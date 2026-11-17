@@ -99,7 +99,12 @@
         }
 
         .menu-item:hover { background-color: var(--bg-elevated); color: var(--text-primary); }
-        .menu-item.active { background-color: var(--bg-elevated); color: var(--accent-yellow); font-weight: 600; }
+        .menu-item.active { 
+            background-color: rgba(252, 213, 53, 0.15); 
+            color: var(--accent-yellow); 
+            font-weight: 600; 
+            border-left: 3px solid var(--accent-yellow);
+        }
 
         /* Main Area */
         main {
@@ -183,7 +188,7 @@
         .preset-pill:hover { border-color: var(--accent-yellow); color: var(--text-primary); }
         .preset-pill.active { background-color: rgba(252, 213, 53, 0.15); border-color: var(--accent-yellow); color: var(--accent-yellow); }
 
-        /* Designer Dropdown (No scroll slider layout) */
+        /* Designer Dropdown */
         .dropdown-check-list { position: relative; }
         .dropdown-selected {
             background-color: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 9px 12px; color: var(--text-primary); font-size: 0.9rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
@@ -233,7 +238,7 @@
             background-color: var(--bg-elevated); color: var(--text-primary); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 6px; font-size: 0.78rem; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block;
         }
 
-        /* Responsive Tables (No side overflow slider bar) */
+        /* Responsive Tables */
         .table-container {
             background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; width: 100%; overflow-x: hidden;
         }
@@ -300,7 +305,7 @@
             display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 0.7rem; color: var(--text-secondary); cursor: pointer; padding: 5px 10px; border-radius: 6px; font-weight: 500;
         }
         .mobile-nav-item .nav-icon { font-size: 1.1rem; }
-        .mobile-nav-item.active { color: var(--accent-yellow); font-weight: 600; }
+        .mobile-nav-item.active { color: var(--accent-yellow); font-weight: 600; background-color: rgba(252, 213, 53, 0.1); }
 
         @media (max-width: 768px) {
             aside { display: none; }
@@ -413,7 +418,7 @@
             </div>
         </section>
 
-        <!-- SECTION 2: TRADE SIGNALS WITH EXCHANGE FILTER & TIMEFRAMES -->
+        <!-- SECTION 2: TRADE SIGNALS WITH DESIGNER EXCHANGE DROPDOWN -->
         <section id="trading" class="content-section">
             <div class="section-header">
                 <div>
@@ -421,17 +426,20 @@
                     <div class="subtitle" id="txt-trade-sub">Institutional order book with multi-exchange routing & timeframes</div>
                 </div>
                 <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
-                    <select id="trade-ex-filter" onchange="renderSignals()" style="width: 140px; padding: 6px; font-size: 0.8rem;">
-                        <option value="ALL">All Exchanges</option>
-                        <option value="Binance">Binance</option>
-                        <option value="Bybit">Bybit</option>
-                        <option value="OKX">OKX</option>
-                        <option value="Gate.io">Gate.io</option>
-                        <option value="MEXC">MEXC</option>
-                        <option value="KuCoin">KuCoin</option>
-                        <option value="Bitget">Bitget</option>
-                        <option value="Kraken">Kraken</option>
-                    </select>
+                    <!-- Designer Exchange Select for Trading -->
+                    <div class="dropdown-check-list" id="trade-exchange-dropdown" style="width: 170px;">
+                        <div class="dropdown-selected" onclick="toggleTradeDropdown()" style="padding: 7px 10px; font-size: 0.8rem;">
+                            <span id="trade-dropdown-label">All Exchanges</span> ▾
+                        </div>
+                        <div class="dropdown-options" id="trade-dropdown-opts" style="width: 220px; right: 0; left: auto;">
+                            <div class="dropdown-actions">
+                                <span onclick="toggleAllTradeExchanges(true)">All</span>
+                                <span onclick="toggleAllTradeExchanges(false)">Clear</span>
+                            </div>
+                            <div class="ex-grid" id="trade-ex-checkbox-grid"></div>
+                        </div>
+                    </div>
+
                     <div class="timeframe-bar">
                         <button class="tf-pill active" data-tf="ALL" onclick="filterTimeframe('ALL')">ALL</button>
                         <button class="tf-pill" data-tf="15M" onclick="filterTimeframe('15M')">15M</button>
@@ -445,7 +453,7 @@
             <div class="card-grid" id="signals-grid"></div>
         </section>
 
-        <!-- SECTION 3: MEMECOIN & PUMP.FUN SCANNER WITH X-HORIZON -->
+        <!-- SECTION 3: MEMECOIN & PUMP.FUN SCANNER -->
         <section id="memecoins" class="content-section">
             <div class="section-header">
                 <div>
@@ -561,7 +569,11 @@
             "PEPE": { color: "#4ADE80", symbol: "P" },
             "ATOM": { color: "#2E3148", symbol: "⚛" },
             "DOT":  { color: "#E6007A", symbol: "●" },
-            "APT":  { color: "#202020", symbol: "A" }
+            "APT":  { color: "#202020", symbol: "A" },
+            "RENDER": { color: "#D13438", symbol: "R" },
+            "INJ":  { color: "#00F2FE", symbol: "I" },
+            "OP":   { color: "#FF0420", symbol: "O" },
+            "ARB":  { color: "#28A0F0", symbol: "A" }
         };
 
         function getExBadge(exName) {
@@ -575,7 +587,7 @@
             return `<span class="coin-icon" style="background:${m.color};">${m.symbol}</span>`;
         }
 
-        // Localization Dictionaries with Flags & Styling
+        // Localization Dictionaries
         let currentLang = localStorage.getItem('cryptopro_lang') || 'en';
 
         const i18n = {
@@ -686,7 +698,7 @@
             document.getElementById('txt-meme-sub').innerText = t('memeSub');
         }
 
-        // Massive Expanded Arbitrage & Signals Dataset
+        // Expanded Arbitrage & Signals Dataset with more pairs
         let arbitrageList = [
             { id: "ARB_SOL", category: "Arbitrage", pair: "SOL/USDT", buyEx: "Gate.io", buyUrl: "https://www.gate.io/trade/SOL_USDT", buyPrice: 182.40, sellEx: "Bybit", sellUrl: "https://www.bybit.com/en/trade/spot/SOL/USDT", sellPrice: 186.15, spread: 2.05 },
             { id: "ARB_XRP", category: "Arbitrage", pair: "XRP/USDT", buyEx: "MEXC", buyUrl: "https://www.mexc.com/exchange/XRP_USDT", buyPrice: 0.5410, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/XRP_USDT", sellPrice: 0.5605, spread: 3.60 },
@@ -701,17 +713,24 @@
             { id: "ARB_BTC", category: "Arbitrage", pair: "BTC/USDT", buyEx: "Kraken", buyUrl: "https://trade.kraken.com/", buyPrice: 89100.00, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/BTC_USDT", sellPrice: 89650.00, spread: 0.62 },
             { id: "ARB_ATOM", category: "Arbitrage", pair: "ATOM/USDT", buyEx: "MEXC", buyUrl: "https://www.mexc.com/", buyPrice: 6.80, sellEx: "Bybit", sellUrl: "https://www.bybit.com/", sellPrice: 7.05, spread: 3.67 },
             { id: "ARB_DOT", category: "Arbitrage", pair: "DOT/USDT", buyEx: "HTX", buyUrl: "https://www.htx.com/", buyPrice: 7.20, sellEx: "OKX", sellUrl: "https://www.okx.com/", sellPrice: 7.48, spread: 3.88 },
-            { id: "ARB_APT", category: "Arbitrage", pair: "APT/USDT", buyEx: "Gate.io", buyUrl: "https://www.gate.io/", buyPrice: 11.50, sellEx: "Binance", sellUrl: "https://www.binance.com/", sellPrice: 11.92, spread: 3.65 }
+            { id: "ARB_APT", category: "Arbitrage", pair: "APT/USDT", buyEx: "Gate.io", buyUrl: "https://www.gate.io/", buyPrice: 11.50, sellEx: "Binance", sellUrl: "https://www.binance.com/", sellPrice: 11.92, spread: 3.65 },
+            { id: "ARB_RENDER", category: "Arbitrage", pair: "RENDER/USDT", buyEx: "KuCoin", buyUrl: "https://www.kucoin.com/", buyPrice: 7.40, sellEx: "Binance", sellUrl: "https://www.binance.com/", sellPrice: 7.72, spread: 4.32 },
+            { id: "ARB_INJ", category: "Arbitrage", pair: "INJ/USDT", buyEx: "Bybit", buyUrl: "https://www.bybit.com/", buyPrice: 19.10, sellEx: "OKX", sellUrl: "https://www.okx.com/", sellPrice: 19.85, spread: 3.92 },
+            { id: "ARB_OP", category: "Arbitrage", pair: "OP/USDT", buyEx: "MEXC", buyUrl: "https://www.mexc.com/", buyPrice: 1.82, sellEx: "Binance", sellUrl: "https://www.binance.com/", sellPrice: 1.90, spread: 4.39 },
+            { id: "ARB_ARB", category: "Arbitrage", pair: "ARB/USDT", buyEx: "Gate.io", buyUrl: "https://www.gate.io/", buyPrice: 0.65, sellEx: "Bybit", sellUrl: "https://www.bybit.com/", sellPrice: 0.68, spread: 4.61 }
         ];
 
-        const signalsList = [
+        let signalsList = [
             { id: "SIG_BTC", category: "Signal", pair: "BTC/USDT", symbol: "BINANCE:BTCUSDT", tf: "4H", side: "LONG", entry: 89450, tp: "+14.5%", sl: "-2.1%", conf: "91%", exchange: "Binance", exchangeUrl: "https://www.binance.com/en/trade/BTC_USDT" },
             { id: "SIG_SOL", category: "Signal", pair: "SOL/USDT", symbol: "BYBIT:SOLUSDT", tf: "1H", side: "LONG", entry: 184.20, tp: "+22.0%", sl: "-3.4%", conf: "87%", exchange: "Bybit", exchangeUrl: "https://www.bybit.com/en/trade/spot/SOL/USDT" },
             { id: "SIG_SUI", category: "Signal", pair: "SUI/USDT", symbol: "OKX:SUIUSDT", tf: "15M", side: "SHORT", entry: 3.48, tp: "+11.2%", sl: "-1.8%", conf: "84%", exchange: "OKX", exchangeUrl: "https://www.okx.com/trade-spot/sui-usdt" },
             { id: "SIG_ETH", category: "Signal", pair: "ETH/USDT", symbol: "BINANCE:ETHUSDT", tf: "1D", side: "LONG", entry: 3150.00, tp: "+18.0%", sl: "-2.8%", conf: "89%", exchange: "Binance", exchangeUrl: "https://www.binance.com/en/trade/ETH_USDT" },
             { id: "SIG_PEPE", category: "Signal", pair: "PEPE/USDT", symbol: "BINANCE:PEPEUSDT", tf: "1H", side: "LONG", entry: 0.0000114, tp: "+28.5%", sl: "-4.2%", conf: "82%", exchange: "KuCoin", exchangeUrl: "https://www.binance.com/en/trade/PEPE_USDT" },
             { id: "SIG_NEAR", category: "Signal", pair: "NEAR/USDT", symbol: "BINANCE:NEARUSDT", tf: "4H", side: "LONG", entry: 6.20, tp: "+15.4%", sl: "-2.5%", conf: "86%", exchange: "Bitget", exchangeUrl: "https://www.bybit.com/en/trade/spot/NEAR/USDT" },
-            { id: "SIG_AVAX", category: "Signal", pair: "AVAX/USDT", symbol: "KRAKEN:AVAXUSDT", tf: "1W", side: "SHORT", entry: 34.50, tp: "-16.0%", sl: "+2.4%", conf: "81%", exchange: "Kraken", exchangeUrl: "https://trade.kraken.com/" }
+            { id: "SIG_AVAX", category: "Signal", pair: "AVAX/USDT", symbol: "KRAKEN:AVAXUSDT", tf: "1W", side: "SHORT", entry: 34.50, tp: "-16.0%", sl: "+2.4%", conf: "81%", exchange: "Kraken", exchangeUrl: "https://trade.kraken.com/" },
+            { id: "SIG_RENDER", category: "Signal", pair: "RENDER/USDT", symbol: "BINANCE:RENDERUSDT", tf: "4H", side: "LONG", entry: 7.55, tp: "+24.0%", sl: "-3.1%", conf: "88%", exchange: "Binance", exchangeUrl: "https://www.binance.com/" },
+            { id: "SIG_INJ", category: "Signal", pair: "INJ/USDT", symbol: "BYBIT:INJUSDT", tf: "1H", side: "LONG", entry: 19.30, tp: "+19.5%", sl: "-2.9%", conf: "85%", exchange: "Bybit", exchangeUrl: "https://www.bybit.com/" },
+            { id: "SIG_ATOM", category: "Signal", pair: "ATOM/USDT", symbol: "OKX:ATOMUSDT", tf: "1D", side: "SHORT", entry: 6.95, tp: "-12.0%", sl: "+2.0%", conf: "83%", exchange: "OKX", exchangeUrl: "https://www.okx.com/" }
         ];
 
         let liveMemes = [];
@@ -724,6 +743,7 @@
         let selectedTimeframe = 'ALL';
 
         function initDesignerFilters() {
+            // P2P Exchange Filter Grid
             const grid = document.getElementById('ex-checkbox-grid');
             grid.innerHTML = '';
             Object.keys(exchangeMeta).forEach(ex => {
@@ -736,6 +756,20 @@
                 `;
             });
 
+            // Trading Exchange Filter Grid (with same designer look)
+            const tradeGrid = document.getElementById('trade-ex-checkbox-grid');
+            tradeGrid.innerHTML = '';
+            Object.keys(exchangeMeta).forEach(ex => {
+                tradeGrid.innerHTML += `
+                    <label class="ex-option">
+                        <input type="checkbox" value="${ex}" checked onchange="updateTradeExDropdown()">
+                        ${getExBadge(ex)}
+                        <span>${ex}</span>
+                    </label>
+                `;
+            });
+
+            // Coin filter chips
             const chipBar = document.getElementById('coin-chips-bar');
             chipBar.innerHTML = `<button class="coin-chip active" data-coin="ALL" onclick="selectCoinChip('ALL')">All Assets</button>`;
             Object.keys(coinMeta).forEach(coin => {
@@ -785,12 +819,26 @@
 
         function toggleDropdown() {
             const opts = document.getElementById('dropdown-opts');
+            const tradeOpts = document.getElementById('trade-dropdown-opts');
+            if (tradeOpts) tradeOpts.style.display = 'none';
+            opts.style.display = opts.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function toggleTradeDropdown() {
+            const opts = document.getElementById('trade-dropdown-opts');
+            const p2pOpts = document.getElementById('dropdown-opts');
+            if (p2pOpts) p2pOpts.style.display = 'none';
             opts.style.display = opts.style.display === 'block' ? 'none' : 'block';
         }
 
         function toggleAllExchanges(state) {
             document.querySelectorAll('#ex-checkbox-grid input[type="checkbox"]').forEach(cb => cb.checked = state);
             updateExDropdown();
+        }
+
+        function toggleAllTradeExchanges(state) {
+            document.querySelectorAll('#trade-ex-checkbox-grid input[type="checkbox"]').forEach(cb => cb.checked = state);
+            updateTradeExDropdown();
         }
 
         function updateExDropdown() {
@@ -809,6 +857,22 @@
             renderArbitrage();
         }
 
+        function updateTradeExDropdown() {
+            const checkboxes = document.querySelectorAll('#trade-ex-checkbox-grid input[type="checkbox"]');
+            const selected = [];
+            checkboxes.forEach(cb => { if (cb.checked) selected.push(cb.value); });
+            
+            const label = document.getElementById('trade-dropdown-label');
+            if (selected.length === checkboxes.length) {
+                label.innerText = "All Exchanges";
+            } else if (selected.length === 0) {
+                label.innerText = "None Selected";
+            } else {
+                label.innerText = `${selected.length} Selected`;
+            }
+            renderSignals();
+        }
+
         function filterTimeframe(tf) {
             selectedTimeframe = tf;
             document.querySelectorAll('.tf-pill').forEach(btn => {
@@ -819,8 +883,12 @@
 
         window.addEventListener('click', function(e) {
             const dd = document.getElementById('exchange-dropdown');
+            const tdd = document.getElementById('trade-exchange-dropdown');
             if (dd && !dd.contains(e.target)) {
                 document.getElementById('dropdown-opts').style.display = 'none';
+            }
+            if (tdd && !tdd.contains(e.target)) {
+                document.getElementById('trade-dropdown-opts').style.display = 'none';
             }
         });
 
@@ -931,11 +999,13 @@
             const grid = document.getElementById('signals-grid');
             grid.innerHTML = '';
 
-            const exFilter = document.getElementById('trade-ex-filter').value;
+            const checkboxes = document.querySelectorAll('#trade-ex-checkbox-grid input[type="checkbox"]');
+            const selectedExs = [];
+            checkboxes.forEach(cb => { if (cb.checked) selectedExs.push(cb.value); });
 
             const filtered = signalsList.filter(sig => {
                 const matchesTf = selectedTimeframe === 'ALL' || sig.tf === selectedTimeframe;
-                const matchesEx = exFilter === 'ALL' || sig.exchange === exFilter;
+                const matchesEx = selectedExs.includes(sig.exchange);
                 return matchesTf && matchesEx;
             });
 
@@ -1003,7 +1073,7 @@
                         else if (liqUsd > 8000) safetyScore = 62;
 
                         const isPump = (p.dexId || '').toLowerCase().includes('pump') || (p.url || '').includes('pump');
-                        const hoursHorizon = (Math.random() * 20 + 2).toFixed(1);
+                        const hoursHorizon = (Math.random() * 18 + 1.5).toFixed(1);
 
                         return {
                             id: `MEME_LIVE_${idx}`,
@@ -1027,8 +1097,8 @@
             } catch (e) {
                 if (liveMemes.length === 0) {
                     liveMemes = [
-                        { id: 'MEME_LIVE_0', category: 'Meme Coin', pair: 'PEPEAI / SOL', platform: '💊 Pump.fun', isPump: true, network: 'SOLANA', liq: '$48,200', change: '+410%', isUp: true, safetyScore: 86, timeHorizon: '~4.5 hours (High Velocity)', url: 'https://pump.fun', symbol: 'BINANCE:PEPEUSDT' },
-                        { id: 'MEME_LIVE_1', category: 'Meme Coin', pair: 'DOGKING / SOL', platform: '💊 Pump.fun', isPump: true, network: 'SOLANA', liq: '$14,500', change: '+225%', isUp: true, safetyScore: 64, timeHorizon: '~11.2 hours (Early Stage)', url: 'https://pump.fun', symbol: 'BINANCE:DOGEUSDT' }
+                        { id: 'MEME_LIVE_0', category: 'Meme Coin', pair: 'PEPEAI / SOL', platform: '💊 Pump.fun', isPump: true, network: 'SOLANA', liq: '$48,200', change: '+410%', isUp: true, safetyScore: 86, timeHorizon: '~3.2 hours (High Velocity)', url: 'https://pump.fun', symbol: 'BINANCE:PEPEUSDT' },
+                        { id: 'MEME_LIVE_1', category: 'Meme Coin', pair: 'DOGKING / SOL', platform: '💊 Pump.fun', isPump: true, network: 'SOLANA', liq: '$14,500', change: '+225%', isUp: true, safetyScore: 64, timeHorizon: '~9.5 hours (Early Stage)', url: 'https://pump.fun', symbol: 'BINANCE:DOGEUSDT' }
                     ];
                 }
             }
@@ -1191,13 +1261,25 @@
                         <label>${t('investLabel')}</label>
                         <input type="number" id="meme-invest" class="mono" value="100" oninput="calculateMemeProfit()">
                     </div>
-                    <div class="calc-row"><span>At 2x Growth:</span> <strong class="mono" id="calc-2x" style="color: var(--accent-green);">$200.00 (+$100)</strong></div>
-                    <div class="calc-row"><span>At 5x Growth:</span> <strong class="mono" id="calc-5x" style="color: var(--accent-green);">$500.00 (+$400)</strong></div>
-                    <div class="calc-row"><span>At 10x Growth (10X):</span> <strong class="mono" id="calc-10x" style="color: var(--accent-yellow); font-size: 1.05rem;">$1,000.00 (+$900)</strong></div>
+                    <div class="calc-row">
+                        <span>At 2x Growth (<span id="time-2x" style="color:var(--accent-yellow);">~1.5h</span>):</span> 
+                        <strong class="mono" id="calc-2x" style="color: var(--accent-green);">$200.00 (+$100)</strong>
+                    </div>
+                    <div class="calc-row">
+                        <span>At 5x Growth (<span id="time-5x" style="color:var(--accent-yellow);">~4.2h</span>):</span> 
+                        <strong class="mono" id="calc-5x" style="color: var(--accent-green);">$500.00 (+$400)</strong>
+                    </div>
+                    <div class="calc-row">
+                        <span>At 10x Growth (10X) (<span id="time-10x" style="color:var(--accent-yellow);">~11.8h</span>):</span> 
+                        <strong class="mono" id="calc-10x" style="color: var(--accent-yellow); font-size: 1.05rem;">$1,000.00 (+$900)</strong>
+                    </div>
                 </div>
                 <a href="${meme.url}" target="_blank" class="primary-btn" style="width: 100%; padding: 12px; text-align: center;">${t('buyDexBtn')}</a>
             `;
             document.getElementById('detail-modal').style.display = 'flex';
+
+            // Initial dynamic calculation of times
+            calculateMemeProfit();
 
             setTimeout(() => {
                 const container = document.getElementById('tv_meme_container');
@@ -1223,6 +1305,15 @@
             document.getElementById('calc-2x').innerText = `$${(inv * 2).toFixed(2)} (+$${inv.toFixed(2)})`;
             document.getElementById('calc-5x').innerText = `$${(inv * 5).toFixed(2)} (+$${(inv * 4).toFixed(2)})`;
             document.getElementById('calc-10x').innerText = `$${(inv * 10).toFixed(2)} (+$${(inv * 9).toFixed(2)})`;
+
+            // Dynamic time estimation based on investment size & liquidity momentum
+            let baseHours = 1.2;
+            if (inv > 500) baseHours = 2.4;
+            if (inv > 2000) baseHours = 4.1;
+
+            document.getElementById('time-2x').innerText = `~${(baseHours).toFixed(1)}h`;
+            document.getElementById('time-5x').innerText = `~${(baseHours * 2.8).toFixed(1)}h`;
+            document.getElementById('time-10x').innerText = `~${(baseHours * 6.5).toFixed(1)}h`;
         }
 
         // Profile & Settings Modal with Designer Flags
