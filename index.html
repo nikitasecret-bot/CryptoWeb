@@ -238,9 +238,9 @@
             background-color: var(--bg-elevated); color: var(--text-primary); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 6px; font-size: 0.78rem; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block;
         }
 
-        /* Desktop Table View (Hidden on Mobile for P2P & Memes) */
-        .desktop-table-view { display: block; }
-        .mobile-card-view { display: none; }
+        /* Desktop vs Mobile display logic classes */
+        .desktop-only-table { display: block; }
+        .mobile-only-cards { display: none; }
 
         .table-container {
             background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; width: 100%; overflow-x: hidden;
@@ -264,7 +264,7 @@
         .safety-bar-bg { width: 100%; height: 5px; background-color: var(--bg-main); border-radius: 3px; overflow: hidden; }
         .safety-bar-fill { height: 100%; border-radius: 3px; }
 
-        /* Cards Grid for Trading & Mobile View */
+        /* Cards Grid */
         .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
         .signal-card {
             background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 12px; cursor: pointer; transition: border-color 0.2s;
@@ -316,8 +316,8 @@
             header { padding: 12px 14px; }
             .content-section { padding: 12px; }
             .ex-grid { grid-template-columns: 1fr; }
-            .desktop-table-view { display: none; }
-            .mobile-card-view { display: grid; }
+            .desktop-only-table { display: none !important; }
+            .mobile-only-cards { display: grid !important; }
         }
     </style>
 </head>
@@ -358,7 +358,7 @@
             <div class="section-header">
                 <div>
                     <h2 id="txt-p2p-title">Inter-Exchange Arbitrage</h2>
-                    <div class="subtitle" id="txt-p2p-sub">Live spread routing across 20 top exchanges & instant capital presets</div>
+                    <div class="subtitle" id="txt-p2p-sub">Live spread routing across 20 top exchanges & sorted by profitability</div>
                 </div>
                 <button class="primary-btn" id="txt-btn-refresh" onclick="simulateMarketTick()">↻ Refresh Ticks</button>
             </div>
@@ -404,7 +404,7 @@
             </div>
 
             <!-- Desktop Table View -->
-            <div class="table-container desktop-table-view">
+            <div class="table-container desktop-only-table">
                 <table>
                     <thead>
                         <tr>
@@ -422,7 +422,7 @@
             </div>
 
             <!-- Mobile Card View -->
-            <div class="card-grid mobile-card-view" id="p2p-card-grid"></div>
+            <div class="card-grid mobile-only-cards" id="p2p-card-grid"></div>
         </section>
 
         <!-- SECTION 2: TRADE SIGNALS -->
@@ -470,7 +470,7 @@
             </div>
 
             <!-- Desktop Table View -->
-            <div class="table-container desktop-table-view">
+            <div class="table-container desktop-only-table">
                 <table>
                     <thead>
                         <tr>
@@ -488,7 +488,7 @@
             </div>
 
             <!-- Mobile Card View -->
-            <div class="card-grid mobile-card-view" id="meme-card-grid"></div>
+            <div class="card-grid mobile-only-cards" id="meme-card-grid"></div>
         </section>
 
         <!-- SECTION 4: FAVORITES -->
@@ -607,13 +607,12 @@
             return `<span class="coin-icon" style="background:${m.color};">${m.symbol}</span>`;
         }
 
-        // Localization Dictionaries
         let currentLang = localStorage.getItem('cryptopro_lang') || 'en';
         let currentUsername = localStorage.getItem('cryptopro_username') || '@CryptoTrader_Pro';
 
         const i18n = {
             en: {
-                timer: "Next tick:", capital: "Capital:", p2pTitle: "Inter-Exchange Arbitrage", p2pSub: "Live spread routing across 20 top exchanges & instant capital presets",
+                timer: "Next tick:", capital: "Capital:", p2pTitle: "Inter-Exchange Arbitrage", p2pSub: "Live spread routing across 20 top exchanges & sorted by profitability",
                 lblCap: "Investment Capital (USDT)", lblEx: "Select Exchanges", lblSearch: "Search Asset", btnRefresh: "↻ Refresh Ticks",
                 thPair: "Pair", thBuy: "Buy Ex.", thSell: "Sell Ex.", thSpread: "Spread", thProfit: "Profit", thAction: "Action",
                 tradeTitle: "Algorithmic Trade Signals", tradeSub: "Institutional order book with multi-exchange routing & timeframes",
@@ -623,7 +622,7 @@
                 safetyLabel: "Contract Safety Audit:", releaseLabel: "Estimated Time to Target Multipliers:"
             },
             ru: {
-                timer: "След. тик:", capital: "Капитал:", p2pTitle: "Межбиржевой арбитраж", p2pSub: "Маршрутизация спредов по 20 топ-биржам и быстрый расчет капитала",
+                timer: "След. тик:", capital: "Капитал:", p2pTitle: "Межбиржевой арбитраж", p2pSub: "Маршрутизация спредов по 20 топ-биржам (от самых выгодных)",
                 lblCap: "Инвестиционный капитал (USDT)", lblEx: "Выбор бирж", lblSearch: "Поиск актива", btnRefresh: "↻ Обновить",
                 thPair: "Пара", thBuy: "Покупка", thSell: "Продажа", thSpread: "Спред", thProfit: "Профит", thAction: "Действие",
                 tradeTitle: "Алгоритмические торговые сигналы", tradeSub: "Стакан ордеров с фильтрами бирж и таймфреймов",
@@ -633,7 +632,7 @@
                 safetyLabel: "Аудит безопасности контракта:", releaseLabel: "Прогноз времени до достижения иксов:"
             },
             uk: {
-                timer: "Наст. тік:", capital: "Капітал:", p2pTitle: "Міжбіржовий арбітраж", p2pSub: "Маршрутизація спредів по 20 топ-біржах та швидкий розрахунок капіталу",
+                timer: "Наст. тік:", capital: "Капітал:", p2pTitle: "Міжбіржовий арбітраж", p2pSub: "Маршрутизація спредів по 20 топ-біржах (від найвигідніших)",
                 lblCap: "Інвестиційний капітал (USDT)", lblEx: "Вибір біржах", lblSearch: "Пошук активу", btnRefresh: "↻ Оновити",
                 thPair: "Пара", thBuy: "Купівля", thSell: "Продаж", thSpread: "Спред", thProfit: "Профіт", thAction: "Дія",
                 tradeTitle: "Алгоритмічні торгові сигнали", tradeSub: "Книга ордерів з фільтрами бірж та таймфреймів",
@@ -643,7 +642,7 @@
                 safetyLabel: "Аудит безпеки контракту:", releaseLabel: "Прогноз часу до досягнення іксів:"
             },
             de: {
-                timer: "Nächster Tick:", capital: "Kapital:", p2pTitle: "Börsenübergreifende Arbitrage", p2pSub: "Live-Spread-Routing über 20 Top-Börsen & Turbo-Kapitalpresets",
+                timer: "Nächster Tick:", capital: "Kapital:", p2pTitle: "Börsenübergreifende Arbitrage", p2pSub: "Live-Spread-Routing über 20 Top-Börsen & nach Rentabilität sortiert",
                 lblCap: "Investitionskapital (USDT)", lblEx: "Börsen auswählen", lblSearch: "Asset suchen", btnRefresh: "↻ Aktualisieren",
                 thPair: "Paar", thBuy: "Kauf", thSell: "Verkauf", thSpread: "Spread", thProfit: "Gewinn", thAction: "Aktion",
                 tradeTitle: "Algorithmische Handelssignale", tradeSub: "Orderbuch mit Börsen- und Zeitrahmen-Filtern",
@@ -653,7 +652,7 @@
                 safetyLabel: "Sicherheitsbewertung:", releaseLabel: "Geschätzte Zeit bis zum Erreichen der Multiplikatoren:"
             },
             fr: {
-                timer: "Prochain tick:", capital: "Capital:", p2pTitle: "Arbitrage inter-plateformes", p2pSub: "Routage des spreads sur 20 bourses & préréglages de capital",
+                timer: "Prochain tick:", capital: "Capital:", p2pTitle: "Arbitrage inter-plateformes", p2pSub: "Routage des spreads sur 20 bourses & triés par rentabilité",
                 lblCap: "Capital d'investissement (USDT)", lblEx: "Sélectionner les bourses", lblSearch: "Rechercher un actif", btnRefresh: "↻ Actualiser",
                 thPair: "Paire", thBuy: "Achat", thSell: "Vente", thSpread: "Spread", thProfit: "Profit", thAction: "Action",
                 tradeTitle: "Signaux de Trading Algorithmiques", tradeSub: "Carnet d'ordres avec filtres de bourses et d'intervalles",
@@ -663,7 +662,7 @@
                 safetyLabel: "Score de sécurité:", releaseLabel: "Temps estimé pour atteindre les multiplicateurs :"
             },
             pl: {
-                timer: "Nast. tyknięcie:", capital: "Kapitał:", p2pTitle: "Arbitraż międzygiełdowy", p2pSub: "Routing spreadów na 20 giełdach i presety kapitałowe",
+                timer: "Nast. tyknięcie:", capital: "Kapitał:", p2pTitle: "Arbitraż międzygiełdowy", p2pSub: "Routing spreadów na 20 giełdach (sortowane od najyszych zysków)",
                 lblCap: "Kapitał inwestycyjny (USDT)", lblEx: "Wybierz giełdy", lblSearch: "Szukaj aktywa", btnRefresh: "↻ Odśwież",
                 thPair: "Para", thBuy: "Kupno", thSell: "Sprzedaż", thSpread: "Spread", thProfit: "Zysk", thAction: "Akcja",
                 tradeTitle: "Algorytmiczne sygnały handlowe", tradeSub: "Księga zleceń z filtrami giełd i interwałów",
@@ -673,7 +672,7 @@
                 safetyLabel: "Ocena bezpieczeństwa:", releaseLabel: "Szacowany czas osiągnięcia multiplikatorów:"
             },
             zh: {
-                timer: "下次刷新:", capital: "本金:", p2pTitle: "跨所套利", p2pSub: "跨20大主流交易所的实时价差路由",
+                timer: "下次刷新:", capital: "本金:", p2pTitle: "跨所套利", p2pSub: "跨20大主流交易所的实时价差路由（按收益率排序）",
                 lblCap: "投资本金 (USDT)", lblEx: "选择交易所", lblSearch: "搜索资产", btnRefresh: "↻ 刷新",
                 thPair: "交易对", thBuy: "买入", thSell: "卖出", thSpread: "价差", thProfit: "利润", thAction: "操作",
                 tradeTitle: "算法交易信号", tradeSub: "带交易所和多时间周期筛选的机构级订单簿",
@@ -683,7 +682,7 @@
                 safetyLabel: "合约安全评分:", releaseLabel: "达到预期倍数的时间窗口:"
             },
             ja: {
-                timer: "次の更新:", capital: "資本:", p2pTitle: "取引所間アービトラージ", p2pSub: "20大取引所をまたぐライブスプレッドルーティング",
+                timer: "次の更新:", capital: "資本:", p2pTitle: "取引所間アービトラージ", p2pSub: "20大取引所をまたぐライブスプレッドルーティング（収益順）",
                 lblCap: "投資資本 (USDT)", lblEx: "取引所の選択", lblSearch: "資産を検索", btnRefresh: "↻ 更新",
                 thPair: "ペア", thBuy: "買値", thSell: "売値", thSpread: "スプレッド", thProfit: "利益", thAction: "操作",
                 tradeTitle: "アルゴリズム取引シグナル", tradeSub: "取引所・タイムフレームフィルター付きオーダーブック",
@@ -719,7 +718,6 @@
             document.getElementById('txt-meme-sub').innerText = t('memeSub');
         }
 
-        // Expanded Arbitrage & Signals Dataset
         let arbitrageList = [
             { id: "ARB_SOL", category: "Arbitrage", pair: "SOL/USDT", buyEx: "Gate.io", buyUrl: "https://www.gate.io/trade/SOL_USDT", buyPrice: 182.40, sellEx: "Bybit", sellUrl: "https://www.bybit.com/en/trade/spot/SOL/USDT", sellPrice: 186.15, spread: 2.05 },
             { id: "ARB_XRP", category: "Arbitrage", pair: "XRP/USDT", buyEx: "MEXC", buyUrl: "https://www.mexc.com/exchange/XRP_USDT", buyPrice: 0.5410, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/XRP_USDT", sellPrice: 0.5605, spread: 3.60 },
@@ -766,7 +764,6 @@
         let selectedTimeframe = 'ALL';
 
         function initDesignerFilters() {
-            // P2P Exchange Filter Grid (20 Exchanges)
             const grid = document.getElementById('ex-checkbox-grid');
             grid.innerHTML = '';
             Object.keys(exchangeMeta).forEach(ex => {
@@ -779,7 +776,6 @@
                 `;
             });
 
-            // Trading Exchange Filter Grid
             const tradeGrid = document.getElementById('trade-ex-checkbox-grid');
             tradeGrid.innerHTML = '';
             Object.keys(exchangeMeta).forEach(ex => {
@@ -792,7 +788,6 @@
                 `;
             });
 
-            // Coin filter chips
             const chipBar = document.getElementById('coin-chips-bar');
             chipBar.innerHTML = `<button class="coin-chip active" data-coin="ALL" onclick="selectCoinChip('ALL')">All Assets</button>`;
             Object.keys(coinMeta).forEach(coin => {
@@ -915,7 +910,6 @@
             }
         });
 
-        // Timers & Auto 5s Refresh
         let timeLeft = 15;
         let memeTimer = 0;
         setInterval(() => {
@@ -974,6 +968,9 @@
                 const matchesEx = selectedExs.includes(item.buyEx) || selectedExs.includes(item.sellEx);
                 return matchesQuery && matchesEx;
             });
+
+            // SORT BY PROFITABILITY / SPREAD (Highest to Lowest)
+            filtered.sort((a, b) => b.spread - a.spread);
 
             if (filtered.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-secondary); padding: 30px;">No arbitrage pairs match your filters.</td></tr>`;
@@ -1102,7 +1099,6 @@
             });
         }
 
-        // Fetch Live Meme Coins & Pump.fun Tokens with Safety Audit & X-Multiplier Horizon
         async function fetchLiveMemes(silent = false) {
             const tbody = document.getElementById('meme-table-body');
             const cardGrid = document.getElementById('meme-card-grid');
@@ -1187,7 +1183,6 @@
                 const badgeClass = meme.isUp ? 'badge-green' : 'badge-red';
                 const platBadge = meme.isPump ? 'badge-pump' : 'badge-yellow';
 
-                // Desktop Table View
                 tbody.innerHTML += `
                     <tr>
                         <td><button class="star-btn ${isFav ? 'favorited' : ''}" onclick="toggleFavorite('${meme.id}')">★</button></td>
@@ -1205,7 +1200,6 @@
                     </tr>
                 `;
 
-                // Mobile Card View
                 cardGrid.innerHTML += `
                     <div class="signal-card" onclick="openMemeModal('${meme.id}')">
                         <div class="signal-top">
@@ -1230,7 +1224,6 @@
             });
         }
 
-        // Arbitrage Modal
         function openArbitrageModal(id) {
             const item = arbitrageList.find(x => x.id === id);
             if (!item) return;
@@ -1276,7 +1269,6 @@
             alert('Order saved to your Account History!');
         }
 
-        // Signal Modal
         function openSignalModal(id) {
             const sig = signalsList.find(x => x.id === id);
             if (!sig) return;
@@ -1316,7 +1308,6 @@
             }, 100);
         }
 
-        // Meme Modal with Safety Audit & X-Multiplier Horizon
         function openMemeModal(id) {
             const meme = liveMemes.find(x => x.id === id);
             if (!meme) return;
@@ -1391,7 +1382,6 @@
             document.getElementById('time-10x').innerText = `~${(baseHours * 6.5).toFixed(1)}h`;
         }
 
-        // Profile & Settings Modal with Username & Designer Language Select
         function openProfileModal() {
             document.getElementById('modal-title').innerText = t('profileTitle');
             
@@ -1504,7 +1494,6 @@
             });
         }
 
-        // Init
         initDesignerFilters();
         applyTranslations();
         renderArbitrage();
