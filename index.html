@@ -1,452 +1,824 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Terminal Pro (Binance Style)</title>
-    <!-- Подключаем шрифты и иконки -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CryptoPro Terminal | Binance Style</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-main: #181a20;
-            --bg-card: #1e2329;
-            --bg-hover: #2b313a;
+            --bg-main: #0b0e11;
+            --bg-card: #181a20;
+            --bg-elevated: #1e2329;
+            --bg-hover: #2b3139;
             --text-primary: #eaecef;
             --text-secondary: #848e9c;
-            --accent-yellow: #f0b90b;
+            --accent-yellow: #fcd535;
+            --accent-yellow-hover: #f0b90b;
             --accent-green: #0ecb81;
+            --accent-green-bg: rgba(14, 203, 129, 0.12);
             --accent-red: #f6465d;
-            --border-color: #2b313a;
+            --accent-red-bg: rgba(246, 70, 93, 0.12);
+            --border-color: #2b3139;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background-color: var(--bg-main);
             color: var(--text-primary);
             display: flex;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Сайдбар (Меню) */
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Desktop Sidebar */
         aside {
-            width: 240px;
+            width: 250px;
             background-color: var(--bg-card);
             border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
+            flex-shrink: 0;
         }
 
         .logo-area {
-            padding: 20px;
-            font-size: 1.2rem;
+            padding: 20px 24px;
+            font-size: 1.25rem;
             font-weight: 700;
             color: var(--accent-yellow);
             display: flex;
             align-items: center;
             gap: 10px;
             border-bottom: 1px solid var(--border-color);
+            letter-spacing: -0.5px;
+        }
+
+        .logo-badge {
+            background: rgba(252, 213, 53, 0.15);
+            color: var(--accent-yellow);
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-weight: 700;
         }
 
         .menu-list {
             list-style: none;
-            padding: 15px 10px;
+            padding: 16px 12px;
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 6px;
         }
 
         .menu-item {
-            padding: 12px 15px;
-            border-radius: 6px;
+            padding: 12px 16px;
+            border-radius: 8px;
             cursor: pointer;
             color: var(--text-secondary);
             font-weight: 500;
-            transition: all 0.2s ease;
+            font-size: 0.95rem;
+            transition: all 0.15s ease;
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .menu-item:hover, .menu-item.active {
-            background-color: var(--bg-hover);
+        .menu-item:hover {
+            background-color: var(--bg-elevated);
             color: var(--text-primary);
         }
 
         .menu-item.active {
+            background-color: var(--bg-elevated);
             color: var(--accent-yellow);
+            font-weight: 600;
         }
 
-        /* Основной контент */
+        /* Main Area */
         main {
             flex: 1;
             display: flex;
             flex-direction: column;
-            overflow-y: auto;
+            width: 100%;
+            padding-bottom: 80px;
         }
 
         header {
-            padding: 15px 30px;
+            padding: 16px 24px;
             background-color: var(--bg-card);
             border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
-        .user-balance {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        .user-balance span {
-            color: var(--accent-green);
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-green);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
+        #header-title {
+            font-size: 1.05rem;
             font-weight: 600;
         }
 
+        .user-balance {
+            background-color: var(--bg-elevated);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .user-balance span {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-left: 4px;
+        }
+
         .content-section {
-            padding: 30px;
+            padding: 24px;
             display: none;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
         }
 
         .content-section.active {
             display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         h2 {
-            margin-bottom: 20px;
-            font-size: 1.5rem;
+            font-size: 1.35rem;
+            font-weight: 700;
         }
 
-        /* Таблицы и Карточки */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-top: 4px;
         }
 
-        .card {
+        /* Controls & Inputs */
+        .controls-bar {
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-            position: relative;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            align-items: flex-end;
         }
 
-        .card-title {
-            font-size: 1.1rem;
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+            min-width: 160px;
+        }
+
+        .control-group label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        input, select {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px 12px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+            width: 100%;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--accent-yellow);
+        }
+
+        button.primary-btn {
+            background-color: var(--accent-yellow);
+            color: #181a20;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
             font-weight: 600;
-            margin-bottom: 10px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.15s;
+            white-space: nowrap;
         }
 
+        button.primary-btn:hover {
+            background-color: var(--accent-yellow-hover);
+        }
+
+        /* Tables */
         .table-container {
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            overflow: hidden;
+            border-radius: 10px;
+            overflow-x: auto;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             text-align: left;
+            min-width: 650px;
         }
 
         th, td {
-            padding: 15px 20px;
+            padding: 14px 16px;
             border-bottom: 1px solid var(--border-color);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         th {
             color: var(--text-secondary);
-            font-weight: 600;
-            background-color: rgba(255,255,255, 0.02);
+            font-weight: 500;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            background-color: var(--bg-elevated);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
         }
 
         tr:hover {
-            background-color: var(--bg-hover);
+            background-color: rgba(43, 49, 57, 0.45);
         }
 
-        .positive { color: var(--accent-green); }
-        .negative { color: var(--accent-red); }
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
 
-        /* Кнопка Избранного (Звездочка) */
+        .badge-green {
+            background-color: var(--accent-green-bg);
+            color: var(--accent-green);
+        }
+
+        .badge-red {
+            background-color: var(--accent-red-bg);
+            color: var(--accent-red);
+        }
+
+        .badge-yellow {
+            background-color: rgba(252, 213, 53, 0.12);
+            color: var(--accent-yellow);
+        }
+
+        .ex-tag {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            display: block;
+        }
+
+        /* Cards Grid (Trading Signals) */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+        }
+
+        .signal-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .signal-card:hover {
+            border-color: #474d57;
+        }
+
+        .signal-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pair-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .signal-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            background-color: var(--bg-main);
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .metric-box span {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .metric-box strong {
+            font-size: 0.9rem;
+        }
+
         .star-btn {
             background: none;
             border: none;
             cursor: pointer;
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-            transition: color 0.2s;
+            color: #474d57;
+            font-size: 1.25rem;
+            transition: transform 0.15s, color 0.15s;
+            padding: 4px;
+        }
+
+        .star-btn:hover {
+            transform: scale(1.15);
         }
 
         .star-btn.favorited {
             color: var(--accent-yellow);
         }
 
-        /* Интерактивные элементы ввода */
-        .input-group {
-            margin-bottom: 20px;
+        /* Mobile Bottom Navigation */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            z-index: 100;
+            padding: 6px 0 calc(6px + env(safe-area-inset-bottom));
+        }
+
+        .mobile-nav-list {
             display: flex;
-            gap: 10px;
+            justify-content: space-around;
+            list-style: none;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
             align-items: center;
-        }
-
-        input {
-            background-color: var(--bg-main);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 10px 15px;
-            color: var(--text-primary);
-            font-size: 1rem;
-            width: 200px;
-        }
-
-        button.primary-btn {
-            background-color: var(--accent-yellow);
-            color: #000;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: 600;
+            gap: 4px;
+            font-size: 0.72rem;
+            color: var(--text-secondary);
             cursor: pointer;
-            transition: opacity 0.2s;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 500;
         }
 
-        button.primary-btn:hover {
-            opacity: 0.9;
+        .mobile-nav-item .nav-icon {
+            font-size: 1.2rem;
+        }
+
+        .mobile-nav-item.active {
+            color: var(--accent-yellow);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            aside {
+                display: none;
+            }
+            .mobile-nav {
+                display: block;
+            }
+            header {
+                padding: 14px 16px;
+            }
+            .content-section {
+                padding: 16px;
+            }
+            .controls-bar {
+                padding: 12px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Сайдбар с навигацией -->
+    <!-- Desktop Sidebar -->
     <aside>
         <div class="logo-area">
-            ⚡ CryptoPro
+            ⚡ CryptoPro <span class="logo-badge">PRO</span>
         </div>
         <ul class="menu-list">
-            <li class="menu-item active" onclick="switchTab('p2p', this)">📈 P2P & Арбитраж</li>
-            <li class="menu-item" onclick="switchTab('trading', this)">📊 Трейдинг Сигналы</li>
-            <li class="menu-item" onclick="switchTab('memecoins', this)">🚀 Мемкоины Скан</li>
-            <li class="menu-item" onclick="switchTab('favorites', this)">⭐ Избранное</li>
+            <li class="menu-item active" data-tab="p2p" onclick="switchTab('p2p')">📈 P2P & Arbitrage</li>
+            <li class="menu-item" data-tab="trading" onclick="switchTab('trading')">📊 Trade Signals</li>
+            <li class="menu-item" data-tab="memecoins" onclick="switchTab('memecoins')">🚀 Meme Scanner</li>
+            <li class="menu-item" data-tab="favorites" onclick="switchTab('favorites')">⭐ Favorites</li>
         </ul>
     </aside>
 
-    <!-- Основная рабочая область -->
+    <!-- Main Content -->
     <main>
         <header>
-            <div id="header-title">Панель P2P Арбитража</div>
-            <div class="user-balance">Капитал: <span id="display-capital">$1,000.00</span></div>
+            <div class="header-left">
+                <div class="live-dot"></div>
+                <div id="header-title">P2P & Spot Arbitrage</div>
+            </div>
+            <div class="user-balance">Est. Capital: <span id="display-capital" class="mono">$1,000.00</span></div>
         </header>
 
-        <!-- РАЗДЕЛ 1: П2П И АРБИТРАЖ -->
+        <!-- SECTION 1: P2P & ARBITRAGE -->
         <section id="p2p" class="content-section active">
-            <h2>Межбиржевой арбитраж (15 бирж)</h2>
-            <div class="input-group">
-                <label>Ваш депозит (USDT):</label>
-                <input type="number" id="capital-input" value="1000" oninput="updateArbitrage()">
-                <button class="primary-btn" onclick="updateArbitrage()">Пересчитать профит</button>
+            <div class="section-header">
+                <div>
+                    <h2>Inter-Exchange Arbitrage</h2>
+                    <div class="subtitle">Real-time spread scanner across 15+ tier-1 exchanges</div>
+                </div>
+            </div>
+
+            <div class="controls-bar">
+                <div class="control-group">
+                    <label>Investment Capital (USDT)</label>
+                    <input type="number" id="capital-input" class="mono" value="1000" min="10" oninput="renderArbitrage()">
+                </div>
+                <div class="control-group">
+                    <label>Search Coin</label>
+                    <input type="text" id="arb-search" placeholder="e.g. SOL, XRP, ETH..." oninput="renderArbitrage()">
+                </div>
+                <div class="control-group" style="flex: 0;">
+                    <label>&nbsp;</label>
+                    <button class="primary-btn" onclick="simulateMarketTick()">↻ Refresh Rates</button>
+                </div>
             </div>
 
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
-                            <th>Избранное</th>
-                            <th>Монета</th>
-                            <th>Купить (Биржа)</th>
-                            <th>Продать (Биржа)</th>
-                            <th>Спред</th>
-                            <th>Чистый Профит</th>
-                            <th>Действие</th>
+                            <th style="width: 50px;">Fav</th>
+                            <th>Asset Pair</th>
+                            <th>Buy At</th>
+                            <th>Sell At</th>
+                            <th>Net Spread</th>
+                            <th>Est. Profit</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody id="p2p-table-body">
-                        <!-- Динамически заполняется через JS -->
-                    </tbody>
+                    <tbody id="p2p-table-body"></tbody>
                 </table>
             </div>
         </section>
 
-        <!-- РАЗДЕЛ 2: ТРЕЙДИНГ -->
+        <!-- SECTION 2: TRADE SIGNALS -->
         <section id="trading" class="content-section">
-            <h2>Анализ рынка и торговые сигналы</h2>
-            <div class="card-grid">
-                <div class="card">
-                    <div class="card-title">BTC/USDT (Трендовый сетап)</div>
-                    <p style="color: var(--text-secondary); margin-bottom: 10px;">Таймфрейм: 4ч</p>
-                    <p>Рекомендация: <strong class="positive">LONG</strong></p>
-                    <p>Цель (Take Profit): <strong>+18.5% (x1.18)</strong></p>
-                    <p>Стоп-лосс: <strong class="negative">-2.1%</strong></p>
-                </div>
-                <div class="card">
-                    <div class="card-title">SOL/USDT (Пробой уровня)</div>
-                    <p style="color: var(--text-secondary); margin-bottom: 10px;">Таймфрейм: 1ч</p>
-                    <p>Рекомендация: <strong class="positive">LONG</strong></p>
-                    <p>Цель (Take Profit): <strong>+35.0% (x1.35)</strong></p>
-                    <p>Стоп-лосс: <strong class="negative">-3.5%</strong></p>
+            <div class="section-header">
+                <div>
+                    <h2>Algorithmic Trade Signals</h2>
+                    <div class="subtitle">High-probability technical setups & liquidity sweeps</div>
                 </div>
             </div>
+            <div class="card-grid" id="signals-grid"></div>
         </section>
 
-        <!-- РАЗДЕЛ 3: МЕМКОИНЫ -->
+        <!-- SECTION 3: MEMECOIN SCANNER -->
         <section id="memecoins" class="content-section">
-            <h2>Сканер новых Мемкоинов (Pump.fun / Raydium)</h2>
+            <div class="section-header">
+                <div>
+                    <h2>Meme Coin Alpha Scanner</h2>
+                    <div class="subtitle">Early DEX liquidity pools (Raydium / Pump.fun / Uniswap)</div>
+                </div>
+            </div>
+
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
-                            <th>⭐</th>
-                            <th>Токен</th>
-                            <th>Сеть</th>
-                            <th>Ликвидность</th>
-                            <th>Потенциал</th>
-                            <th>Безопасность LP</th>
+                            <th style="width: 50px;">Fav</th>
+                            <th>Token</th>
+                            <th>Network</th>
+                            <th>Liquidity</th>
+                            <th>24h Momentum</th>
+                            <th>Contract Audit</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td><button class="star-btn" onclick="toggleFavorite('PEPEK', this)">⭐</button></td>
-                            <td><strong>PEPEK / SOL</strong></td>
-                            <td>Solana</td>
-                            <td>$14,500</td>
-                            <td class="positive">x4.5 (Взлет)</td>
-                            <td>🔒 Залочено (100%)</td>
-                        </tr>
-                        <tr>
-                            <td><button class="star-btn" onclick="toggleFavorite('MOONDOG', this)">⭐</button></td>
-                            <td><strong>MOONDOG / SOL</strong></td>
-                            <td>Solana</td>
-                            <td>$8,200</td>
-                            <td class="positive">x8.2 (Ранний)</td>
-                            <td>🔒 Залочено (95%)</td>
-                        </tr>
-                    </tbody>
+                    <tbody id="meme-table-body"></tbody>
                 </table>
             </div>
         </section>
 
-        <!-- РАЗДЕЛ 4: ИЗБРАННОЕ -->
+        <!-- SECTION 4: FAVORITES -->
         <section id="favorites" class="content-section">
-            <h2>Ваши сохраненные монеты и связки</h2>
+            <div class="section-header">
+                <div>
+                    <h2>Saved Watchlist</h2>
+                    <div class="subtitle">Your starred arbitrage spreads, signals, and tokens</div>
+                </div>
+            </div>
+
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
-                            <th>Тип актива</th>
-                            <th>Название / Пара</th>
-                            <th>Статус</th>
+                            <th>Category</th>
+                            <th>Asset / Setup</th>
+                            <th>Key Metric</th>
+                            <th>Remove</th>
                         </tr>
                     </thead>
-                    <tbody id="favorites-table-body">
-                        <tr><td colspan="3" style="color: var::text-secondary; text-align: center;">Список избранного пуст. Нажимайте звездочки ⭐ на элементах!</td></tr>
-                    </tbody>
+                    <tbody id="favorites-table-body"></tbody>
                 </table>
             </div>
         </section>
     </main>
 
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-nav">
+        <ul class="mobile-nav-list">
+            <li class="mobile-nav-item active" data-tab="p2p" onclick="switchTab('p2p')">
+                <span class="nav-icon">📈</span>
+                <span>Arbitrage</span>
+            </li>
+            <li class="mobile-nav-item" data-tab="trading" onclick="switchTab('trading')">
+                <span class="nav-icon">📊</span>
+                <span>Signals</span>
+            </li>
+            <li class="mobile-nav-item" data-tab="memecoins" onclick="switchTab('memecoins')">
+                <span class="nav-icon">🚀</span>
+                <span>Memes</span>
+            </li>
+            <li class="mobile-nav-item" data-tab="favorites" onclick="switchTab('favorites')">
+                <span class="nav-icon">⭐</span>
+                <span>Watchlist</span>
+            </li>
+        </ul>
+    </nav>
+
     <script>
-        // Данные арбитража для примера
-        const p2pData = [
-            { id: "SOL_ARB", coin: "SOL/USDT", buyEx: "Gate.io ($182.5)", sellEx: "Bybit ($186.2)", spread: 2.02, profitBase: 35.4 },
-            { id: "XRP_ARB", coin: "XRP/USDT", buyEx: "MEXC ($0.54)", sellEx: "Binance ($0.56)", spread: 3.70, profitBase: 52.1 },
-            { id: "ETH_ARB", coin: "ETH/USDT", buyEx: "KuCoin ($3,120)", sellEx: "OKX ($3,165)", spread: 1.44, profitBase: 22.5 }
+        // Structured Data Store
+        let arbitrageList = [
+            { id: "ARB_SOL", category: "Arbitrage", pair: "SOL/USDT", buyEx: "Gate.io", buyPrice: 182.40, sellEx: "Bybit", sellPrice: 186.15, spread: 2.05 },
+            { id: "ARB_XRP", category: "Arbitrage", pair: "XRP/USDT", buyEx: "MEXC", buyPrice: 0.5410, sellEx: "Binance", sellPrice: 0.5605, spread: 3.60 },
+            { id: "ARB_ETH", category: "Arbitrage", pair: "ETH/USDT", buyEx: "KuCoin", buyPrice: 3120.00, sellEx: "OKX", sellPrice: 3164.50, spread: 1.43 },
+            { id: "ARB_TON", category: "Arbitrage", pair: "TON/USDT", buyEx: "HTX", buyPrice: 5.42, sellEx: "Bybit", sellPrice: 5.57, spread: 2.77 },
+            { id: "ARB_AVAX", category: "Arbitrage", pair: "AVAX/USDT", buyEx: "Kraken", buyPrice: 34.10, sellEx: "Binance", sellPrice: 34.72, spread: 1.82 }
         ];
 
-        let favorites = JSON.parse(localStorage.getItem('crypto_favorites')) || [];
+        const signalsList = [
+            { id: "SIG_BTC", category: "Signal", pair: "BTC/USDT", tf: "4H", side: "LONG", entry: "$89,450", tp: "+14.5%", sl: "-2.1%", conf: "91%" },
+            { id: "SIG_SOL", category: "Signal", pair: "SOL/USDT", tf: "1H", side: "LONG", entry: "$184.20", tp: "+22.0%", sl: "-3.4%", conf: "87%" },
+            { id: "SIG_SUI", category: "Signal", pair: "SUI/USDT", tf: "15M", side: "SHORT", entry: "$3.48", tp: "+11.2%", sl: "-1.8%", conf: "84%" },
+            { id: "SIG_PEPE", category: "Signal", pair: "1000PEPE/USDT", tf: "1H", side: "LONG", entry: "$0.0114", tp: "+28.5%", sl: "-4.2%", conf: "82%" }
+        ];
 
-        // Переключение вкладок меню
-        function switchTab(tabId, element) {
+        const memeList = [
+            { id: "MEME_PEPEK", category: "Meme Coin", pair: "PEPEK / SOL", network: "Solana", liq: "$42,800", gain: "+340% (4.4x)", audit: "LP Locked (100%)", safe: true },
+            { id: "MEME_MOON", category: "Meme Coin", pair: "MOONDOG / SOL", network: "Solana", liq: "$19,200", gain: "+610% (7.1x)", audit: "LP Locked (95%)", safe: true },
+            { id: "MEME_TURBO", category: "Meme Coin", pair: "TURBOAI / ETH", network: "Base", liq: "$85,400", gain: "+185% (2.8x)", audit: "Mint Renounced", safe: true },
+            { id: "MEME_CATZ", category: "Meme Coin", pair: "CYBERCAT / SOL", network: "Solana", liq: "$6,400", gain: "+120% (2.2x)", audit: "High Volatility", safe: false }
+        ];
+
+        let favorites = JSON.parse(localStorage.getItem('cryptopro_watchlist')) || [];
+
+        // Tab Navigation (Syncs Desktop & Mobile)
+        function switchTab(tabId) {
             document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
-            
+            document.querySelectorAll('.menu-item, .mobile-nav-item').forEach(el => {
+                el.classList.toggle('active', el.dataset.tab === tabId);
+            });
+
             document.getElementById(tabId).classList.add('active');
-            element.classList.add('active');
 
             const titles = {
-                'p2p': 'Панель P2P Арбитража',
-                'trading': 'Торговые сигналы и аналитика',
-                'memecoins': 'Сканер мемкоинов в реальном времени',
-                'favorites': 'Избранные торговые пары'
+                'p2p': 'P2P & Spot Arbitrage',
+                'trading': 'Algorithmic Trade Signals',
+                'memecoins': 'Meme Coin Alpha Scanner',
+                'favorites': 'Saved Watchlist'
             };
             document.getElementById('header-title').innerText = titles[tabId];
 
-            if(tabId === 'favorites') renderFavorites();
+            if (tabId === 'favorites') renderFavorites();
         }
 
-        // Пересчет арбитража под введенный капитал
-        function updateArbitrage() {
-            const capital = parseFloat(document.getElementById('capital-input').value) || 1000;
-            document.getElementById('display-capital').innerText = `$${capital.toLocaleString()}`;
-            
+        // Render Arbitrage Table
+        function renderArbitrage() {
+            const capital = parseFloat(document.getElementById('capital-input').value) || 0;
+            const query = document.getElementById('arb-search').value.trim().toUpperCase();
+            document.getElementById('display-capital').innerText = `$${capital.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+
             const tbody = document.getElementById('p2p-table-body');
             tbody.innerHTML = '';
 
-            p2pData.forEach(item => {
-                const realProfit = (capital * (item.spread / 100)).toFixed(2);
+            const filtered = arbitrageList.filter(item => item.pair.includes(query));
+
+            filtered.forEach(item => {
+                const netProfit = (capital * (item.spread / 100)).toFixed(2);
                 const isFav = favorites.includes(item.id);
-                
+
                 tbody.innerHTML += `
                     <tr>
-                        <td><button class="star-btn ${isFav ? 'favorited' : ''}" onclick="toggleFavorite('${item.id}', this)">⭐</button></td>
-                        <td><strong>${item.coin}</strong></td>
-                        <td>${item.buyEx}</td>
-                        <td>${item.sellEx}</td>
-                        <td class="positive">+${item.spread}%</td>
-                        <td class="positive">+$${realProfit}</td>
-                        <td><button class="primary-btn" style="padding: 5px 10px; font-size: 0.8rem;" onclick="alert('Связка ${item.coin} зафиксирована!')">В сделку</button></td>
+                        <td><button class="star-btn ${isFav ? 'favorited' : ''}" onclick="toggleFavorite('${item.id}')">★</button></td>
+                        <td><strong>${item.pair}</strong></td>
+                        <td class="mono">$${item.buyPrice} <span class="ex-tag">${item.buyEx}</span></td>
+                        <td class="mono">$${item.sellPrice} <span class="ex-tag">${item.sellEx}</span></td>
+                        <td><span class="badge badge-green mono">+${item.spread.toFixed(2)}%</span></td>
+                        <td class="mono" style="color: var(--accent-green); font-weight: 600;">+$${netProfit}</td>
+                        <td><button class="primary-btn" style="padding: 6px 12px; font-size: 0.8rem;" onclick="alert('Route locked: Buy ${item.pair} on ${item.buyEx} -> Sell on ${item.sellEx}')">Execute</button></td>
                     </tr>
                 `;
             });
         }
 
-        // Логика добавления в Избранное
-        function toggleFavorite(id, btnElement) {
+        // Simulate Live Rate Refresh
+        function simulateMarketTick() {
+            arbitrageList = arbitrageList.map(item => {
+                const delta = (Math.random() * 0.4 - 0.15);
+                const newSpread = Math.max(0.65, +(item.spread + delta).toFixed(2));
+                return { ...item, spread: newSpread };
+            });
+            renderArbitrage();
+        }
+
+        // Render Trade Signals
+        function renderSignals() {
+            const grid = document.getElementById('signals-grid');
+            grid.innerHTML = '';
+
+            signalsList.forEach(sig => {
+                const isFav = favorites.includes(sig.id);
+                const badgeClass = sig.side === 'LONG' ? 'badge-green' : 'badge-red';
+
+                grid.innerHTML += `
+                    <div class="signal-card">
+                        <div class="signal-top">
+                            <div class="pair-name">
+                                ${sig.pair}
+                                <span class="badge ${badgeClass}">${sig.side}</span>
+                                <span class="badge badge-yellow">${sig.tf}</span>
+                            </div>
+                            <button class="star-btn ${isFav ? 'favorited' : ''}" onclick="toggleFavorite('${sig.id}')">★</button>
+                        </div>
+                        <div class="signal-metrics">
+                            <div class="metric-box">
+                                <span>Entry Zone</span>
+                                <strong class="mono">${sig.entry}</strong>
+                            </div>
+                            <div class="metric-box">
+                                <span>Target (TP)</span>
+                                <strong class="mono" style="color: var(--accent-green);">${sig.tp}</strong>
+                            </div>
+                            <div class="metric-box">
+                                <span>Stop Loss</span>
+                                <strong class="mono" style="color: var(--accent-red);">${sig.sl}</strong>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; color: var(--text-secondary);">
+                            <span>AI Confidence: <strong style="color: var(--text-primary);">${sig.conf}</strong></span>
+                            <span style="color: var(--accent-yellow); cursor: pointer;" onclick="alert('Setup copied to clipboard!')">Copy Setup →</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Render Meme Coins
+        function renderMemes() {
+            const tbody = document.getElementById('meme-table-body');
+            tbody.innerHTML = '';
+
+            memeList.forEach(meme => {
+                const isFav = favorites.includes(meme.id);
+                const auditBadge = meme.safe ? 'badge-green' : 'badge-red';
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td><button class="star-btn ${isFav ? 'favorited' : ''}" onclick="toggleFavorite('${meme.id}')">★</button></td>
+                        <td><strong>${meme.pair}</strong></td>
+                        <td>${meme.network}</td>
+                        <td class="mono">${meme.liq}</td>
+                        <td><span class="badge badge-green mono">${meme.gain}</span></td>
+                        <td><span class="badge ${auditBadge}">${meme.audit}</span></td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Toggle Watchlist Item
+        function toggleFavorite(id) {
             const index = favorites.indexOf(id);
             if (index > -1) {
                 favorites.splice(index, 1);
-                btnElement.classList.remove('favorited');
             } else {
                 favorites.push(id);
-                btnElement.classList.add('favorited');
             }
-            localStorage.setItem('crypto_favorites', JSON.stringify(favorites));
-            if(document.getElementById('favorites').classList.contains('active')) {
+            localStorage.setItem('cryptopro_watchlist', JSON.stringify(favorites));
+            renderArbitrage();
+            renderSignals();
+            renderMemes();
+            if (document.getElementById('favorites').classList.contains('active')) {
                 renderFavorites();
             }
         }
 
+        // Render Favorites Tab
         function renderFavorites() {
             const tbody = document.getElementById('favorites-table-body');
             if (favorites.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" style="color: var(--text-secondary); text-align: center;">Список избранного пуст.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" style="color: var(--text-secondary); text-align: center; padding: 30px;">Your watchlist is empty. Click the ★ icon on any pair or signal to save it here.</td></tr>`;
                 return;
             }
-            
+
+            const allItems = [...arbitrageList, ...signalsList, ...memeList];
             tbody.innerHTML = '';
+
             favorites.forEach(favId => {
+                const item = allItems.find(x => x.id === favId);
+                if (!item) return;
+
+                let metric = '';
+                if (item.category === 'Arbitrage') metric = `+${item.spread}% Spread (${item.buyEx} → ${item.sellEx})`;
+                if (item.category === 'Signal') metric = `${item.side} | TP: ${item.tp}`;
+                if (item.category === 'Meme Coin') metric = `${item.gain} | Liq: ${item.liq}`;
+
                 tbody.innerHTML += `
                     <tr>
-                        <td>Арбитраж / Пара</td>
-                        <td><strong>${favId}</strong></td>
-                        <td><span class="positive">Активно в отслеживании</span></td>
+                        <td><span class="badge badge-yellow">${item.category}</span></td>
+                        <td><strong>${item.pair}</strong></td>
+                        <td class="mono" style="color: var(--accent-green);">${metric}</td>
+                        <td><button class="star-btn favorited" title="Remove" onclick="toggleFavorite('${item.id}')">✕</button></td>
                     </tr>
                 `;
             });
         }
 
-        // Инициализация при загрузке
-        updateArbitrage();
+        // Initial Render
+        renderArbitrage();
+        renderSignals();
+        renderMemes();
     </script>
 </body>
 </html>
