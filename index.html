@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CryptoPro Terminal | Binance Pro Edition</title>
+    <title>CryptoPro Terminal | Professional Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -36,6 +36,7 @@
             display: flex;
             min-height: 100vh;
             overflow-x: hidden;
+            width: 100%;
         }
 
         .mono {
@@ -44,7 +45,7 @@
 
         /* Desktop Sidebar */
         aside {
-            width: 250px;
+            width: 240px;
             background-color: var(--bg-card);
             border-right: 1px solid var(--border-color);
             display: flex;
@@ -53,15 +54,14 @@
         }
 
         .logo-area {
-            padding: 20px 24px;
-            font-size: 1.25rem;
+            padding: 20px 20px;
+            font-size: 1.2rem;
             font-weight: 700;
             color: var(--accent-yellow);
             display: flex;
             align-items: center;
             gap: 10px;
             border-bottom: 1px solid var(--border-color);
-            letter-spacing: -0.5px;
             cursor: pointer;
             transition: opacity 0.15s;
         }
@@ -70,7 +70,7 @@
         .logo-badge {
             background: rgba(252, 213, 53, 0.15);
             color: var(--accent-yellow);
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             padding: 2px 6px;
             border-radius: 4px;
             text-transform: uppercase;
@@ -86,28 +86,20 @@
         }
 
         .menu-item {
-            padding: 12px 16px;
+            padding: 12px 14px;
             border-radius: 8px;
             cursor: pointer;
             color: var(--text-secondary);
             font-weight: 500;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .menu-item:hover {
-            background-color: var(--bg-elevated);
-            color: var(--text-primary);
-        }
-
-        .menu-item.active {
-            background-color: var(--bg-elevated);
-            color: var(--accent-yellow);
-            font-weight: 600;
-        }
+        .menu-item:hover { background-color: var(--bg-elevated); color: var(--text-primary); }
+        .menu-item.active { background-color: var(--bg-elevated); color: var(--accent-yellow); font-weight: 600; }
 
         /* Main Area */
         main {
@@ -115,11 +107,12 @@
             display: flex;
             flex-direction: column;
             width: 100%;
+            min-width: 0;
             padding-bottom: 90px;
         }
 
         header {
-            padding: 16px 24px;
+            padding: 14px 20px;
             background-color: var(--bg-card);
             border-bottom: 1px solid var(--border-color);
             display: flex;
@@ -130,445 +123,193 @@
             z-index: 20;
         }
 
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
+        .header-left { display: flex; align-items: center; gap: 10px; }
         .live-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--accent-green);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--accent-green);
-            animation: pulse 2s infinite;
+            width: 8px; height: 8px; background-color: var(--accent-green); border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-green); animation: pulse 2s infinite;
         }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
 
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.4; }
-            100% { opacity: 1; }
-        }
-
-        #header-title {
-            font-size: 1.05rem;
-            font-weight: 600;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
+        #header-title { font-size: 1rem; font-weight: 600; }
+        .header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
         .timer-widget {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background-color: var(--bg-elevated);
-            border: 1px solid var(--border-color);
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
+            display: flex; align-items: center; gap: 6px; background-color: var(--bg-elevated);
+            border: 1px solid var(--border-color); padding: 5px 10px; border-radius: 6px; font-size: 0.78rem; color: var(--text-secondary);
         }
-
-        .timer-countdown {
-            color: var(--accent-yellow);
-            font-weight: 600;
-        }
+        .timer-countdown { color: var(--accent-yellow); font-weight: 600; }
 
         .user-balance {
-            background-color: var(--bg-elevated);
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            border: 1px solid var(--border-color);
+            background-color: var(--bg-elevated); padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; color: var(--text-secondary); border: 1px solid var(--border-color);
         }
-
-        .user-balance span {
-            color: var(--text-primary);
-            font-weight: 600;
-            margin-left: 4px;
-        }
+        .user-balance span { color: var(--text-primary); font-weight: 600; margin-left: 4px; }
 
         .profile-btn {
-            background-color: var(--bg-elevated);
-            border: 1px solid var(--border-color);
-            color: var(--accent-yellow);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.1rem;
-            transition: background 0.15s;
+            background-color: var(--bg-elevated); border: 1px solid var(--border-color); color: var(--accent-yellow);
+            width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem;
         }
-        .profile-btn:hover { background-color: var(--bg-hover); }
 
         .content-section {
-            padding: 24px;
-            display: none;
-            max-width: 1200px;
-            width: 100%;
-            margin: 0 auto;
-            opacity: 0;
-            transition: opacity 0.25s ease-in-out;
+            padding: 20px; display: none; max-width: 1200px; width: 100%; margin: 0 auto; opacity: 0; transition: opacity 0.25s ease-in-out;
         }
-
-        .content-section.active {
-            display: block;
-            opacity: 1;
-        }
+        .content-section.active { display: block; opacity: 1; }
 
         .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 20px;
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;
         }
-
-        h2 {
-            font-size: 1.35rem;
-            font-weight: 700;
-        }
-
-        .subtitle {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            margin-top: 4px;
-        }
+        h2 { font-size: 1.25rem; font-weight: 700; }
+        .subtitle { color: var(--text-secondary); font-size: 0.82rem; margin-top: 4px; }
 
         /* Controls Panel */
         .controls-panel {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
+            background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 14px;
         }
-
         .controls-top-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
-            align-items: start;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; align-items: start;
         }
-
-        .control-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .control-group label {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-            display: flex;
-            justify-content: space-between;
-        }
+        .control-group { display: flex; flex-direction: column; gap: 6px; }
+        .control-group label { font-size: 0.78rem; color: var(--text-secondary); font-weight: 500; display: flex; justify-content: space-between; }
 
         input, select {
-            background-color: var(--bg-main);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 10px 12px;
-            color: var(--text-primary);
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color 0.2s;
-            width: 100%;
+            background-color: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 9px 12px; color: var(--text-primary); font-size: 0.9rem; outline: none; width: 100%;
         }
-
         input:focus, select:focus { border-color: var(--accent-yellow); }
 
-        .preset-pills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
+        .preset-pills { display: flex; flex-wrap: wrap; gap: 5px; }
         .preset-pill {
-            background-color: var(--bg-elevated);
-            border: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.15s;
+            background-color: var(--bg-elevated); border: 1px solid var(--border-color); color: var(--text-secondary);
+            padding: 3px 8px; border-radius: 5px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.15s;
         }
         .preset-pill:hover { border-color: var(--accent-yellow); color: var(--text-primary); }
         .preset-pill.active { background-color: rgba(252, 213, 53, 0.15); border-color: var(--accent-yellow); color: var(--accent-yellow); }
 
-        /* Exchange Dropdown */
+        /* Designer Dropdown (No scroll slider layout) */
         .dropdown-check-list { position: relative; }
         .dropdown-selected {
-            background-color: var(--bg-main);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 10px 12px;
-            color: var(--text-primary);
-            font-size: 0.92rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background-color: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 9px 12px; color: var(--text-primary); font-size: 0.9rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
         }
         .dropdown-options {
-            display: none;
-            position: absolute;
-            top: calc(100% + 6px);
-            left: 0; right: 0;
-            background-color: var(--bg-elevated);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            z-index: 50;
-            box-shadow: 0 12px 28px rgba(0,0,0,0.65);
-            padding: 10px;
+            display: none; position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+            background-color: var(--bg-elevated); border: 1px solid var(--border-color); border-radius: 10px; z-index: 50; box-shadow: 0 12px 28px rgba(0,0,0,0.65); padding: 10px;
         }
-        .dropdown-actions {
-            display: flex;
-            justify-content: space-between;
-            padding-bottom: 8px;
-            margin-bottom: 8px;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 0.75rem;
-        }
+        .dropdown-actions { display: flex; justify-content: space-between; padding-bottom: 6px; margin-bottom: 6px; border-bottom: 1px solid var(--border-color); font-size: 0.75rem; }
         .dropdown-actions span { color: var(--accent-yellow); cursor: pointer; font-weight: 600; }
 
-        .ex-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            max-height: 180px;
-            overflow-y: auto;
-        }
+        .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; max-height: 170px; overflow-y: auto; }
         .ex-option {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 8px;
-            cursor: pointer;
-            color: var(--text-primary);
-            font-size: 0.82rem;
-            font-weight: 500;
-            border-radius: 6px;
-            background-color: var(--bg-card);
+            display: flex; align-items: center; gap: 7px; padding: 6px 8px; cursor: pointer; color: var(--text-primary); font-size: 0.8rem; font-weight: 500; border-radius: 6px; background-color: var(--bg-card);
         }
         .ex-option:hover { background-color: var(--bg-hover); }
         .ex-option input { width: auto; accent-color: var(--accent-yellow); }
 
         .ex-badge-icon {
-            width: 20px; height: 20px;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.65rem;
-            font-weight: 800;
-            color: #fff;
-            flex-shrink: 0;
+            width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 800; color: #fff; flex-shrink: 0;
         }
 
-        /* Coin Filter Chips */
-        .coin-filter-bar {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            overflow-x: auto;
-            padding-top: 4px;
-            border-top: 1px solid var(--border-color);
-        }
+        /* Coin Chips Filter */
+        .coin-filter-bar { display: flex; align-items: center; gap: 6px; overflow-x: auto; padding-top: 4px; border-top: 1px solid var(--border-color); scrollbar-width: none; }
+        .coin-filter-bar::-webkit-scrollbar { display: none; }
         .coin-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background-color: var(--bg-main);
-            border: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.82rem;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.15s;
+            display: inline-flex; align-items: center; gap: 5px; background-color: var(--bg-main); border: 1px solid var(--border-color);
+            color: var(--text-secondary); padding: 5px 10px; border-radius: 16px; font-size: 0.78rem; font-weight: 600; cursor: pointer; white-space: nowrap;
         }
         .coin-chip:hover { background-color: var(--bg-elevated); color: var(--text-primary); }
         .coin-chip.active { background-color: var(--accent-yellow); color: #181a20; border-color: var(--accent-yellow); }
-        .coin-icon {
-            width: 18px; height: 18px; border-radius: 50%;
-            display: inline-flex; align-items: center; justify-content: center;
-            font-size: 0.65rem; font-weight: 800; color: #fff;
-        }
+        .coin-icon { width: 16px; height: 16px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 800; color: #fff; }
 
-        /* Premium Timeframe Selector in Trading */
-        .timeframe-bar {
-            display: flex;
-            gap: 6px;
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            padding: 6px;
-            border-radius: 8px;
-        }
+        /* Timeframe Bar */
+        .timeframe-bar { display: flex; gap: 5px; background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 4px; border-radius: 8px; }
         .tf-pill {
-            background-color: transparent;
-            border: none;
-            color: var(--text-secondary);
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.82rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.15s;
+            background-color: transparent; border: none; color: var(--text-secondary); padding: 5px 10px; border-radius: 6px; font-size: 0.78rem; font-weight: 600; cursor: pointer;
         }
         .tf-pill:hover { color: var(--text-primary); background-color: var(--bg-elevated); }
         .tf-pill.active { background-color: var(--accent-yellow); color: #181a20; }
 
         button.primary-btn {
-            background-color: var(--accent-yellow);
-            color: #181a20;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: background-color 0.15s, transform 0.1s;
-            white-space: nowrap;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
+            background-color: var(--accent-yellow); color: #181a20; border: none; padding: 9px 16px; border-radius: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer; white-space: nowrap; text-align: center;
         }
         button.primary-btn:hover { background-color: var(--accent-yellow-hover); }
-        button.primary-btn:active { transform: scale(0.98); }
-
         .secondary-link-btn {
-            background-color: var(--bg-elevated);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            transition: background 0.15s;
+            background-color: var(--bg-elevated); color: var(--text-primary); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 6px; font-size: 0.78rem; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block;
         }
-        .secondary-link-btn:hover { background-color: var(--bg-hover); }
 
-        /* Tables & Cards */
+        /* Responsive Tables (No side overflow slider bar) */
         .table-container {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            overflow-x: auto;
+            background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; width: 100%; overflow-x: hidden;
         }
-        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 750px; }
-        th, td { padding: 14px 16px; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
-        th { color: var(--text-secondary); font-weight: 500; font-size: 0.78rem; text-transform: uppercase; background-color: var(--bg-elevated); }
+        table { width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed; }
+        th, td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        th { color: var(--text-secondary); font-weight: 500; font-size: 0.72rem; text-transform: uppercase; background-color: var(--bg-elevated); }
         tr:last-child td { border-bottom: none; }
         tr:hover { background-color: rgba(43, 49, 57, 0.45); }
 
-        .pair-cell { display: flex; align-items: center; gap: 10px; }
-        .ex-cell { display: flex; align-items: center; gap: 6px; margin-top: 3px; font-size: 0.8rem; color: var(--text-secondary); }
+        .pair-cell { display: flex; align-items: center; gap: 8px; }
+        .ex-cell { display: flex; align-items: center; gap: 5px; margin-top: 2px; font-size: 0.75rem; color: var(--text-secondary); }
 
-        .badge {
-            padding: 4px 8px; border-radius: 4px; font-size: 0.78rem; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;
-        }
+        .badge { padding: 3px 6px; border-radius: 4px; font-size: 0.72rem; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
         .badge-green { background-color: var(--accent-green-bg); color: var(--accent-green); }
         .badge-red { background-color: var(--accent-red-bg); color: var(--accent-red); }
         .badge-yellow { background-color: rgba(252, 213, 53, 0.12); color: var(--accent-yellow); }
         .badge-pump { background-color: rgba(14, 203, 129, 0.2); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
 
-        .safety-wrap { display: flex; flex-direction: column; gap: 4px; min-width: 110px; }
-        .safety-bar-bg { width: 100%; height: 6px; background-color: var(--bg-main); border-radius: 3px; overflow: hidden; }
+        .safety-wrap { display: flex; flex-direction: column; gap: 3px; }
+        .safety-bar-bg { width: 100%; height: 5px; background-color: var(--bg-main); border-radius: 3px; overflow: hidden; }
         .safety-bar-fill { height: 100%; border-radius: 3px; }
 
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 16px;
-        }
+        /* Cards Grid */
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
         .signal-card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 18px;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            cursor: pointer;
-            transition: border-color 0.2s, transform 0.15s;
+            background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 12px; cursor: pointer; transition: border-color 0.2s;
         }
-        .signal-card:hover { border-color: #474d57; transform: translateY(-2px); }
+        .signal-card:hover { border-color: #474d57; }
         .signal-top { display: flex; justify-content: space-between; align-items: center; }
-        .pair-name { font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-        .signal-metrics {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; background-color: var(--bg-main); padding: 12px; border-radius: 8px;
-        }
-        .metric-box span { display: block; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 4px; }
-        .metric-box strong { font-size: 0.9rem; }
+        .pair-name { font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+        .signal-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; background-color: var(--bg-main); padding: 10px; border-radius: 6px; }
+        .metric-box span { display: block; font-size: 0.7rem; color: var(--text-secondary); margin-bottom: 2px; }
+        .metric-box strong { font-size: 0.85rem; }
 
-        .star-btn {
-            background: none; border: none; cursor: pointer; color: #474d57; font-size: 1.25rem; transition: transform 0.15s, color 0.15s; padding: 4px;
-        }
-        .star-btn:hover { transform: scale(1.15); }
+        .star-btn { background: none; border: none; cursor: pointer; color: #474d57; font-size: 1.15rem; padding: 4px; }
         .star-btn.favorited { color: var(--accent-yellow); }
 
         /* Loader */
-        .loader-container { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; gap: 12px; color: var(--text-secondary); }
-        .spinner {
-            width: 32px; height: 32px; border: 3px solid var(--border-color); border-top: 3px solid var(--accent-yellow); border-radius: 50%; animation: spin 0.8s linear infinite;
-        }
+        .loader-container { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px; gap: 10px; color: var(--text-secondary); }
+        .spinner { width: 28px; height: 28px; border: 3px solid var(--border-color); border-top: 3px solid var(--accent-yellow); border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         /* Modal */
         .modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.82);
-            display: none; justify-content: center; align-items: center; z-index: 1000; padding: 16px; backdrop-filter: blur(4px);
+            display: none; justify-content: center; align-items: center; z-index: 1000; padding: 12px; backdrop-filter: blur(4px);
         }
         .modal-card {
             background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;
-            width: 100%; max-width: 760px; max-height: 92vh; overflow-y: auto; padding: 24px;
-            display: flex; flex-direction: column; gap: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.65);
+            width: 100%; max-width: 720px; max-height: 90vh; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 15px 40px rgba(0,0,0,0.65);
         }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; }
-        .modal-close { background: none; border: none; color: var(--text-secondary); font-size: 1.4rem; cursor: pointer; }
-        .calc-box { background-color: var(--bg-main); padding: 16px; border-radius: 8px; display: flex; flex-direction: column; gap: 12px; }
-        .calc-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; }
-        .tradingview-container { width: 100%; height: 350px; background-color: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .modal-close { background: none; border: none; color: var(--text-secondary); font-size: 1.3rem; cursor: pointer; }
+        .calc-box { background-color: var(--bg-main); padding: 14px; border-radius: 8px; display: flex; flex-direction: column; gap: 10px; }
+        .calc-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; }
+        .tradingview-container { width: 100%; height: 320px; background-color: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; }
 
-        /* Mobile Bottom Navigation */
+        /* Mobile Bottom Nav */
         .mobile-nav {
             display: none; position: fixed; bottom: 0; left: 0; right: 0; background-color: var(--bg-card); border-top: 1px solid var(--border-color); z-index: 100; padding: 6px 0 calc(6px + env(safe-area-inset-bottom));
         }
         .mobile-nav-list { display: flex; justify-content: space-around; list-style: none; }
         .mobile-nav-item {
-            display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.72rem; color: var(--text-secondary); cursor: pointer; padding: 6px 12px; border-radius: 8px; font-weight: 500;
+            display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 0.7rem; color: var(--text-secondary); cursor: pointer; padding: 5px 10px; border-radius: 6px; font-weight: 500;
         }
-        .mobile-nav-item .nav-icon { font-size: 1.2rem; }
+        .mobile-nav-item .nav-icon { font-size: 1.1rem; }
         .mobile-nav-item.active { color: var(--accent-yellow); font-weight: 600; }
 
         @media (max-width: 768px) {
             aside { display: none; }
             .mobile-nav { display: block; }
-            header { padding: 14px 16px; }
-            .content-section { padding: 16px; }
+            header { padding: 12px 14px; }
+            .content-section { padding: 12px; }
             .ex-grid { grid-template-columns: 1fr; }
+            table { min-width: 100%; }
+            th, td { padding: 10px 6px; font-size: 0.78rem; }
         }
     </style>
 </head>
@@ -609,7 +350,7 @@
             <div class="section-header">
                 <div>
                     <h2 id="txt-p2p-title">Inter-Exchange Arbitrage</h2>
-                    <div class="subtitle" id="txt-p2p-sub">Live spread routing with multi-exchange selection & instant capital presets</div>
+                    <div class="subtitle" id="txt-p2p-sub">Live spread routing across top exchanges & instant capital presets</div>
                 </div>
                 <button class="primary-btn" id="txt-btn-refresh" onclick="simulateMarketTick()">↻ Refresh Ticks</button>
             </div>
@@ -658,13 +399,13 @@
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 40px;">Fav</th>
-                            <th id="th-pair">Asset Pair</th>
-                            <th id="th-buy">Buy Exchange</th>
-                            <th id="th-sell">Sell Exchange</th>
+                            <th style="width: 38px;">Fav</th>
+                            <th id="th-pair">Pair</th>
+                            <th id="th-buy">Buy Ex.</th>
+                            <th id="th-sell">Sell Ex.</th>
                             <th id="th-spread">Spread</th>
-                            <th id="th-profit">Net Profit</th>
-                            <th id="th-action">Action</th>
+                            <th id="th-profit">Profit</th>
+                            <th id="th-action" style="width: 85px;">Action</th>
                         </tr>
                     </thead>
                     <tbody id="p2p-table-body"></tbody>
@@ -672,26 +413,39 @@
             </div>
         </section>
 
-        <!-- SECTION 2: TRADE SIGNALS WITH TIMEFRAME SELECTOR -->
+        <!-- SECTION 2: TRADE SIGNALS WITH EXCHANGE FILTER & TIMEFRAMES -->
         <section id="trading" class="content-section">
             <div class="section-header">
                 <div>
                     <h2 id="txt-trade-title">Algorithmic Trade Signals</h2>
                     <div class="subtitle" id="txt-trade-sub">Institutional order book with multi-exchange routing & timeframes</div>
                 </div>
-                <div class="timeframe-bar">
-                    <button class="tf-pill active" data-tf="ALL" onclick="filterTimeframe('ALL')">ALL</button>
-                    <button class="tf-pill" data-tf="15M" onclick="filterTimeframe('15M')">15M</button>
-                    <button class="tf-pill" data-tf="1H" onclick="filterTimeframe('1H')">1H</button>
-                    <button class="tf-pill" data-tf="4H" onclick="filterTimeframe('4H')">4H</button>
-                    <button class="tf-pill" data-tf="1D" onclick="filterTimeframe('1D')">1D</button>
-                    <button class="tf-pill" data-tf="1W" onclick="filterTimeframe('1W')">1W</button>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                    <select id="trade-ex-filter" onchange="renderSignals()" style="width: 140px; padding: 6px; font-size: 0.8rem;">
+                        <option value="ALL">All Exchanges</option>
+                        <option value="Binance">Binance</option>
+                        <option value="Bybit">Bybit</option>
+                        <option value="OKX">OKX</option>
+                        <option value="Gate.io">Gate.io</option>
+                        <option value="MEXC">MEXC</option>
+                        <option value="KuCoin">KuCoin</option>
+                        <option value="Bitget">Bitget</option>
+                        <option value="Kraken">Kraken</option>
+                    </select>
+                    <div class="timeframe-bar">
+                        <button class="tf-pill active" data-tf="ALL" onclick="filterTimeframe('ALL')">ALL</button>
+                        <button class="tf-pill" data-tf="15M" onclick="filterTimeframe('15M')">15M</button>
+                        <button class="tf-pill" data-tf="1H" onclick="filterTimeframe('1H')">1H</button>
+                        <button class="tf-pill" data-tf="4H" onclick="filterTimeframe('4H')">4H</button>
+                        <button class="tf-pill" data-tf="1D" onclick="filterTimeframe('1D')">1D</button>
+                        <button class="tf-pill" data-tf="1W" onclick="filterTimeframe('1W')">1W</button>
+                    </div>
                 </div>
             </div>
             <div class="card-grid" id="signals-grid"></div>
         </section>
 
-        <!-- SECTION 3: MEMECOIN & PUMP.FUN SCANNER -->
+        <!-- SECTION 3: MEMECOIN & PUMP.FUN SCANNER WITH X-HORIZON -->
         <section id="memecoins" class="content-section">
             <div class="section-header">
                 <div>
@@ -705,13 +459,13 @@
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 40px;">Fav</th>
-                            <th>Token Pair</th>
-                            <th>Platform / Chain</th>
-                            <th>Liquidity</th>
-                            <th>24h Change</th>
-                            <th>Safety Audit</th>
-                            <th>Analysis & ROI</th>
+                            <th style="width: 38px;">Fav</th>
+                            <th>Pair</th>
+                            <th>Platform</th>
+                            <th>Liq.</th>
+                            <th>24h</th>
+                            <th>Safety</th>
+                            <th style="width: 90px;">Action</th>
                         </tr>
                     </thead>
                     <tbody id="meme-table-body"></tbody>
@@ -735,7 +489,7 @@
                             <th>Category</th>
                             <th>Asset / Setup</th>
                             <th>Metric</th>
-                            <th>Remove</th>
+                            <th style="width: 60px;">Remove</th>
                         </tr>
                     </thead>
                     <tbody id="favorites-table-body"></tbody>
@@ -804,7 +558,10 @@
             "NEAR": { color: "#111111", symbol: "N" },
             "DOGE": { color: "#C2A633", symbol: "Ð" },
             "LINK": { color: "#2A5ADA", symbol: "⬡" },
-            "PEPE": { color: "#4ADE80", symbol: "P" }
+            "PEPE": { color: "#4ADE80", symbol: "P" },
+            "ATOM": { color: "#2E3148", symbol: "⚛" },
+            "DOT":  { color: "#E6007A", symbol: "●" },
+            "APT":  { color: "#202020", symbol: "A" }
         };
 
         function getExBadge(exName) {
@@ -818,89 +575,89 @@
             return `<span class="coin-icon" style="background:${m.color};">${m.symbol}</span>`;
         }
 
-        // Localization Dictionaries
+        // Localization Dictionaries with Flags & Styling
         let currentLang = localStorage.getItem('cryptopro_lang') || 'en';
 
         const i18n = {
             en: {
-                timer: "Next tick:", capital: "Capital:", p2pTitle: "Inter-Exchange Arbitrage", p2pSub: "Live spread routing across 10 top exchanges & instant capital presets",
+                timer: "Next tick:", capital: "Capital:", p2pTitle: "Inter-Exchange Arbitrage", p2pSub: "Live spread routing across top exchanges & instant capital presets",
                 lblCap: "Investment Capital (USDT)", lblEx: "Select Exchanges", lblSearch: "Search Asset", btnRefresh: "↻ Refresh Ticks",
-                thPair: "Asset Pair", thBuy: "Buy Exchange", thSell: "Sell Exchange", thSpread: "Spread", thProfit: "Net Profit", thAction: "Action",
-                tradeTitle: "Algorithmic Trade Signals", tradeSub: "Institutional order book with multi-exchange routing & timeframe filters",
+                thPair: "Pair", thBuy: "Buy Ex.", thSell: "Sell Ex.", thSpread: "Spread", thProfit: "Profit", thAction: "Action",
+                tradeTitle: "Algorithmic Trade Signals", tradeSub: "Institutional order book with multi-exchange routing & timeframes",
                 memeTitle: "Meme & Pump.fun Scanner (Auto 5s)", memeSub: "Real-time DEX & Pump.fun launches with contract safety audit & ROI time horizon",
                 profileTitle: "Account Settings & History", langLabel: "Interface Language:",
                 calcTitle: "ROI & Multiplier Calculator", investLabel: "Investment Amount (USD)", buyDexBtn: "Buy on Pump.fun / DEX →",
-                safetyLabel: "Contract Safety Audit:", releaseLabel: "Estimated Multiplier Horizon:"
+                safetyLabel: "Contract Safety Audit:", releaseLabel: "Estimated Time to Target Multipliers:"
             },
             ru: {
-                timer: "След. тик:", capital: "Капитал:", p2pTitle: "Межбиржевой арбитраж", p2pSub: "Маршрутизация спредов по 10 топ-биржам и быстрый расчет капитала",
+                timer: "След. тик:", capital: "Капитал:", p2pTitle: "Межбиржевой арбитраж", p2pSub: "Маршрутизация спредов по топ-биржам и быстрый расчет капитала",
                 lblCap: "Инвестиционный капитал (USDT)", lblEx: "Выбор бирж", lblSearch: "Поиск актива", btnRefresh: "↻ Обновить",
-                thPair: "Пара", thBuy: "Биржа покупки", thSell: "Биржа продажи", thSpread: "Спред", thProfit: "Чистый профит", thAction: "Действие",
-                tradeTitle: "Алгоритмические торговые сигналы", tradeSub: "Институциональный стакан ордеров с фильтрами таймфреймов",
+                thPair: "Пара", thBuy: "Покупка", thSell: "Продажа", thSpread: "Спред", thProfit: "Профит", thAction: "Действие",
+                tradeTitle: "Алгоритмические торговые сигналы", tradeSub: "Стакан ордеров с фильтрами бирж и таймфреймов",
                 memeTitle: "Сканер Мемкоинов и Pump.fun (Авто 5с)", memeSub: "Токены Pump.fun и DEX с аудитом безопасности и прогнозом времени иксов",
                 profileTitle: "Настройки аккаунта и история", langLabel: "Язык интерфейса:",
                 calcTitle: "Калькулятор доходности и иксов", investLabel: "Сумма инвестиций (USD)", buyDexBtn: "Купить на Pump.fun / DEX →",
-                safetyLabel: "Аудит безопасности контракта:", releaseLabel: "Прогноз времени до иксов:"
+                safetyLabel: "Аудит безопасности контракта:", releaseLabel: "Прогноз времени до достижения иксов:"
             },
             uk: {
-                timer: "Наст. тік:", capital: "Капітал:", p2pTitle: "Міжбіржовий арбітраж", p2pSub: "Маршрутизація спредів по 10 топ-біржах та швидкий розрахунок капіталу",
+                timer: "Наст. тік:", capital: "Капітал:", p2pTitle: "Міжбіржовий арбітраж", p2pSub: "Маршрутизація спредів по топ-біржах та швидкий розрахунок капіталу",
                 lblCap: "Інвестиційний капітал (USDT)", lblEx: "Вибір біржах", lblSearch: "Пошук активу", btnRefresh: "↻ Оновити",
-                thPair: "Пара", thBuy: "Біржа купівлі", thSell: "Біржа продажу", thSpread: "Спред", thProfit: "Чистий прибуток", thAction: "Дія",
-                tradeTitle: "Алгоритмічні торгові сигнали", tradeSub: "Інституційна книга ордерів з фільтрами таймфреймів",
+                thPair: "Пара", thBuy: "Купівля", thSell: "Продаж", thSpread: "Спред", thProfit: "Профіт", thAction: "Дія",
+                tradeTitle: "Алгоритмічні торгові сигнали", tradeSub: "Книга ордерів з фільтрами бірж та таймфреймів",
                 memeTitle: "Сканер Мемкоїнів та Pump.fun (Авто 5с)", memeSub: "Токени Pump.fun і DEX з аудитом безпеки та прогнозом часу іксів",
                 profileTitle: "Налаштування акаунту та історія", langLabel: "Мова інтерфейсу:",
                 calcTitle: "Калькулятор прибутковості та іксів", investLabel: "Сума інвестицій (USD)", buyDexBtn: "Купити на Pump.fun / DEX →",
-                safetyLabel: "Аудит безпеки контракту:", releaseLabel: "Прогноз часу до іксів:"
+                safetyLabel: "Аудит безпеки контракту:", releaseLabel: "Прогноз часу до досягнення іксів:"
             },
             de: {
-                timer: "Nächster Tick:", capital: "Kapital:", p2pTitle: "Börsenübergreifende Arbitrage", p2pSub: "Live-Spread-Routing über 10 Top-Börsen & Turbo-Kapitalpresets",
+                timer: "Nächster Tick:", capital: "Kapital:", p2pTitle: "Börsenübergreifende Arbitrage", p2pSub: "Live-Spread-Routing über Top-Börsen & Turbo-Kapitalpresets",
                 lblCap: "Investitionskapital (USDT)", lblEx: "Börsen auswählen", lblSearch: "Asset suchen", btnRefresh: "↻ Aktualisieren",
-                thPair: "Paar", thBuy: "Kaufbörse", thSell: "Verkaufsbörse", thSpread: "Spread", thProfit: "Nettogewinn", thAction: "Aktion",
-                tradeTitle: "Algorithmische Handelssignale", tradeSub: "Orderbuch mit Zeitrahmen-Filtern",
+                thPair: "Paar", thBuy: "Kauf", thSell: "Verkauf", thSpread: "Spread", thProfit: "Gewinn", thAction: "Aktion",
+                tradeTitle: "Algorithmische Handelssignale", tradeSub: "Orderbuch mit Börsen- und Zeitrahmen-Filtern",
                 memeTitle: "Meme & Pump.fun Scanner (Auto 5s)", memeSub: "Echtzeit-DEX & Pump.fun Token mit Sicherheits-Check & ROI-Zeithorizont",
                 profileTitle: "Kontoeinstellungen & Verlauf", langLabel: "Sprache:",
                 calcTitle: "ROI & Multiplikator-Rechner", investLabel: "Investitionsbetrag (USD)", buyDexBtn: "Auf Pump.fun / DEX kaufen →",
-                safetyLabel: "Sicherheitsbewertung:", releaseLabel: "Geschätzter Multiplikator-Horizont:"
+                safetyLabel: "Sicherheitsbewertung:", releaseLabel: "Geschätzte Zeit bis zum Erreichen der Multiplikatoren:"
             },
             fr: {
-                timer: "Prochain tick:", capital: "Capital:", p2pTitle: "Arbitrage inter-plateformes", p2pSub: "Routage des spreads sur 10 bourses & préréglages de capital",
+                timer: "Prochain tick:", capital: "Capital:", p2pTitle: "Arbitrage inter-plateformes", p2pSub: "Routage des spreads sur bourses & préréglages de capital",
                 lblCap: "Capital d'investissement (USDT)", lblEx: "Sélectionner les bourses", lblSearch: "Rechercher un actif", btnRefresh: "↻ Actualiser",
-                thPair: "Paire", thBuy: "Achat Ex.", thSell: "Vente Ex.", thSpread: "Spread", thProfit: "Profit net", thAction: "Action",
-                tradeTitle: "Signaux de Trading Algorithmiques", tradeSub: "Carnet d'ordres institutionnel avec filtres",
+                thPair: "Paire", thBuy: "Achat", thSell: "Vente", thSpread: "Spread", thProfit: "Profit", thAction: "Action",
+                tradeTitle: "Signaux de Trading Algorithmiques", tradeSub: "Carnet d'ordres avec filtres de bourses et d'intervalles",
                 memeTitle: "Scanner Meme & Pump.fun (Auto 5s)", memeSub: "Tokens Pump.fun et DEX en temps réel avec audit de sécurité",
                 profileTitle: "Paramètres du compte & Historique", langLabel: "Langue de l'interface:",
                 calcTitle: "Calculateur de ROI et Multiplicateur", investLabel: "Montant de l'investissement (USD)", buyDexBtn: "Acheter sur Pump.fun / DEX →",
-                safetyLabel: "Score de sécurité:", releaseLabel: "Horizon temporel estimé:"
+                safetyLabel: "Score de sécurité:", releaseLabel: "Temps estimé pour atteindre les multiplicateurs :"
             },
             pl: {
-                timer: "Nast. tyknięcie:", capital: "Kapitał:", p2pTitle: "Arbitraż międzygiełdowy", p2pSub: "Routing spreadów na 10 giełdach i presety kapitałowe",
+                timer: "Nast. tyknięcie:", capital: "Kapitał:", p2pTitle: "Arbitraż międzygiełdowy", p2pSub: "Routing spreadów na giełdach i presety kapitałowe",
                 lblCap: "Kapitał inwestycyjny (USDT)", lblEx: "Wybierz giełdy", lblSearch: "Szukaj aktywa", btnRefresh: "↻ Odśwież",
-                thPair: "Para", thBuy: "Giełda kupna", thSell: "Giełda sprzedaży", thSpread: "Spread", thProfit: "Zysk netto", thAction: "Akcja",
-                tradeTitle: "Algorytmiczne sygnały handlowe", tradeSub: "Księga zleceń z filtrami interwałowymi",
+                thPair: "Para", thBuy: "Kupno", thSell: "Sprzedaż", thSpread: "Spread", thProfit: "Zysk", thAction: "Akcja",
+                tradeTitle: "Algorytmiczne sygnały handlowe", tradeSub: "Księga zleceń z filtrami giełd i interwałów",
                 memeTitle: "Skaner Meme & Pump.fun (Auto 5s)", memeSub: "Tokeny Pump.fun i DEX z audytem bezpieczeństwa i horyzontem ROI",
                 profileTitle: "Ustawienia konta i historia", langLabel: "Język interfejsu:",
                 calcTitle: "Kalkulator zwrotu z inwestycji (ROI)", investLabel: "Kwota inwestycji (USD)", buyDexBtn: "Kup na Pump.fun / DEX →",
-                safetyLabel: "Ocena bezpieczeństwa:", releaseLabel: "Szacowany horyzont zysków:"
+                safetyLabel: "Ocena bezpieczeństwa:", releaseLabel: "Szacowany czas osiągnięcia multiplikatorów:"
             },
             zh: {
-                timer: "下次刷新:", capital: "本金:", p2pTitle: "跨所套利", p2pSub: "跨10大主流交易所的实时价差路由",
+                timer: "下次刷新:", capital: "本金:", p2pTitle: "跨所套利", p2pSub: "主流交易所之间的实时价差路由",
                 lblCap: "投资本金 (USDT)", lblEx: "选择交易所", lblSearch: "搜索资产", btnRefresh: "↻ 刷新",
-                thPair: "交易对", thBuy: "买入所", thSell: "卖出所", thSpread: "价差", thProfit: "净利润", thAction: "操作",
-                tradeTitle: "算法交易信号", tradeSub: "带多时间周期筛选的机构级订单簿",
+                thPair: "交易对", thBuy: "买入", thSell: "卖出", thSpread: "价差", thProfit: "利润", thAction: "操作",
+                tradeTitle: "算法交易信号", tradeSub: "带交易所和多时间周期筛选的机构级订单簿",
                 memeTitle: "Meme & Pump.fun 实时扫描器 (5秒)", memeSub: "带合约安全审计和收益预期时间的实时代币扫描",
                 profileTitle: "账户设置与历史记录", langLabel: "界面语言:",
                 calcTitle: "回报率与倍数计算器", investLabel: "投资金额 (USD)", buyDexBtn: "在 Pump.fun / DEX 购买 →",
-                safetyLabel: "合约安全评分:", releaseLabel: "预期爆发时间窗口:"
+                safetyLabel: "合约安全评分:", releaseLabel: "达到预期倍数的时间窗口:"
             },
             ja: {
-                timer: "次の更新:", capital: "資本:", p2pTitle: "取引所間アービトラージ", p2pSub: "10大取引所をまたぐライブスプレッドルーティング",
+                timer: "次の更新:", capital: "資本:", p2pTitle: "取引所間アービトラージ", p2pSub: "主要取引所をまたぐライブスプレッドルーティング",
                 lblCap: "投資資本 (USDT)", lblEx: "取引所の選択", lblSearch: "資産を検索", btnRefresh: "↻ 更新",
-                thPair: "ペア", thBuy: "買取引所", thSell: "売却取引所", thSpread: "スプレッド", thProfit: "純利益", thAction: "操作",
-                tradeTitle: "アルゴリズム取引シグナル", tradeSub: "タイムフレームフィルター付きオーダーブック",
+                thPair: "ペア", thBuy: "買値", thSell: "売値", thSpread: "スプレッド", thProfit: "利益", thAction: "操作",
+                tradeTitle: "アルゴリズム取引シグナル", tradeSub: "取引所・タイムフレームフィルター付きオーダーブック",
                 memeTitle: "ミーム & Pump.fun スキャナー (自動5秒)", memeSub: "安全性監査と利益予測時間付きリアルタイムスキャナー",
                 profileTitle: "アカウント設定と履歴", langLabel: "インターフェース言語:",
                 calcTitle: "ROI & 倍率計算機", investLabel: "投資額 (USD)", buyDexBtn: "Pump.fun / DEX で購入 →",
-                safetyLabel: "コントラクト安全性:", releaseLabel: "予想利益到達時間:"
+                safetyLabel: "コントラクト安全性:", releaseLabel: "倍率達成までの予想時間:"
             }
         };
 
@@ -929,7 +686,7 @@
             document.getElementById('txt-meme-sub').innerText = t('memeSub');
         }
 
-        // Expanded Arbitrage & Signals Dataset
+        // Massive Expanded Arbitrage & Signals Dataset
         let arbitrageList = [
             { id: "ARB_SOL", category: "Arbitrage", pair: "SOL/USDT", buyEx: "Gate.io", buyUrl: "https://www.gate.io/trade/SOL_USDT", buyPrice: 182.40, sellEx: "Bybit", sellUrl: "https://www.bybit.com/en/trade/spot/SOL/USDT", sellPrice: 186.15, spread: 2.05 },
             { id: "ARB_XRP", category: "Arbitrage", pair: "XRP/USDT", buyEx: "MEXC", buyUrl: "https://www.mexc.com/exchange/XRP_USDT", buyPrice: 0.5410, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/XRP_USDT", sellPrice: 0.5605, spread: 3.60 },
@@ -941,7 +698,10 @@
             { id: "ARB_NEAR", category: "Arbitrage", pair: "NEAR/USDT", buyEx: "OKX", buyUrl: "https://www.okx.com/trade-spot/near-usdt", buyPrice: 6.12, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/NEAR_USDT", sellPrice: 6.30, spread: 2.94 },
             { id: "ARB_DOGE", category: "Arbitrage", pair: "DOGE/USDT", buyEx: "KuCoin", buyUrl: "https://www.kucoin.com/trade/DOGE-USDT", buyPrice: 0.385, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/DOGE_USDT", sellPrice: 0.398, spread: 3.37 },
             { id: "ARB_LINK", category: "Arbitrage", pair: "LINK/USDT", buyEx: "Bitget", buyUrl: "https://www.bitget.com/", buyPrice: 18.20, sellEx: "Coinbase", sellUrl: "https://www.coinbase.com/", sellPrice: 18.85, spread: 3.57 },
-            { id: "ARB_BTC", category: "Arbitrage", pair: "BTC/USDT", buyEx: "Kraken", buyUrl: "https://trade.kraken.com/", buyPrice: 89100.00, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/BTC_USDT", sellPrice: 89650.00, spread: 0.62 }
+            { id: "ARB_BTC", category: "Arbitrage", pair: "BTC/USDT", buyEx: "Kraken", buyUrl: "https://trade.kraken.com/", buyPrice: 89100.00, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/BTC_USDT", sellPrice: 89650.00, spread: 0.62 },
+            { id: "ARB_ATOM", category: "Arbitrage", pair: "ATOM/USDT", buyEx: "MEXC", buyUrl: "https://www.mexc.com/", buyPrice: 6.80, sellEx: "Bybit", sellUrl: "https://www.bybit.com/", sellPrice: 7.05, spread: 3.67 },
+            { id: "ARB_DOT", category: "Arbitrage", pair: "DOT/USDT", buyEx: "HTX", buyUrl: "https://www.htx.com/", buyPrice: 7.20, sellEx: "OKX", sellUrl: "https://www.okx.com/", sellPrice: 7.48, spread: 3.88 },
+            { id: "ARB_APT", category: "Arbitrage", pair: "APT/USDT", buyEx: "Gate.io", buyUrl: "https://www.gate.io/", buyPrice: 11.50, sellEx: "Binance", sellUrl: "https://www.binance.com/", sellPrice: 11.92, spread: 3.65 }
         ];
 
         const signalsList = [
@@ -1123,7 +883,7 @@
             });
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-secondary); padding: 30px;">No arbitrage pairs match your current filters.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-secondary); padding: 30px;">No arbitrage pairs match your filters.</td></tr>`;
                 return;
             }
 
@@ -1152,7 +912,7 @@
                         </td>
                         <td><span class="badge badge-green mono">+${item.spread.toFixed(2)}%</span></td>
                         <td class="mono" style="color: var(--accent-green); font-weight: 600;">+$${netProfit}</td>
-                        <td><button class="primary-btn" style="padding: 6px 12px; font-size: 0.8rem;" onclick="openArbitrageModal('${item.id}')">Execute</button></td>
+                        <td><button class="primary-btn" style="padding: 5px 10px; font-size: 0.75rem;" onclick="openArbitrageModal('${item.id}')">Execute</button></td>
                     </tr>
                 `;
             });
@@ -1171,7 +931,18 @@
             const grid = document.getElementById('signals-grid');
             grid.innerHTML = '';
 
-            const filtered = signalsList.filter(sig => selectedTimeframe === 'ALL' || sig.tf === selectedTimeframe);
+            const exFilter = document.getElementById('trade-ex-filter').value;
+
+            const filtered = signalsList.filter(sig => {
+                const matchesTf = selectedTimeframe === 'ALL' || sig.tf === selectedTimeframe;
+                const matchesEx = exFilter === 'ALL' || sig.exchange === exFilter;
+                return matchesTf && matchesEx;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-secondary); padding: 30px;">No trade signals match selected filters.</div>`;
+                return;
+            }
 
             filtered.forEach(sig => {
                 const isFav = favorites.includes(sig.id);
@@ -1188,7 +959,7 @@
                             </div>
                             <button class="star-btn ${isFav ? 'favorited' : ''}" onclick="event.stopPropagation(); toggleFavorite('${sig.id}')">★</button>
                         </div>
-                        <div class="ex-cell" style="margin-bottom: 4px;">${getExBadge(sig.exchange)} Exchange: <strong>${sig.exchange}</strong></div>
+                        <div class="ex-cell" style="margin-bottom: 2px;">${getExBadge(sig.exchange)} Exchange: <strong>${sig.exchange}</strong></div>
                         <div class="signal-metrics">
                             <div class="metric-box">
                                 <span>Entry Zone</span>
@@ -1203,9 +974,9 @@
                                 <strong class="mono" style="color: var(--accent-red);">${sig.sl}</strong>
                             </div>
                         </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; color: var(--text-secondary);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--text-secondary);">
                             <span>AI Confidence: <strong style="color: var(--text-primary);">${sig.conf}</strong></span>
-                            <span style="color: var(--accent-yellow);">View Live Chart →</span>
+                            <span style="color: var(--accent-yellow);">View Chart →</span>
                         </div>
                     </div>
                 `;
@@ -1232,9 +1003,7 @@
                         else if (liqUsd > 8000) safetyScore = 62;
 
                         const isPump = (p.dexId || '').toLowerCase().includes('pump') || (p.url || '').includes('pump');
-                        
-                        // Estimated time horizon to achieve target x's based on momentum
-                        const hoursHorizon = (Math.random() * 24 + 4).toFixed(1);
+                        const hoursHorizon = (Math.random() * 20 + 2).toFixed(1);
 
                         return {
                             id: `MEME_LIVE_${idx}`,
@@ -1258,8 +1027,8 @@
             } catch (e) {
                 if (liveMemes.length === 0) {
                     liveMemes = [
-                        { id: 'MEME_LIVE_0', category: 'Meme Coin', pair: 'PEPEAI / SOL', platform: '💊 Pump.fun', isPump: true, network: 'SOLANA', liq: '$48,200', change: '+410%', isUp: true, safetyScore: 86, timeHorizon: '~6.5 hours (High Velocity)', url: 'https://pump.fun', symbol: 'BINANCE:PEPEUSDT' },
-                        { id: 'MEME_LIVE_1', category: 'Meme Coin', pair: 'DOGKING / SOL', platform: '💊 Pump.fun', isPump: true, network: 'SOLANA', liq: '$14,500', change: '+225%', isUp: true, safetyScore: 64, timeHorizon: '~14.2 hours (Early Stage)', url: 'https://pump.fun', symbol: 'BINANCE:DOGEUSDT' }
+                        { id: 'MEME_LIVE_0', category: 'Meme Coin', pair: 'PEPEAI / SOL', platform: '💊 Pump.fun', isPump: true, network: 'SOLANA', liq: '$48,200', change: '+410%', isUp: true, safetyScore: 86, timeHorizon: '~4.5 hours (High Velocity)', url: 'https://pump.fun', symbol: 'BINANCE:PEPEUSDT' },
+                        { id: 'MEME_LIVE_1', category: 'Meme Coin', pair: 'DOGKING / SOL', platform: '💊 Pump.fun', isPump: true, network: 'SOLANA', liq: '$14,500', change: '+225%', isUp: true, safetyScore: 64, timeHorizon: '~11.2 hours (Early Stage)', url: 'https://pump.fun', symbol: 'BINANCE:DOGEUSDT' }
                     ];
                 }
             }
@@ -1270,12 +1039,12 @@
         function getSafetyHtml(score) {
             let color = 'var(--accent-green)';
             let label = 'Safe';
-            if (score < 50) { color = 'var(--accent-red)'; label = 'High Risk'; }
-            else if (score < 75) { color = 'var(--accent-yellow)'; label = 'Moderate'; }
+            if (score < 50) { color = 'var(--accent-red)'; label = 'Risk'; }
+            else if (score < 75) { color = 'var(--accent-yellow)'; label = 'Fair'; }
 
             return `
                 <div class="safety-wrap">
-                    <div style="display:flex; justify-content:space-between; font-size:0.75rem;">
+                    <div style="display:flex; justify-content:space-between; font-size:0.7rem;">
                         <span style="color:${color}; font-weight:700;">${score}/100</span>
                         <span style="color:var(--text-secondary);">${label}</span>
                     </div>
@@ -1308,7 +1077,7 @@
                         <td class="mono">${meme.liq}</td>
                         <td><span class="badge ${badgeClass} mono">${meme.change}</span></td>
                         <td>${getSafetyHtml(meme.safetyScore)}</td>
-                        <td><button class="primary-btn" style="padding: 6px 12px; font-size: 0.8rem;" onclick="openMemeModal('${meme.id}')">Inspect & ROI →</button></td>
+                        <td><button class="primary-btn" style="padding: 5px 10px; font-size: 0.75rem;" onclick="openMemeModal('${meme.id}')">Inspect</button></td>
                     </tr>
                 `;
             });
@@ -1348,7 +1117,7 @@
         function executeArbitrageOrder(pair, netProfit) {
             const newOrder = {
                 id: `ORD_${Date.now().toString().slice(-4)}`,
-                time: new Date().toISOString().replace('T', ' ').substring(0, 16),
+                time: "2026-11-17 14:12",
                 pair: pair,
                 type: 'Arbitrage Route',
                 amount: document.getElementById('display-capital').innerText,
@@ -1389,7 +1158,7 @@
                     script.async = true;
                     script.onload = function() {
                         new TradingView.widget({
-                            "width": "100%", "height": "350", "symbol": sig.symbol,
+                            "width": "100%", "height": "320", "symbol": sig.symbol,
                             "interval": sig.tf === '15M' ? '15' : (sig.tf === '1H' ? '60' : '240'),
                             "timezone": "Etc/UTC", "theme": "dark", "style": "1", "locale": "en",
                             "toolbar_bg": "#181a20", "enable_publishing": false, "container_id": "tv_chart_container"
@@ -1439,7 +1208,7 @@
                     script.async = true;
                     script.onload = function() {
                         new TradingView.widget({
-                            "width": "100%", "height": "350", "symbol": meme.symbol || "BINANCE:SOLUSDT",
+                            "width": "100%", "height": "320", "symbol": meme.symbol || "BINANCE:SOLUSDT",
                             "interval": "60", "timezone": "Etc/UTC", "theme": "dark", "style": "1", "locale": "en",
                             "toolbar_bg": "#181a20", "container_id": "tv_meme_container"
                         });
@@ -1456,7 +1225,7 @@
             document.getElementById('calc-10x').innerText = `$${(inv * 10).toFixed(2)} (+$${(inv * 9).toFixed(2)})`;
         }
 
-        // Profile & Settings Modal
+        // Profile & Settings Modal with Designer Flags
         function openProfileModal() {
             document.getElementById('modal-title').innerText = t('profileTitle');
             
@@ -1491,7 +1260,7 @@
                     </div>
                 </div>
                 <div style="font-weight: 600; font-size: 0.9rem; margin-top: 4px;">📜 Order History & Executed Routes</div>
-                <div class="calc-box" style="max-height: 200px; overflow-y: auto; gap: 10px;">
+                <div class="calc-box" style="max-height: 180px; overflow-y: auto; gap: 10px;">
                     ${ordersHtml || '<div style="color: var(--text-secondary); text-align: center;">No orders recorded yet.</div>'}
                 </div>
                 <button class="secondary-link-btn" style="text-align: center; padding: 10px;" onclick="clearOrderHistory()">Clear History</button>
