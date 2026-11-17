@@ -189,7 +189,7 @@
         .preset-pill:hover { border-color: var(--accent-yellow); color: var(--text-primary); }
         .preset-pill.active { background-color: rgba(252, 213, 53, 0.15); border-color: var(--accent-yellow); color: var(--accent-yellow); }
 
-        /* Designer Dropdown */
+        /* Custom Styled Dropdowns (Exchange & Language Selectors) */
         .dropdown-check-list { position: relative; }
         .dropdown-selected {
             background-color: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 9px 12px; color: var(--text-primary); font-size: 0.9rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
@@ -295,7 +295,7 @@
             background: linear-gradient(90deg, #fcd535, #f0b90b); color: #181a20; font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; display: inline-block; margin-top: 4px;
         }
 
-        /* AI CHAT SECTION STYLES */
+        /* AI CHAT SECTION */
         .chat-container {
             display: flex; flex-direction: column; height: calc(100vh - 140px); background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden;
         }
@@ -328,12 +328,11 @@
         }
         .chat-suggestion-chip:hover { color: var(--accent-yellow); border-color: var(--accent-yellow); }
 
-        /* Loader */
+        /* Loader & Modal */
         .loader-container { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px; gap: 10px; color: var(--text-secondary); }
         .spinner { width: 28px; height: 28px; border: 3px solid var(--border-color); border-top: 3px solid var(--accent-yellow); border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Modal */
         .modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.82);
             display: none; justify-content: center; align-items: center; z-index: 1000; padding: 12px; backdrop-filter: blur(4px);
@@ -530,7 +529,7 @@
                             <th>Liq.</th>
                             <th>24h</th>
                             <th>Safety</th>
-                            <th style="width: 100px;">Action / AI</th>
+                            <th style="width: 140px;">Action / AI</th>
                         </tr>
                     </thead>
                     <tbody id="meme-table-body"></tbody>
@@ -546,18 +545,18 @@
             <div class="section-header">
                 <div>
                     <h2>🤖 AI Chat & Trading Assistant</h2>
-                    <div class="subtitle">Ask any question or launch automated meme targets with instant internal push alerts</div>
+                    <div class="subtitle">Ask any question or launch automated meme & trading targets with instant internal push alerts</div>
                 </div>
             </div>
 
             <div class="chat-container">
                 <div class="chat-messages" id="chat-messages-box">
                     <div class="chat-msg ai">
-                        Привет! Я твой персональный AI-ассистент в терминале. Готов помочь разобраться с мемкоинами, арбитражем или настройкой целевых иксов. Выбери быстрый вопрос ниже или напиши свой!
+                        Привет! Я твой персональный AI-ассистент в терминале. Готов помочь разобраться с мемкоинами, арбитражем, торговыми сигналами или настройкой целевых иксов. Выбери быстрый вопрос ниже или напиши свой!
                     </div>
                 </div>
                 <div class="chat-suggestions">
-                    <span class="chat-suggestion-chip" onclick="sendAiPrompt('Как безопасно покупать мемкоины на Pump.fun?')">🛡️ Как покупать на Pump.fun?</span>
+                    <span class="chat-suggestion-chip" onclick="sendAiPrompt('Как работают торговые сигналы и AI уверенность?')">📊 Как читать сигналы?</span>
                     <span class="chat-suggestion-chip" onclick="sendAiPrompt('Как настроить уведомления на 2x иксы?')">🎯 Как настроить цель 2X?</span>
                     <span class="chat-suggestion-chip" onclick="sendAiPrompt('Какие сейчас топ-3 мемкоина с высокой ликвидностью?')">🚀 Топ мемкоины сейчас</span>
                 </div>
@@ -692,7 +691,7 @@
         let currentAvatar = localStorage.getItem('cryptopro_avatar') || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80';
         let telegramAlertsEnabled = localStorage.getItem('cryptopro_tg_enabled') === 'true';
         let telegramChatId = localStorage.getItem('cryptopro_tg_chat') || '@crypto_alerts_channel';
-        let activeMemeTargets = JSON.parse(localStorage.getItem('cryptopro_meme_targets')) || [];
+        let activeTargets = JSON.parse(localStorage.getItem('cryptopro_active_targets')) || [];
 
         const i18n = {
             en: {
@@ -967,7 +966,7 @@
                 if (document.getElementById('memecoins').classList.contains('active')) {
                     fetchLiveMemes(true);
                 }
-                checkMemeTargetsProgress();
+                checkTargetsProgress();
                 memeTimer = 0;
             }
             const timerEl = document.getElementById('countdown-timer');
@@ -1135,9 +1134,12 @@
                                 <strong class="mono" style="color: var(--accent-red);">${sig.sl}</strong>
                             </div>
                         </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--text-secondary);">
-                            <span>AI Confidence: <strong style="color: var(--accent-yellow);">${sig.confStr}</strong></span>
-                            <span style="color: var(--accent-yellow);">View Chart →</span>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                            <span style="font-size: 0.8rem; color: var(--text-secondary);">AI Conf: <strong style="color: var(--accent-yellow);">${sig.confStr}</strong></span>
+                            <div style="display: flex; gap: 4px;">
+                                <button class="primary-btn" style="padding: 5px 8px; font-size: 0.7rem;" onclick="event.stopPropagation(); openSignalModal('${sig.id}')">Chart</button>
+                                <button class="primary-btn" style="padding: 5px 8px; font-size: 0.7rem; background: var(--accent-yellow); color:#181a20;" onclick="event.stopPropagation(); startTradeAiSetup('${sig.pair}', '${sig.side}')">🤖 AI Вход</button>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -1248,7 +1250,7 @@
                         <td>
                             <div style="display:flex; gap:4px;">
                                 <button class="primary-btn" style="padding: 5px 8px; font-size: 0.7rem;" onclick="openMemeModal('${meme.id}')">Inspect</button>
-                                <button class="secondary-link-btn" style="padding: 5px 8px; font-size: 0.7rem; background: var(--accent-yellow); color:#181a20; border:none;" onclick="startMemeAiSetup('${meme.pair}')">🤖 AI Вход</button>
+                                <button class="primary-btn" style="padding: 5px 8px; font-size: 0.7rem; background: var(--accent-yellow); color:#181a20;" onclick="startMemeAiSetup('${meme.pair}')">🤖 AI Вход</button>
                             </div>
                         </td>
                     </tr>
@@ -1278,7 +1280,7 @@
             });
         }
 
-        // AI CHAT & STEP-BY-STEP INVESTMENT WIZARD LOGIC
+        // AI CHAT & WIZARD LOGIC FOR MEMECOINS AND TRADING SIGNALS
         function appendChatMessage(sender, text, isSystem = false) {
             const box = document.getElementById('chat-messages-box');
             if (!box) return;
@@ -1295,13 +1297,13 @@
             switchTab('ai-chat');
             appendChatMessage('user', text);
             setTimeout(() => {
-                let reply = "Я проанализировал твой запрос. Всегда проверяй ликвидность пула перед входом и используй некастодиальные кошельки (например, Phantom). Хочешь выбрать мемкоин из сканера и настроить авто-цель по иксам?";
-                if (text.includes('Pump.fun')) {
-                    reply = "Покупка на Pump.fun:\n1. Подключи кошелек Phantom с небольшим балансом SOL.\n2. Выбери токен со статусом Safety > 75.\n3. Укажи сумму и нажми Buy. Mint-авторизация должна быть отключена!";
+                let reply = "Я проанализировал твой запрос. Всегда проверяй ликвидность пула и уровни риска перед сделкой. Хочешь запустить AI-ассистент для мемкоинов или торговых сигналов?";
+                if (text.includes('сигналы')) {
+                    reply = "Торговые сигналы в терминале отсортированы по силе AI-модели (Conf). Нажми кнопку '🤖 AI Вход' на любом сигнале во вкладке Signals, чтобы получить пошаговый план и настроить таргет!";
                 } else if (text.includes('2X') || text.includes('цель')) {
-                    reply = "Чтобы настроить цель (например, 2X) по мемкоину, перейди во вкладку 'Meme & Pump.fun Scanner', нажми кнопку '🤖 AI Вход' на любой монете или выбери монету из списка. Я проведу тебя по шагам!";
+                    reply = "Чтобы настроить цель (например, 2X), выбери нужную монету или сигнал, укажи сумму и желаемый икс. Как только рынок достигнет цели, я пришлю тебе пуш-уведомление в этот чат!";
                 } else if (text.includes('топ')) {
-                    reply = "Сейчас в топе по ликвидности PEPEAI и DOGKING на сети Solana. Риск-рейтинг средний, потенциал роста до 5x при текущей динамике.";
+                    reply = "Сейчас в топе по ликвидности PEPEAI и DOGKING на сети Solana, а также сильные лонг-сигналы по BTC и SOL.";
                 }
                 appendChatMessage('ai', reply);
             }, 600);
@@ -1315,7 +1317,7 @@
             
             appendChatMessage('user', val);
             setTimeout(() => {
-                let answer = `Интересный вопрос! Как AI-помощник биржи, я рекомендую соблюдать риск-менеджмент: выделяй на мемкоины не более 5-10% капитала. По вопросу "${val}" — стратегия заключается в быстром выходе по достижении целевых иксов.`;
+                let answer = `Интересный вопрос! Как AI-помощник биржи, я рекомендую соблюдать риск-менеджмент. По запросу "${val}" — следи за трендом и фиксируй профит частями по достижении целей.`;
                 if (val.toLowerCase().includes('привет') || val.toLowerCase().includes('здарова')) {
                     answer = "Привет! Чем могу помочь в трейдинге сегодня?";
                 }
@@ -1323,79 +1325,91 @@
             }, 700);
         }
 
-        let pendingMemePair = '';
-
+        // MEME AI WIZARD
         function startMemeAiSetup(pair) {
-            pendingMemePair = pair;
             switchTab('ai-chat');
-            appendChatMessage('ai', `🚀 Отлично! Ты выбрал мемкоин **${pair}** для инвестиции.\n\nДавай настроим сделку пошагово:\n1️⃣ **Шаг 1:** Укажи сумму инвестиций в USD (например, ` + `$100` + `):`);
+            appendChatMessage('ai', `🚀 Отлично! Ты выбрал мемкоин **${pair}** для инвестиции.\n\nДавай настроим сделку пошагово:\n1️⃣ **Шаг 1:** Укажи сумму инвестиций в USD (например, $100):`);
             
-            // Add interactive response buttons in chat
             setTimeout(() => {
                 const box = document.getElementById('chat-messages-box');
                 box.innerHTML += `
-                    <div style="display:flex; gap:6px; margin: 4px 0;" id="interactive-wizard-1">
-                        <button class="primary-btn" style="font-size:0.75rem; padding:6px 12px;" onclick="wizardStepAmount('${pair}', 50)">$50</button>
-                        <button class="primary-btn" style="font-size:0.75rem; padding:6px 12px;" onclick="wizardStepAmount('${pair}', 100)">$100</button>
-                        <button class="primary-btn" style="font-size:0.75rem; padding:6px 12px;" onclick="wizardStepAmount('${pair}', 500)">$500</button>
+                    <div style="display:flex; gap:6px; margin: 4px 0;">
+                        <button class="primary-btn" style="font-size:0.75rem; padding:6px 12px;" onclick="wizardStepAmount('${pair}', 50, 'meme')">$50</button>
+                        <button class="primary-btn" style="font-size:0.75rem; padding:6px 12px;" onclick="wizardStepAmount('${pair}', 100, 'meme')">$100</button>
+                        <button class="primary-btn" style="font-size:0.75rem; padding:6px 12px;" onclick="wizardStepAmount('${pair}', 500, 'meme')">$500</button>
                     </div>
                 `;
                 box.scrollTop = box.scrollHeight;
             }, 300);
         }
 
-        function wizardStepAmount(pair, amount) {
-            appendChatMessage('user', `Инвестирую $${amount} в ${pair}`);
+        // TRADING SIGNAL AI WIZARD (NEW FEATURE)
+        function startTradeAiSetup(pair, side) {
+            switchTab('ai-chat');
+            appendChatMessage('ai', `📊 Отличный выбор торгового сигнала **${pair} (${side})**!\n\nДавай настроим сделку пошагово:\n1️⃣ **Шаг 1:** Укажи рабочий объем позиции в USDT (например, $200):`);
+            
             setTimeout(() => {
-                appendChatMessage('ai', `💰 Сумма зафиксирована: **$${amount}**.\n\n2️⃣ **Шаг 2:** Какой **ожидаемый результат (иксы)** ты хочешь поставить? Как только монета достигнет этой цели, я пришлю тебе пуш-уведомление прямо сюда в чат!`);
                 const box = document.getElementById('chat-messages-box');
                 box.innerHTML += `
-                    <div style="display:flex; gap:6px; margin: 4px 0;" id="interactive-wizard-2">
-                        <button class="primary-btn" style="font-size:0.75rem; padding:6px 12px; background:var(--accent-green); color:#fff;" onclick="wizardStepTarget('${pair}', ${amount}, 2)">🎯 2X (X2)</button>
-                        <button class="primary-btn" style="font-size:0.75rem; padding:6px 12px; background:var(--accent-green); color:#fff;" onclick="wizardStepTarget('${pair}', ${amount}, 5)">🎯 5X (X5)</button>
-                        <button class="primary-btn" style="font-size:0.75rem; padding:6px 12px; background:var(--accent-yellow); color:#181a20;" onclick="wizardStepTarget('${pair}', ${amount}, 10)">🎯 10X (ТОП)</button>
+                    <div style="display:flex; gap:6px; margin: 4px 0;">
+                        <button class="primary-btn" style="font-size:0.75rem; padding:6px 12px;" onclick="wizardStepAmount('${pair} (${side})', 100, 'trade')">$100</button>
+                        <button class="primary-btn" style="font-size:0.75rem; padding:6px 12px;" onclick="wizardStepAmount('${pair} (${side})', 250, 'trade')">$250</button>
+                        <button class="primary-btn" style="font-size:0.75rem; padding:6px 12px;" onclick="wizardStepAmount('${pair} (${side})', 1000, 'trade')">$1,000</button>
+                    </div>
+                `;
+                box.scrollTop = box.scrollHeight;
+            }, 300);
+        }
+
+        function wizardStepAmount(label, amount, type) {
+            appendChatMessage('user', `Инвестирую/беру объем $${amount} в ${label}`);
+            setTimeout(() => {
+                appendChatMessage('ai', `💰 Сумма зафиксирована: **$${amount}**.\n\n2️⃣ **Шаг 2:** Какой **целевой мультипликатор / профит** ты хочешь поставить? Как только актив достигнет этой цели, я пришлю тебе пуш-уведомление прямо в этот чат!`);
+                const box = document.getElementById('chat-messages-box');
+                box.innerHTML += `
+                    <div style="display:flex; gap:6px; margin: 4px 0;">
+                        <button class="primary-btn" style="font-size:0.75rem; padding:6px 12px; background:var(--accent-green); color:#fff;" onclick="wizardStepTarget('${label}', ${amount}, 2, '${type}')">🎯 2X (Цель)</button>
+                        <button class="primary-btn" style="font-size:0.75rem; padding:6px 12px; background:var(--accent-green); color:#fff;" onclick="wizardStepTarget('${label}', ${amount}, 3, '${type}')">🎯 3X (Цель)</button>
+                        <button class="primary-btn" style="font-size:0.75rem; padding:6px 12px; background:var(--accent-yellow); color:#181a20;" onclick="wizardStepTarget('${label}', ${amount}, 5, '${type}')">🎯 5X (ТОП)</button>
                     </div>
                 `;
                 box.scrollTop = box.scrollHeight;
             }, 500);
         }
 
-        function wizardStepTarget(pair, amount, targetX) {
-            appendChatMessage('user', `Ставлю цель: ${targetX}X для ${pair}`);
+        function wizardStepTarget(label, amount, targetX, type) {
+            appendChatMessage('user', `Ставлю цель: ${targetX}X для ${label}`);
             
-            // Save to active targets
             const newTarget = {
                 id: `TGT_${Date.now()}`,
-                pair: pair,
+                label: label,
                 amount: amount,
                 targetMultiplier: targetX,
                 currentMultiplier: 1.0,
-                status: 'active'
+                status: 'active',
+                type: type
             };
-            activeMemeTargets.push(newTarget);
-            localStorage.setItem('cryptopro_meme_targets', JSON.stringify(activeMemeTargets));
+            activeTargets.push(newTarget);
+            localStorage.setItem('cryptopro_active_targets', JSON.stringify(activeTargets));
 
             setTimeout(() => {
-                appendChatMessage('ai', `✅ **Сделка успешно зарегистрирована в системе!**\n\n📊 **Параметры:** ${pair}\n💵 **Инвестиция:** $${amount}\n🎯 **Цель:** ${targetX}X (Ожидаемый профит: $${amount * targetX})\n\n🤖 *Я начал мониторинг пула в реальном времени. Как только монета сделает ${targetX}X, ты мгновенно получишь уведомление в этом чате!*`, false);
+                appendChatMessage('ai', `✅ **Позиция успешно зарегистрирована в системе!**\n\n📊 **Актив:** ${label}\n💵 **Объем:** $${amount}\n🎯 **Цель:** ${targetX}X (Ожидаемый профит: $${amount * targetX})\n\n🤖 *Я начал мониторинг котировок в реальном времени. Как только цель будет взята, ты мгновенно получишь уведомление в этом чате!*`, false);
             }, 600);
         }
 
-        // Simulate target checks & push notifications into chat
-        function checkMemeTargetsProgress() {
-            if (!activeMemeTargets || activeMemeTargets.length === 0) return;
+        function checkTargetsProgress() {
+            if (!activeTargets || activeTargets.length === 0) return;
 
-            activeMemeTargets.forEach(tgr => {
+            activeTargets.forEach(tgr => {
                 if (tgr.status !== 'active') return;
                 
-                // Simulate random multiplier growth
-                tgr.currentMultiplier += +(Math.random() * 0.35).toFixed(2);
+                tgr.currentMultiplier += +(Math.random() * 0.4).toFixed(2);
 
                 if (tgr.currentMultiplier >= tgr.targetMultiplier) {
                     tgr.status = 'triggered';
-                    localStorage.setItem('cryptopro_meme_targets', JSON.stringify(activeMemeTargets));
+                    localStorage.setItem('cryptopro_active_targets', JSON.stringify(activeTargets));
 
-                    // PUSH NOTIFICATION IN INTERNAL CHAT
-                    appendChatMessage('system-alert', `🚨 ПУШ-УВЕДОМЛЕНИЕ ОТ БИРЖИ: Мемкоин **${tgr.pair}** достиг твоей цели в **${tgr.targetMultiplier}X**! Твои $${tgr.amount} превратились в **$${tgr.amount * tgr.targetMultiplier}** (+$${tgr.amount * (tgr.targetMultiplier - 1)}). Рекомендуем зафиксировать прибыль на DEX!`);
+                    appendChatMessage('system-alert', `🚨 ПУШ-УВЕДОМЛЕНИЕ ОТ БИРЖИ: Актив **${tgr.label}** достиг твоей цели в **${tgr.targetMultiplier}X**! Твои $${tgr.amount} превратились в **$${tgr.amount * tgr.targetMultiplier}** (+$${tgr.amount * (tgr.targetMultiplier - 1)}). Рекомендуем зафиксировать прибыль!`);
                 }
             });
         }
@@ -1460,7 +1474,10 @@
                     <div class="calc-row"><span>Stop Loss (SL):</span> <strong class="mono" style="color: var(--accent-red);">${sig.sl}</strong></div>
                     <div class="calc-row"><span>AI Model Confidence:</span> <strong style="color: var(--accent-yellow);">${sig.confStr}</strong></div>
                 </div>
-                <a href="${sig.exchangeUrl}" target="_blank" class="primary-btn" style="width: 100%; padding: 12px; text-align: center;">Open Terminal & Execute Order →</a>
+                <div style="display: flex; gap: 10px;">
+                    <a href="${sig.exchangeUrl}" target="_blank" class="primary-btn" style="flex: 1; padding: 12px; text-align: center;">Open Terminal →</a>
+                    <button class="primary-btn" style="flex: 1; padding: 12px; background: var(--accent-yellow); color:#181a20;" onclick="closeModal(); startTradeAiSetup('${sig.pair}', '${sig.side}')">🤖 AI Вход и Уведомление</button>
+                </div>
             `;
             document.getElementById('detail-modal').style.display = 'flex';
 
@@ -1557,11 +1574,11 @@
                 <div class="calc-box">
                     <div class="calc-row">
                         <span>${t('userLabel')}</span>
-                        <input type="text" id="username-input" class="mono" value="${currentUsername}" oninput="updateUsername(this.value)" style="width: 170px; padding: 6px;">
+                        <input type="text" id="username-input" class="mono" value="${currentUsername}" oninput="updateUsername(this.value)" style="width: 180px; padding: 7px;">
                     </div>
                     <div class="calc-row">
                         <span>${t('langLabel')}</span>
-                        <select id="lang-select" onchange="changeLanguage(this.value)" style="width: 170px; padding: 6px;">
+                        <select id="lang-select" onchange="changeLanguage(this.value)" style="width: 180px; padding: 7px; background-color: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-primary); border-radius: 8px; outline: none; cursor: pointer;">
                             <option value="en" ${currentLang==='en'?'selected':''}>🇬🇧 English</option>
                             <option value="ru" ${currentLang==='ru'?'selected':''}>🇷🇺 Русский</option>
                             <option value="uk" ${currentLang==='uk'?'selected':''}>🇺🇦 Українська</option>
@@ -1577,7 +1594,7 @@
                     </div>
                     <div class="calc-row">
                         <span>${t('tgChatLabel')}</span>
-                        <input type="text" id="tg-chat-input" class="mono" value="${telegramChatId}" oninput="updateTelegramChat(this.value)" style="width: 170px; padding: 6px;">
+                        <input type="text" id="tg-chat-input" class="mono" value="${telegramChatId}" oninput="updateTelegramChat(this.value)" style="width: 180px; padding: 7px;">
                     </div>
                 </div>
 
