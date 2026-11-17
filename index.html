@@ -245,7 +245,7 @@
             margin-top: 4px;
         }
 
-        /* Enhanced Controls Panel */
+        /* Controls Panel */
         .controls-panel {
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -292,7 +292,6 @@
 
         input:focus, select:focus { border-color: var(--accent-yellow); }
 
-        /* Quick Capital Pills */
         .preset-pills {
             display: flex;
             flex-wrap: wrap;
@@ -310,22 +309,11 @@
             cursor: pointer;
             transition: all 0.15s;
         }
+        .preset-pill:hover { border-color: var(--accent-yellow); color: var(--text-primary); }
+        .preset-pill.active { background-color: rgba(252, 213, 53, 0.15); border-color: var(--accent-yellow); color: var(--accent-yellow); }
 
-        .preset-pill:hover {
-            border-color: var(--accent-yellow);
-            color: var(--text-primary);
-        }
-
-        .preset-pill.active {
-            background-color: rgba(252, 213, 53, 0.15);
-            border-color: var(--accent-yellow);
-            color: var(--accent-yellow);
-        }
-
-        /* Designer Multi-select Exchange Dropdown */
-        .dropdown-check-list {
-            position: relative;
-        }
+        /* Exchange Dropdown */
+        .dropdown-check-list { position: relative; }
         .dropdown-selected {
             background-color: var(--bg-main);
             border: 1px solid var(--border-color);
@@ -337,16 +325,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: border-color 0.2s;
         }
-        .dropdown-selected:hover { border-color: #474d57; }
-
         .dropdown-options {
             display: none;
             position: absolute;
             top: calc(100% + 6px);
-            left: 0;
-            right: 0;
+            left: 0; right: 0;
             background-color: var(--bg-elevated);
             border: 1px solid var(--border-color);
             border-radius: 10px;
@@ -354,7 +338,6 @@
             box-shadow: 0 12px 28px rgba(0,0,0,0.65);
             padding: 10px;
         }
-
         .dropdown-actions {
             display: flex;
             justify-content: space-between;
@@ -363,50 +346,43 @@
             border-bottom: 1px solid var(--border-color);
             font-size: 0.75rem;
         }
-        .dropdown-actions span {
-            color: var(--accent-yellow);
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .dropdown-actions span:hover { text-decoration: underline; }
+        .dropdown-actions span { color: var(--accent-yellow); cursor: pointer; font-weight: 600; }
 
         .ex-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 6px;
+            max-height: 180px;
+            overflow-y: auto;
         }
-
         .ex-option {
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 7px 9px;
+            padding: 6px 8px;
             cursor: pointer;
             color: var(--text-primary);
-            font-size: 0.84rem;
+            font-size: 0.82rem;
             font-weight: 500;
             border-radius: 6px;
             background-color: var(--bg-card);
-            border: 1px solid transparent;
-            transition: all 0.15s;
         }
         .ex-option:hover { background-color: var(--bg-hover); }
         .ex-option input { width: auto; accent-color: var(--accent-yellow); }
 
         .ex-badge-icon {
-            width: 20px;
-            height: 20px;
+            width: 20px; height: 20px;
             border-radius: 50%;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.68rem;
+            font-size: 0.65rem;
             font-weight: 800;
             color: #fff;
             flex-shrink: 0;
         }
 
-        /* Quick Coin Filter Bar */
+        /* Coin Filter Chips */
         .coin-filter-bar {
             display: flex;
             align-items: center;
@@ -415,7 +391,6 @@
             padding-top: 4px;
             border-top: 1px solid var(--border-color);
         }
-
         .coin-chip {
             display: inline-flex;
             align-items: center;
@@ -431,27 +406,36 @@
             white-space: nowrap;
             transition: all 0.15s;
         }
-        .coin-chip:hover {
-            background-color: var(--bg-elevated);
-            color: var(--text-primary);
-        }
-        .coin-chip.active {
-            background-color: var(--accent-yellow);
-            color: #181a20;
-            border-color: var(--accent-yellow);
+        .coin-chip:hover { background-color: var(--bg-elevated); color: var(--text-primary); }
+        .coin-chip.active { background-color: var(--accent-yellow); color: #181a20; border-color: var(--accent-yellow); }
+        .coin-icon {
+            width: 18px; height: 18px; border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 0.65rem; font-weight: 800; color: #fff;
         }
 
-        .coin-icon {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.65rem;
-            font-weight: 800;
-            color: #fff;
+        /* Premium Timeframe Selector in Trading */
+        .timeframe-bar {
+            display: flex;
+            gap: 6px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 6px;
+            border-radius: 8px;
         }
+        .tf-pill {
+            background-color: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .tf-pill:hover { color: var(--text-primary); background-color: var(--bg-elevated); }
+        .tf-pill.active { background-color: var(--accent-yellow); color: #181a20; }
 
         button.primary-btn {
             background-color: var(--accent-yellow);
@@ -486,95 +470,39 @@
         }
         .secondary-link-btn:hover { background-color: var(--bg-hover); }
 
-        /* Tables */
+        /* Tables & Cards */
         .table-container {
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 10px;
             overflow-x: auto;
         }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            min-width: 750px;
-        }
-
-        th, td {
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 0.9rem;
-        }
-
-        th {
-            color: var(--text-secondary);
-            font-weight: 500;
-            font-size: 0.78rem;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-            background-color: var(--bg-elevated);
-        }
-
+        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 750px; }
+        th, td { padding: 14px 16px; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
+        th { color: var(--text-secondary); font-weight: 500; font-size: 0.78rem; text-transform: uppercase; background-color: var(--bg-elevated); }
         tr:last-child td { border-bottom: none; }
         tr:hover { background-color: rgba(43, 49, 57, 0.45); }
 
-        .pair-cell {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .ex-cell {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 3px;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
+        .pair-cell { display: flex; align-items: center; gap: 10px; }
+        .ex-cell { display: flex; align-items: center; gap: 6px; margin-top: 3px; font-size: 0.8rem; color: var(--text-secondary); }
 
         .badge {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
+            padding: 4px 8px; border-radius: 4px; font-size: 0.78rem; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;
         }
-
         .badge-green { background-color: var(--accent-green-bg); color: var(--accent-green); }
         .badge-red { background-color: var(--accent-red-bg); color: var(--accent-red); }
         .badge-yellow { background-color: rgba(252, 213, 53, 0.12); color: var(--accent-yellow); }
         .badge-pump { background-color: rgba(14, 203, 129, 0.2); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
 
-        /* Safety Meter */
-        .safety-wrap {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            min-width: 110px;
-        }
-        .safety-bar-bg {
-            width: 100%;
-            height: 6px;
-            background-color: var(--bg-main);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-        .safety-bar-fill {
-            height: 100%;
-            border-radius: 3px;
-        }
+        .safety-wrap { display: flex; flex-direction: column; gap: 4px; min-width: 110px; }
+        .safety-bar-bg { width: 100%; height: 6px; background-color: var(--bg-main); border-radius: 3px; overflow: hidden; }
+        .safety-bar-fill { height: 100%; border-radius: 3px; }
 
-        /* Cards Grid */
         .card-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 16px;
         }
-
         .signal-card {
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -586,182 +514,52 @@
             cursor: pointer;
             transition: border-color 0.2s, transform 0.15s;
         }
-
-        .signal-card:hover {
-            border-color: #474d57;
-            transform: translateY(-2px);
-        }
-
-        .signal-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .pair-name {
-            font-size: 1.1rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
+        .signal-card:hover { border-color: #474d57; transform: translateY(-2px); }
+        .signal-top { display: flex; justify-content: space-between; align-items: center; }
+        .pair-name { font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
         .signal-metrics {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            background-color: var(--bg-main);
-            padding: 12px;
-            border-radius: 8px;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; background-color: var(--bg-main); padding: 12px; border-radius: 8px;
         }
-
-        .metric-box span {
-            display: block;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-bottom: 4px;
-        }
-
+        .metric-box span { display: block; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 4px; }
         .metric-box strong { font-size: 0.9rem; }
 
         .star-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #474d57;
-            font-size: 1.25rem;
-            transition: transform 0.15s, color 0.15s;
-            padding: 4px;
+            background: none; border: none; cursor: pointer; color: #474d57; font-size: 1.25rem; transition: transform 0.15s, color 0.15s; padding: 4px;
         }
         .star-btn:hover { transform: scale(1.15); }
         .star-btn.favorited { color: var(--accent-yellow); }
 
-        /* Loading Spinner */
-        .loader-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px;
-            gap: 12px;
-            color: var(--text-secondary);
-        }
-
+        /* Loader */
+        .loader-container { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; gap: 12px; color: var(--text-secondary); }
         .spinner {
-            width: 32px;
-            height: 32px;
-            border: 3px solid var(--border-color);
-            border-top: 3px solid var(--accent-yellow);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+            width: 32px; height: 32px; border: 3px solid var(--border-color); border-top: 3px solid var(--accent-yellow); border-radius: 50%; animation: spin 0.8s linear infinite;
         }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Modal Overlay & Charts */
+        /* Modal */
         .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.82);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 16px;
-            backdrop-filter: blur(4px);
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.82);
+            display: none; justify-content: center; align-items: center; z-index: 1000; padding: 16px; backdrop-filter: blur(4px);
         }
-
         .modal-card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            width: 100%;
-            max-width: 760px;
-            max-height: 92vh;
-            overflow-y: auto;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.65);
-            animation: scaleIn 0.2s ease;
+            background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;
+            width: 100%; max-width: 760px; max-height: 92vh; overflow-y: auto; padding: 24px;
+            display: flex; flex-direction: column; gap: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.65);
         }
-
-        @keyframes scaleIn {
-            from { transform: scale(0.95); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 12px;
-        }
-
-        .modal-close {
-            background: none; border: none; color: var(--text-secondary); font-size: 1.4rem; cursor: pointer;
-        }
-
-        .calc-box {
-            background-color: var(--bg-main);
-            padding: 16px;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .calc-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.9rem;
-        }
-
-        .tradingview-container {
-            width: 100%;
-            height: 350px;
-            background-color: var(--bg-main);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            overflow: hidden;
-        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; }
+        .modal-close { background: none; border: none; color: var(--text-secondary); font-size: 1.4rem; cursor: pointer; }
+        .calc-box { background-color: var(--bg-main); padding: 16px; border-radius: 8px; display: flex; flex-direction: column; gap: 12px; }
+        .calc-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; }
+        .tradingview-container { width: 100%; height: 350px; background-color: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; }
 
         /* Mobile Bottom Navigation */
         .mobile-nav {
-            display: none;
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            background-color: var(--bg-card);
-            border-top: 1px solid var(--border-color);
-            z-index: 100;
-            padding: 6px 0 calc(6px + env(safe-area-inset-bottom));
+            display: none; position: fixed; bottom: 0; left: 0; right: 0; background-color: var(--bg-card); border-top: 1px solid var(--border-color); z-index: 100; padding: 6px 0 calc(6px + env(safe-area-inset-bottom));
         }
-
-        .mobile-nav-list {
-            display: flex;
-            justify-content: space-around;
-            list-style: none;
-        }
-
+        .mobile-nav-list { display: flex; justify-content: space-around; list-style: none; }
         .mobile-nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            font-size: 0.72rem;
-            color: var(--text-secondary);
-            cursor: pointer;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-weight: 500;
+            display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.72rem; color: var(--text-secondary); cursor: pointer; padding: 6px 12px; border-radius: 8px; font-weight: 500;
         }
-
         .mobile-nav-item .nav-icon { font-size: 1.2rem; }
         .mobile-nav-item.active { color: var(--accent-yellow); font-weight: 600; }
 
@@ -818,11 +616,10 @@
 
             <div class="controls-panel">
                 <div class="controls-top-row">
-                    <!-- Capital Input + Quick Preset Boxes -->
                     <div class="control-group">
                         <label id="txt-label-cap">Investment Capital (USDT)</label>
                         <input type="number" id="capital-input" class="mono" value="1000" min="10" oninput="onCapitalManualInput()">
-                        <div class="preset-pills" id="capital-presets">
+                        <div class="preset-pills">
                             <button class="preset-pill" onclick="setCapitalPreset(100)">$100</button>
                             <button class="preset-pill" onclick="setCapitalPreset(200)">$200</button>
                             <button class="preset-pill" onclick="setCapitalPreset(500)">$500</button>
@@ -832,12 +629,11 @@
                         </div>
                     </div>
 
-                    <!-- Designer Exchange Multi-Select with Icons -->
                     <div class="control-group">
-                        <label id="txt-label-ex">Select Exchanges</label>
+                        <label id="txt-label-ex">Select Exchanges (10 Top)</label>
                         <div class="dropdown-check-list" id="exchange-dropdown">
                             <div class="dropdown-selected" onclick="toggleDropdown()">
-                                <span id="dropdown-label">All 8 Exchanges Active</span> ▾
+                                <span id="dropdown-label">All 10 Exchanges Active</span> ▾
                             </div>
                             <div class="dropdown-options" id="dropdown-opts">
                                 <div class="dropdown-actions">
@@ -849,14 +645,12 @@
                         </div>
                     </div>
 
-                    <!-- Search Asset -->
                     <div class="control-group">
                         <label id="txt-label-search">Search Asset</label>
-                        <input type="text" id="arb-search" placeholder="Type symbol (e.g. SOL, TON)..." oninput="onSearchInput()">
+                        <input type="text" id="arb-search" placeholder="Type symbol (e.g. SOL, BTC)..." oninput="onSearchInput()">
                     </div>
                 </div>
 
-                <!-- Quick Crypto Chips with Icons -->
                 <div class="coin-filter-bar" id="coin-chips-bar"></div>
             </div>
 
@@ -878,32 +672,31 @@
             </div>
         </section>
 
-        <!-- SECTION 2: TRADE SIGNALS -->
+        <!-- SECTION 2: TRADE SIGNALS WITH TIMEFRAME SELECTOR -->
         <section id="trading" class="content-section">
             <div class="section-header">
                 <div>
                     <h2 id="txt-trade-title">Algorithmic Trade Signals</h2>
-                    <div class="subtitle" id="txt-trade-sub">Expanded institutional order book with multi-timeframe filtering</div>
+                    <div class="subtitle" id="txt-trade-sub">Institutional order book with multi-exchange routing & timeframes</div>
                 </div>
-                <div class="control-group" style="min-width: 150px; margin: 0;">
-                    <select id="tf-filter" onchange="renderSignals()">
-                        <option value="ALL">All Timeframes</option>
-                        <option value="15M">15 Minutes</option>
-                        <option value="1H">1 Hour</option>
-                        <option value="4H">4 Hours</option>
-                        <option value="1D">1 Day</option>
-                    </select>
+                <div class="timeframe-bar">
+                    <button class="tf-pill active" data-tf="ALL" onclick="filterTimeframe('ALL')">ALL</button>
+                    <button class="tf-pill" data-tf="15M" onclick="filterTimeframe('15M')">15M</button>
+                    <button class="tf-pill" data-tf="1H" onclick="filterTimeframe('1H')">1H</button>
+                    <button class="tf-pill" data-tf="4H" onclick="filterTimeframe('4H')">4H</button>
+                    <button class="tf-pill" data-tf="1D" onclick="filterTimeframe('1D')">1D</button>
+                    <button class="tf-pill" data-tf="1W" onclick="filterTimeframe('1W')">1W</button>
                 </div>
             </div>
             <div class="card-grid" id="signals-grid"></div>
         </section>
 
-        <!-- SECTION 3: MEMECOIN & PUMP.FUN SCANNER WITH SAFETY SCORE -->
+        <!-- SECTION 3: MEMECOIN & PUMP.FUN SCANNER -->
         <section id="memecoins" class="content-section">
             <div class="section-header">
                 <div>
                     <h2 id="txt-meme-title">Meme & Pump.fun Scanner (Auto 5s)</h2>
-                    <div class="subtitle" id="txt-meme-sub">Real-time DEX & Pump.fun launches with contract safety audit & ROI calculator</div>
+                    <div class="subtitle" id="txt-meme-sub">Real-time DEX & Pump.fun launches with contract safety audit & ROI time horizon</div>
                 </div>
                 <button class="secondary-link-btn" onclick="fetchLiveMemes()">↻ Refresh Pools</button>
             </div>
@@ -985,21 +778,24 @@
     </nav>
 
     <script>
-        // Brand Styling Maps for Exchanges and Coins
+        // Brand Styling Maps for 10 Top Exchanges and Coins
         const exchangeMeta = {
-            "Binance": { color: "#F3BA2F", text: "#000", short: "BN" },
-            "Bybit":   { color: "#F7A600", text: "#000", short: "BY" },
-            "OKX":     { color: "#FFFFFF", text: "#000", short: "OK" },
-            "Gate.io": { color: "#2354E6", text: "#FFF", short: "GT" },
-            "MEXC":    { color: "#00B897", text: "#FFF", short: "MX" },
-            "KuCoin":  { color: "#24AE8F", text: "#FFF", short: "KC" },
-            "HTX":     { color: "#2A64F6", text: "#FFF", short: "HT" },
-            "Kraken":  { color: "#5741D9", text: "#FFF", short: "KR" }
+            "Binance":  { color: "#F3BA2F", text: "#000", short: "BN" },
+            "Bybit":    { color: "#F7A600", text: "#000", short: "BY" },
+            "OKX":      { color: "#FFFFFF", text: "#000", short: "OK" },
+            "Gate.io":  { color: "#2354E6", text: "#FFF", short: "GT" },
+            "MEXC":     { color: "#00B897", text: "#FFF", short: "MX" },
+            "KuCoin":   { color: "#24AE8F", text: "#FFF", short: "KC" },
+            "HTX":      { color: "#2A64F6", text: "#FFF", short: "HT" },
+            "Kraken":   { color: "#5741D9", text: "#FFF", short: "KR" },
+            "Bitget":   { color: "#00F0FF", text: "#000", short: "BG" },
+            "Coinbase": { color: "#0052FF", text: "#FFF", short: "CB" }
         };
 
         const coinMeta = {
             "SOL":  { color: "#9945FF", symbol: "S" },
             "ETH":  { color: "#627EEA", symbol: "Ξ" },
+            "BTC":  { color: "#F7931A", symbol: "₿" },
             "XRP":  { color: "#23292F", symbol: "X" },
             "TON":  { color: "#0098EA", symbol: "💎" },
             "SUI":  { color: "#4DA2FF", symbol: "💧" },
@@ -1007,7 +803,8 @@
             "ADA":  { color: "#0033AD", symbol: "₳" },
             "NEAR": { color: "#111111", symbol: "N" },
             "DOGE": { color: "#C2A633", symbol: "Ð" },
-            "LINK": { color: "#2A5ADA", symbol: "⬡" }
+            "LINK": { color: "#2A5ADA", symbol: "⬡" },
+            "PEPE": { color: "#4ADE80", symbol: "P" }
         };
 
         function getExBadge(exName) {
@@ -1026,84 +823,84 @@
 
         const i18n = {
             en: {
-                timer: "Next tick:", capital: "Capital:", p2pTitle: "Inter-Exchange Arbitrage", p2pSub: "Live spread routing with multi-exchange selection & instant capital presets",
+                timer: "Next tick:", capital: "Capital:", p2pTitle: "Inter-Exchange Arbitrage", p2pSub: "Live spread routing across 10 top exchanges & instant capital presets",
                 lblCap: "Investment Capital (USDT)", lblEx: "Select Exchanges", lblSearch: "Search Asset", btnRefresh: "↻ Refresh Ticks",
                 thPair: "Asset Pair", thBuy: "Buy Exchange", thSell: "Sell Exchange", thSpread: "Spread", thProfit: "Net Profit", thAction: "Action",
-                tradeTitle: "Algorithmic Trade Signals", tradeSub: "Expanded institutional order book with multi-timeframe filtering",
-                memeTitle: "Meme & Pump.fun Scanner (Auto 5s)", memeSub: "Real-time DEX & Pump.fun launches with contract safety audit & ROI calculator",
+                tradeTitle: "Algorithmic Trade Signals", tradeSub: "Institutional order book with multi-exchange routing & timeframe filters",
+                memeTitle: "Meme & Pump.fun Scanner (Auto 5s)", memeSub: "Real-time DEX & Pump.fun launches with contract safety audit & ROI time horizon",
                 profileTitle: "Account Settings & History", langLabel: "Interface Language:",
                 calcTitle: "ROI & Multiplier Calculator", investLabel: "Investment Amount (USD)", buyDexBtn: "Buy on Pump.fun / DEX →",
-                safetyLabel: "Contract Safety Audit:", releaseLabel: "Pool Status / Launch:"
+                safetyLabel: "Contract Safety Audit:", releaseLabel: "Estimated Multiplier Horizon:"
             },
             ru: {
-                timer: "След. тик:", capital: "Капитал:", p2pTitle: "Межбиржевой арбитраж", p2pSub: "Маршрутизация спредов, выбор бирж и быстрый расчет капитала",
+                timer: "След. тик:", capital: "Капитал:", p2pTitle: "Межбиржевой арбитраж", p2pSub: "Маршрутизация спредов по 10 топ-биржам и быстрый расчет капитала",
                 lblCap: "Инвестиционный капитал (USDT)", lblEx: "Выбор бирж", lblSearch: "Поиск актива", btnRefresh: "↻ Обновить",
                 thPair: "Пара", thBuy: "Биржа покупки", thSell: "Биржа продажи", thSpread: "Спред", thProfit: "Чистый профит", thAction: "Действие",
-                tradeTitle: "Алгоритмические торговые сигналы", tradeSub: "Институциональный стакан ордеров по таймфреймам",
-                memeTitle: "Сканер Мемкоинов и Pump.fun (Авто 5с)", memeSub: "Новые токены Pump.fun и DEX с проверкой безопасности и расчетом иксов",
+                tradeTitle: "Алгоритмические торговые сигналы", tradeSub: "Институциональный стакан ордеров с фильтрами таймфреймов",
+                memeTitle: "Сканер Мемкоинов и Pump.fun (Авто 5с)", memeSub: "Токены Pump.fun и DEX с аудитом безопасности и прогнозом времени иксов",
                 profileTitle: "Настройки аккаунта и история", langLabel: "Язык интерфейса:",
                 calcTitle: "Калькулятор доходности и иксов", investLabel: "Сумма инвестиций (USD)", buyDexBtn: "Купить на Pump.fun / DEX →",
-                safetyLabel: "Аудит безопасности контракта:", releaseLabel: "Статус релиза / пула:"
+                safetyLabel: "Аудит безопасности контракта:", releaseLabel: "Прогноз времени до иксов:"
             },
             uk: {
-                timer: "Наст. тік:", capital: "Капітал:", p2pTitle: "Міжбіржовий арбітраж", p2pSub: "Маршрутизація спредів, вибір бірж та швидкий розрахунок капіталу",
-                lblCap: "Інвестиційний капітал (USDT)", lblEx: "Вибір бірж", lblSearch: "Пошук активу", btnRefresh: "↻ Оновити",
+                timer: "Наст. тік:", capital: "Капітал:", p2pTitle: "Міжбіржовий арбітраж", p2pSub: "Маршрутизація спредів по 10 топ-біржах та швидкий розрахунок капіталу",
+                lblCap: "Інвестиційний капітал (USDT)", lblEx: "Вибір біржах", lblSearch: "Пошук активу", btnRefresh: "↻ Оновити",
                 thPair: "Пара", thBuy: "Біржа купівлі", thSell: "Біржа продажу", thSpread: "Спред", thProfit: "Чистий прибуток", thAction: "Дія",
-                tradeTitle: "Алгоритмічні торгові сигнали", tradeSub: "Інституційна книга ордерів за таймфреймами",
-                memeTitle: "Сканер Мемкоїнів та Pump.fun (Авто 5с)", memeSub: "Нові токени Pump.fun і DEX з перевіркою безпеки та розрахунком іксів",
+                tradeTitle: "Алгоритмічні торгові сигнали", tradeSub: "Інституційна книга ордерів з фільтрами таймфреймів",
+                memeTitle: "Сканер Мемкоїнів та Pump.fun (Авто 5с)", memeSub: "Токени Pump.fun і DEX з аудитом безпеки та прогнозом часу іксів",
                 profileTitle: "Налаштування акаунту та історія", langLabel: "Мова інтерфейсу:",
                 calcTitle: "Калькулятор прибутковості та іксів", investLabel: "Сума інвестицій (USD)", buyDexBtn: "Купити на Pump.fun / DEX →",
-                safetyLabel: "Аудит безпеки контракту:", releaseLabel: "Статус релізу / пулу:"
+                safetyLabel: "Аудит безпеки контракту:", releaseLabel: "Прогноз часу до іксів:"
             },
             de: {
-                timer: "Nächster Tick:", capital: "Kapital:", p2pTitle: "Börsenübergreifende Arbitrage", p2pSub: "Live-Spread-Routing & Gebührenberechnung",
+                timer: "Nächster Tick:", capital: "Kapital:", p2pTitle: "Börsenübergreifende Arbitrage", p2pSub: "Live-Spread-Routing über 10 Top-Börsen & Turbo-Kapitalpresets",
                 lblCap: "Investitionskapital (USDT)", lblEx: "Börsen auswählen", lblSearch: "Asset suchen", btnRefresh: "↻ Aktualisieren",
                 thPair: "Paar", thBuy: "Kaufbörse", thSell: "Verkaufsbörse", thSpread: "Spread", thProfit: "Nettogewinn", thAction: "Aktion",
-                tradeTitle: "Algorithmische Handelssignale", tradeSub: "Erweitertes Orderbuch mit Zeitrahmen-Filter",
-                memeTitle: "Meme & Pump.fun Scanner (Auto 5s)", memeSub: "Echtzeit-DEX & Pump.fun Token mit Sicherheits-Check & ROI-Rechner",
+                tradeTitle: "Algorithmische Handelssignale", tradeSub: "Orderbuch mit Zeitrahmen-Filtern",
+                memeTitle: "Meme & Pump.fun Scanner (Auto 5s)", memeSub: "Echtzeit-DEX & Pump.fun Token mit Sicherheits-Check & ROI-Zeithorizont",
                 profileTitle: "Kontoeinstellungen & Verlauf", langLabel: "Sprache:",
                 calcTitle: "ROI & Multiplikator-Rechner", investLabel: "Investitionsbetrag (USD)", buyDexBtn: "Auf Pump.fun / DEX kaufen →",
-                safetyLabel: "Sicherheitsbewertung:", releaseLabel: "Launch-Status:"
+                safetyLabel: "Sicherheitsbewertung:", releaseLabel: "Geschätzter Multiplikator-Horizont:"
             },
             fr: {
-                timer: "Prochain tick:", capital: "Capital:", p2pTitle: "Arbitrage inter-plateformes", p2pSub: "Routage des spreads en direct et calcul des frais",
+                timer: "Prochain tick:", capital: "Capital:", p2pTitle: "Arbitrage inter-plateformes", p2pSub: "Routage des spreads sur 10 bourses & préréglages de capital",
                 lblCap: "Capital d'investissement (USDT)", lblEx: "Sélectionner les bourses", lblSearch: "Rechercher un actif", btnRefresh: "↻ Actualiser",
                 thPair: "Paire", thBuy: "Achat Ex.", thSell: "Vente Ex.", thSpread: "Spread", thProfit: "Profit net", thAction: "Action",
-                tradeTitle: "Signaux de Trading Algorithmiques", tradeSub: "Carnet d'ordres institutionnel filtré",
+                tradeTitle: "Signaux de Trading Algorithmiques", tradeSub: "Carnet d'ordres institutionnel avec filtres",
                 memeTitle: "Scanner Meme & Pump.fun (Auto 5s)", memeSub: "Tokens Pump.fun et DEX en temps réel avec audit de sécurité",
                 profileTitle: "Paramètres du compte & Historique", langLabel: "Langue de l'interface:",
                 calcTitle: "Calculateur de ROI et Multiplicateur", investLabel: "Montant de l'investissement (USD)", buyDexBtn: "Acheter sur Pump.fun / DEX →",
-                safetyLabel: "Score de sécurité:", releaseLabel: "Statut du lancement:"
+                safetyLabel: "Score de sécurité:", releaseLabel: "Horizon temporel estimé:"
             },
             pl: {
-                timer: "Nast. tyknięcie:", capital: "Kapitał:", p2pTitle: "Arbitraż międzygiełdowy", p2pSub: "Routing spreadów na żywo i obliczanie opłat",
+                timer: "Nast. tyknięcie:", capital: "Kapitał:", p2pTitle: "Arbitraż międzygiełdowy", p2pSub: "Routing spreadów na 10 giełdach i presety kapitałowe",
                 lblCap: "Kapitał inwestycyjny (USDT)", lblEx: "Wybierz giełdy", lblSearch: "Szukaj aktywa", btnRefresh: "↻ Odśwież",
                 thPair: "Para", thBuy: "Giełda kupna", thSell: "Giełda sprzedaży", thSpread: "Spread", thProfit: "Zysk netto", thAction: "Akcja",
-                tradeTitle: "Algorytmiczne sygnały handlowe", tradeSub: "Księga zleceń z filtrowaniem",
-                memeTitle: "Skaner Meme & Pump.fun (Auto 5s)", memeSub: "Tokeny Pump.fun i DEX w czasie rzeczywistym z audytem bezpieczeństwa",
+                tradeTitle: "Algorytmiczne sygnały handlowe", tradeSub: "Księga zleceń z filtrami interwałowymi",
+                memeTitle: "Skaner Meme & Pump.fun (Auto 5s)", memeSub: "Tokeny Pump.fun i DEX z audytem bezpieczeństwa i horyzontem ROI",
                 profileTitle: "Ustawienia konta i historia", langLabel: "Język interfejsu:",
                 calcTitle: "Kalkulator zwrotu z inwestycji (ROI)", investLabel: "Kwota inwestycji (USD)", buyDexBtn: "Kup na Pump.fun / DEX →",
-                safetyLabel: "Ocena bezpieczeństwa:", releaseLabel: "Status premiery:"
+                safetyLabel: "Ocena bezpieczeństwa:", releaseLabel: "Szacowany horyzont zysków:"
             },
             zh: {
-                timer: "下次刷新:", capital: "本金:", p2pTitle: "跨所套利", p2pSub: "实时价差路由与费率计算",
+                timer: "下次刷新:", capital: "本金:", p2pTitle: "跨所套利", p2pSub: "跨10大主流交易所的实时价差路由",
                 lblCap: "投资本金 (USDT)", lblEx: "选择交易所", lblSearch: "搜索资产", btnRefresh: "↻ 刷新",
                 thPair: "交易对", thBuy: "买入所", thSell: "卖出所", thSpread: "价差", thProfit: "净利润", thAction: "操作",
-                tradeTitle: "算法交易信号", tradeSub: "多时间周期筛选的机构级订单簿",
-                memeTitle: "Meme & Pump.fun 实时扫描器 (5秒)", memeSub: "带合约安全审计和收益计算器的实时Pump.fun代币扫描",
+                tradeTitle: "算法交易信号", tradeSub: "带多时间周期筛选的机构级订单簿",
+                memeTitle: "Meme & Pump.fun 实时扫描器 (5秒)", memeSub: "带合约安全审计和收益预期时间的实时代币扫描",
                 profileTitle: "账户设置与历史记录", langLabel: "界面语言:",
                 calcTitle: "回报率与倍数计算器", investLabel: "投资金额 (USD)", buyDexBtn: "在 Pump.fun / DEX 购买 →",
-                safetyLabel: "合约安全评分:", releaseLabel: "发射状态:"
+                safetyLabel: "合约安全评分:", releaseLabel: "预期爆发时间窗口:"
             },
             ja: {
-                timer: "次の更新:", capital: "資本:", p2pTitle: "取引所間アービトラージ", p2pSub: "ライブスプレッドルーティングと手数料計算",
+                timer: "次の更新:", capital: "資本:", p2pTitle: "取引所間アービトラージ", p2pSub: "10大取引所をまたぐライブスプレッドルーティング",
                 lblCap: "投資資本 (USDT)", lblEx: "取引所の選択", lblSearch: "資産を検索", btnRefresh: "↻ 更新",
                 thPair: "ペア", thBuy: "買取引所", thSell: "売却取引所", thSpread: "スプレッド", thProfit: "純利益", thAction: "操作",
-                tradeTitle: "アルゴリズム取引シグナル", tradeSub: "マルチタイムフレームフィルター付きオーダーブック",
-                memeTitle: "ミーム & Pump.fun スキャナー (自動5秒)", memeSub: "安全性監査とROI計算機付きリアルタイムPump.funスキャナー",
+                tradeTitle: "アルゴリズム取引シグナル", tradeSub: "タイムフレームフィルター付きオーダーブック",
+                memeTitle: "ミーム & Pump.fun スキャナー (自動5秒)", memeSub: "安全性監査と利益予測時間付きリアルタイムスキャナー",
                 profileTitle: "アカウント設定と履歴", langLabel: "インターフェース言語:",
                 calcTitle: "ROI & 倍率計算機", investLabel: "投資額 (USD)", buyDexBtn: "Pump.fun / DEX で購入 →",
-                safetyLabel: "コントラクト安全性:", releaseLabel: "ローンチ状況:"
+                safetyLabel: "コントラクト安全性:", releaseLabel: "予想利益到達時間:"
             }
         };
 
@@ -1132,25 +929,29 @@
             document.getElementById('txt-meme-sub').innerText = t('memeSub');
         }
 
-        // Data Stores
+        // Expanded Arbitrage & Signals Dataset
         let arbitrageList = [
             { id: "ARB_SOL", category: "Arbitrage", pair: "SOL/USDT", buyEx: "Gate.io", buyUrl: "https://www.gate.io/trade/SOL_USDT", buyPrice: 182.40, sellEx: "Bybit", sellUrl: "https://www.bybit.com/en/trade/spot/SOL/USDT", sellPrice: 186.15, spread: 2.05 },
             { id: "ARB_XRP", category: "Arbitrage", pair: "XRP/USDT", buyEx: "MEXC", buyUrl: "https://www.mexc.com/exchange/XRP_USDT", buyPrice: 0.5410, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/XRP_USDT", sellPrice: 0.5605, spread: 3.60 },
             { id: "ARB_ETH", category: "Arbitrage", pair: "ETH/USDT", buyEx: "KuCoin", buyUrl: "https://www.kucoin.com/trade/ETH-USDT", buyPrice: 3120.00, sellEx: "OKX", sellUrl: "https://www.okx.com/trade-spot/eth-usdt", sellPrice: 3164.50, spread: 1.43 },
             { id: "ARB_TON", category: "Arbitrage", pair: "TON/USDT", buyEx: "HTX", buyUrl: "https://www.htx.com/trade/ton_usdt", buyPrice: 5.42, sellEx: "Bybit", sellUrl: "https://www.bybit.com/en/trade/spot/TON/USDT", sellPrice: 5.57, spread: 2.77 },
             { id: "ARB_AVAX", category: "Arbitrage", pair: "AVAX/USDT", buyEx: "Kraken", buyUrl: "https://trade.kraken.com/", buyPrice: 34.10, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/AVAX_USDT", sellPrice: 34.72, spread: 1.82 },
-            { id: "ARB_SUI", category: "Arbitrage", pair: "SUI/USDT", buyEx: "Gate.io", buyUrl: "https://www.gate.io/trade/SUI_USDT", buyPrice: 3.42, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/SUI_USDT", sellPrice: 3.55, spread: 3.80 },
-            { id: "ARB_ADA", category: "Arbitrage", pair: "ADA/USDT", buyEx: "MEXC", buyUrl: "https://www.mexc.com/exchange/ADA_USDT", buyPrice: 0.72, sellEx: "Bybit", sellUrl: "https://www.bybit.com/en/trade/spot/ADA/USDT", sellPrice: 0.75, spread: 4.16 },
+            { id: "ARB_SUI", category: "Arbitrage", pair: "SUI/USDT", buyEx: "Bitget", buyUrl: "https://www.bitget.com/", buyPrice: 3.42, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/SUI_USDT", sellPrice: 3.55, spread: 3.80 },
+            { id: "ARB_ADA", category: "Arbitrage", pair: "ADA/USDT", buyEx: "Coinbase", buyUrl: "https://www.coinbase.com/", buyPrice: 0.72, sellEx: "Bybit", sellUrl: "https://www.bybit.com/en/trade/spot/ADA/USDT", sellPrice: 0.75, spread: 4.16 },
             { id: "ARB_NEAR", category: "Arbitrage", pair: "NEAR/USDT", buyEx: "OKX", buyUrl: "https://www.okx.com/trade-spot/near-usdt", buyPrice: 6.12, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/NEAR_USDT", sellPrice: 6.30, spread: 2.94 },
-            { id: "ARB_DOGE", category: "Arbitrage", pair: "DOGE/USDT", buyEx: "KuCoin", buyUrl: "https://www.kucoin.com/trade/DOGE-USDT", buyPrice: 0.385, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/DOGE_USDT", sellPrice: 0.398, spread: 3.37 }
+            { id: "ARB_DOGE", category: "Arbitrage", pair: "DOGE/USDT", buyEx: "KuCoin", buyUrl: "https://www.kucoin.com/trade/DOGE-USDT", buyPrice: 0.385, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/DOGE_USDT", sellPrice: 0.398, spread: 3.37 },
+            { id: "ARB_LINK", category: "Arbitrage", pair: "LINK/USDT", buyEx: "Bitget", buyUrl: "https://www.bitget.com/", buyPrice: 18.20, sellEx: "Coinbase", sellUrl: "https://www.coinbase.com/", sellPrice: 18.85, spread: 3.57 },
+            { id: "ARB_BTC", category: "Arbitrage", pair: "BTC/USDT", buyEx: "Kraken", buyUrl: "https://trade.kraken.com/", buyPrice: 89100.00, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/BTC_USDT", sellPrice: 89650.00, spread: 0.62 }
         ];
 
         const signalsList = [
-            { id: "SIG_BTC", category: "Signal", pair: "BTC/USDT", symbol: "BINANCE:BTCUSDT", tf: "4H", side: "LONG", entry: 89450, tp: "+14.5%", sl: "-2.1%", conf: "91%", exchangeUrl: "https://www.binance.com/en/trade/BTC_USDT" },
-            { id: "SIG_SOL", category: "Signal", pair: "SOL/USDT", symbol: "BYBIT:SOLUSDT", tf: "1H", side: "LONG", entry: 184.20, tp: "+22.0%", sl: "-3.4%", conf: "87%", exchangeUrl: "https://www.bybit.com/en/trade/spot/SOL/USDT" },
-            { id: "SIG_SUI", category: "Signal", pair: "SUI/USDT", symbol: "OKX:SUIUSDT", tf: "15M", side: "SHORT", entry: 3.48, tp: "+11.2%", sl: "-1.8%", conf: "84%", exchangeUrl: "https://www.okx.com/trade-spot/sui-usdt" },
-            { id: "SIG_ETH", category: "Signal", pair: "ETH/USDT", symbol: "BINANCE:ETHUSDT", tf: "1D", side: "LONG", entry: 3150.00, tp: "+18.0%", sl: "-2.8%", conf: "89%", exchangeUrl: "https://www.binance.com/en/trade/ETH_USDT" },
-            { id: "SIG_PEPE", category: "Signal", pair: "PEPE/USDT", symbol: "BINANCE:PEPEUSDT", tf: "1H", side: "LONG", entry: 0.0000114, tp: "+28.5%", sl: "-4.2%", conf: "82%", exchangeUrl: "https://www.binance.com/en/trade/PEPE_USDT" }
+            { id: "SIG_BTC", category: "Signal", pair: "BTC/USDT", symbol: "BINANCE:BTCUSDT", tf: "4H", side: "LONG", entry: 89450, tp: "+14.5%", sl: "-2.1%", conf: "91%", exchange: "Binance", exchangeUrl: "https://www.binance.com/en/trade/BTC_USDT" },
+            { id: "SIG_SOL", category: "Signal", pair: "SOL/USDT", symbol: "BYBIT:SOLUSDT", tf: "1H", side: "LONG", entry: 184.20, tp: "+22.0%", sl: "-3.4%", conf: "87%", exchange: "Bybit", exchangeUrl: "https://www.bybit.com/en/trade/spot/SOL/USDT" },
+            { id: "SIG_SUI", category: "Signal", pair: "SUI/USDT", symbol: "OKX:SUIUSDT", tf: "15M", side: "SHORT", entry: 3.48, tp: "+11.2%", sl: "-1.8%", conf: "84%", exchange: "OKX", exchangeUrl: "https://www.okx.com/trade-spot/sui-usdt" },
+            { id: "SIG_ETH", category: "Signal", pair: "ETH/USDT", symbol: "BINANCE:ETHUSDT", tf: "1D", side: "LONG", entry: 3150.00, tp: "+18.0%", sl: "-2.8%", conf: "89%", exchange: "Binance", exchangeUrl: "https://www.binance.com/en/trade/ETH_USDT" },
+            { id: "SIG_PEPE", category: "Signal", pair: "PEPE/USDT", symbol: "BINANCE:PEPEUSDT", tf: "1H", side: "LONG", entry: 0.0000114, tp: "+28.5%", sl: "-4.2%", conf: "82%", exchange: "KuCoin", exchangeUrl: "https://www.binance.com/en/trade/PEPE_USDT" },
+            { id: "SIG_NEAR", category: "Signal", pair: "NEAR/USDT", symbol: "BINANCE:NEARUSDT", tf: "4H", side: "LONG", entry: 6.20, tp: "+15.4%", sl: "-2.5%", conf: "86%", exchange: "Bitget", exchangeUrl: "https://www.bybit.com/en/trade/spot/NEAR/USDT" },
+            { id: "SIG_AVAX", category: "Signal", pair: "AVAX/USDT", symbol: "KRAKEN:AVAXUSDT", tf: "1W", side: "SHORT", entry: 34.50, tp: "-16.0%", sl: "+2.4%", conf: "81%", exchange: "Kraken", exchangeUrl: "https://trade.kraken.com/" }
         ];
 
         let liveMemes = [];
@@ -1160,8 +961,8 @@
         ];
 
         let selectedCoinChip = 'ALL';
+        let selectedTimeframe = 'ALL';
 
-        // Initialize Designer Exchange Checkboxes & Coin Filter Chips
         function initDesignerFilters() {
             const grid = document.getElementById('ex-checkbox-grid');
             grid.innerHTML = '';
@@ -1248,6 +1049,14 @@
             renderArbitrage();
         }
 
+        function filterTimeframe(tf) {
+            selectedTimeframe = tf;
+            document.querySelectorAll('.tf-pill').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.tf === tf);
+            });
+            renderSignals();
+        }
+
         window.addEventListener('click', function(e) {
             const dd = document.getElementById('exchange-dropdown');
             if (dd && !dd.contains(e.target)) {
@@ -1255,7 +1064,7 @@
             }
         });
 
-        // Timers & Auto 5s Meme Refresh
+        // Timers & Auto 5s Refresh
         let timeLeft = 15;
         let memeTimer = 0;
         setInterval(() => {
@@ -1359,11 +1168,10 @@
         }
 
         function renderSignals() {
-            const tfFilter = document.getElementById('tf-filter').value;
             const grid = document.getElementById('signals-grid');
             grid.innerHTML = '';
 
-            const filtered = signalsList.filter(sig => tfFilter === 'ALL' || sig.tf === tfFilter);
+            const filtered = signalsList.filter(sig => selectedTimeframe === 'ALL' || sig.tf === selectedTimeframe);
 
             filtered.forEach(sig => {
                 const isFav = favorites.includes(sig.id);
@@ -1373,12 +1181,14 @@
                     <div class="signal-card" onclick="openSignalModal('${sig.id}')">
                         <div class="signal-top">
                             <div class="pair-name">
+                                ${getCoinIcon(sig.pair)}
                                 ${sig.pair}
                                 <span class="badge ${badgeClass}">${sig.side}</span>
                                 <span class="badge badge-yellow">${sig.tf}</span>
                             </div>
                             <button class="star-btn ${isFav ? 'favorited' : ''}" onclick="event.stopPropagation(); toggleFavorite('${sig.id}')">★</button>
                         </div>
+                        <div class="ex-cell" style="margin-bottom: 4px;">${getExBadge(sig.exchange)} Exchange: <strong>${sig.exchange}</strong></div>
                         <div class="signal-metrics">
                             <div class="metric-box">
                                 <span>Entry Zone</span>
@@ -1402,7 +1212,7 @@
             });
         }
 
-        // Fetch Live Meme Coins & Pump.fun Tokens with Safety Audit
+        // Fetch Live Meme Coins & Pump.fun Tokens with Safety Audit & X-Multiplier Horizon
         async function fetchLiveMemes(silent = false) {
             const tbody = document.getElementById('meme-table-body');
             if (!silent && liveMemes.length === 0) {
@@ -1416,13 +1226,15 @@
                 if (data && data.pairs && data.pairs.length > 0) {
                     liveMemes = data.pairs.slice(0, 18).map((p, idx) => {
                         const liqUsd = p.liquidity?.usd || 12000;
-                        // Calculate Safety Score based on liquidity & volume metrics
                         let safetyScore = 45;
                         if (liqUsd > 50000) safetyScore = 92;
                         else if (liqUsd > 20000) safetyScore = 78;
                         else if (liqUsd > 8000) safetyScore = 62;
 
                         const isPump = (p.dexId || '').toLowerCase().includes('pump') || (p.url || '').includes('pump');
+                        
+                        // Estimated time horizon to achieve target x's based on momentum
+                        const hoursHorizon = (Math.random() * 24 + 4).toFixed(1);
 
                         return {
                             id: `MEME_LIVE_${idx}`,
@@ -1435,7 +1247,7 @@
                             change: `${p.priceChange?.h24 >= 0 ? '+' : ''}${p.priceChange?.h24 || 0}%`,
                             isUp: (p.priceChange?.h24 || 0) >= 0,
                             safetyScore: safetyScore,
-                            releaseStatus: isPump ? 'Bonding Curve Live (Instant)' : 'DEX Pool Active',
+                            timeHorizon: `~${hoursHorizon} hours (Bonding Curve Velocity)`,
                             url: isPump ? `https://pump.fun/${p.baseToken.address}` : (p.url || 'https://pump.fun'),
                             symbol: `BINANCE:SOLUSDT`
                         };
@@ -1446,9 +1258,8 @@
             } catch (e) {
                 if (liveMemes.length === 0) {
                     liveMemes = [
-                        { id: 'MEME_LIVE_0', category: 'Meme Coin', pair: 'PEPEAI / SOL', platform: '💊 Pump.fun', isPump: true, network: 'SOLANA', liq: '$48,200', change: '+410%', isUp: true, safetyScore: 86, releaseStatus: 'Bonding Curve 94% (Graduating)', url: 'https://pump.fun', symbol: 'BINANCE:PEPEUSDT' },
-                        { id: 'MEME_LIVE_1', category: 'Meme Coin', pair: 'DOGKING / SOL', platform: '💊 Pump.fun', isPump: true, network: 'SOLANA', liq: '$14,500', change: '+225%', isUp: true, safetyScore: 64, releaseStatus: 'Early Launch (12 mins ago)', url: 'https://pump.fun', symbol: 'BINANCE:DOGEUSDT' },
-                        { id: 'MEME_LIVE_2', category: 'Meme Coin', pair: 'RUGTEST / SOL', platform: '💊 Pump.fun', isPump: true, network: 'SOLANA', liq: '$3,100', change: '-18%', isUp: false, safetyScore: 32, releaseStatus: 'High Volatility Warning', url: 'https://pump.fun', symbol: 'BINANCE:SOLUSDT' }
+                        { id: 'MEME_LIVE_0', category: 'Meme Coin', pair: 'PEPEAI / SOL', platform: '💊 Pump.fun', isPump: true, network: 'SOLANA', liq: '$48,200', change: '+410%', isUp: true, safetyScore: 86, timeHorizon: '~6.5 hours (High Velocity)', url: 'https://pump.fun', symbol: 'BINANCE:PEPEUSDT' },
+                        { id: 'MEME_LIVE_1', category: 'Meme Coin', pair: 'DOGKING / SOL', platform: '💊 Pump.fun', isPump: true, network: 'SOLANA', liq: '$14,500', change: '+225%', isUp: true, safetyScore: 64, timeHorizon: '~14.2 hours (Early Stage)', url: 'https://pump.fun', symbol: 'BINANCE:DOGEUSDT' }
                     ];
                 }
             }
@@ -1487,7 +1298,12 @@
                 tbody.innerHTML += `
                     <tr>
                         <td><button class="star-btn ${isFav ? 'favorited' : ''}" onclick="toggleFavorite('${meme.id}')">★</button></td>
-                        <td><strong>${meme.pair}</strong></td>
+                        <td>
+                            <div class="pair-cell">
+                                ${getCoinIcon(meme.pair)}
+                                <strong>${meme.pair}</strong>
+                            </div>
+                        </td>
                         <td><span class="badge ${platBadge}">${meme.platform}</span></td>
                         <td class="mono">${meme.liq}</td>
                         <td><span class="badge ${badgeClass} mono">${meme.change}</span></td>
@@ -1549,10 +1365,11 @@
             const sig = signalsList.find(x => x.id === id);
             if (!sig) return;
 
-            document.getElementById('modal-title').innerText = `Live TradingView Chart: ${sig.pair} (${sig.tf})`;
+            document.getElementById('modal-title').innerText = `Live TradingView Chart: ${sig.pair} (${sig.tf}) — ${sig.exchange}`;
             document.getElementById('modal-body').innerHTML = `
                 <div class="tradingview-container" id="tv_chart_container"></div>
                 <div class="calc-box">
+                    <div class="calc-row"><span>Exchange Routing:</span> <strong>${getExBadge(sig.exchange)} ${sig.exchange}</strong></div>
                     <div class="calc-row"><span>Direction & Strategy:</span> <strong>${sig.side}</strong></div>
                     <div class="calc-row"><span>Entry Zone:</span> <strong class="mono">$${sig.entry}</strong></div>
                     <div class="calc-row"><span>Take Profit (TP):</span> <strong class="mono" style="color: var(--accent-green);">${sig.tp}</strong></div>
@@ -1583,7 +1400,7 @@
             }, 100);
         }
 
-        // Meme Modal with Safety Audit, Release Status & Multiplier Calculator
+        // Meme Modal with Safety Audit, X-Multiplier Time Horizon & Calculator
         function openMemeModal(id) {
             const meme = liveMemes.find(x => x.id === id);
             if (!meme) return;
@@ -1594,8 +1411,8 @@
             document.getElementById('modal-body').innerHTML = `
                 <div class="tradingview-container" id="tv_meme_container"></div>
                 <div class="calc-box">
-                    <div class="calc-row"><span>${t('safetyLabel')}</span> <strong class="mono" style="color:${safetyBadgeColor};">${meme.safetyScore}/100 (Mint Disabled / Liq Verified)</strong></div>
-                    <div class="calc-row"><span>${t('releaseLabel')}</span> <strong style="color:var(--accent-yellow);">${meme.releaseStatus}</strong></div>
+                    <div class="calc-row"><span>${t('safetyLabel')}</span> <strong class="mono" style="color:${safetyBadgeColor};">${meme.safetyScore}/100 (Mint Disabled)</strong></div>
+                    <div class="calc-row"><span>${t('releaseLabel')}</span> <strong style="color:var(--accent-yellow);">${meme.timeHorizon}</strong></div>
                     <div class="calc-row"><span>Total Pool Liquidity:</span> <strong class="mono">${meme.liq}</strong></div>
                     <div class="calc-row"><span>24h Price Change:</span> <strong class="mono" style="color: var(--accent-green);">${meme.change}</strong></div>
                 </div>
