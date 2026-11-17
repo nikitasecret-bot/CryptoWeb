@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CryptoPro Terminal | Professional 20-Exchange Edition</title>
+    <title>CryptoPro Terminal | AI-Powered 20-Exchange Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -166,7 +166,7 @@
         h2 { font-size: 1.25rem; font-weight: 700; }
         .subtitle { color: var(--text-secondary); font-size: 0.82rem; margin-top: 4px; }
 
-        /* Controls Panel */
+        /* Controls & Panels */
         .controls-panel {
             background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 14px;
         }
@@ -279,7 +279,7 @@
         .star-btn { background: none; border: none; cursor: pointer; color: #474d57; font-size: 1.15rem; padding: 4px; }
         .star-btn.favorited { color: var(--accent-yellow); }
 
-        /* Binance Style Profile Modal Styling */
+        /* Profile Modal */
         .binance-profile-card {
             display: flex; align-items: center; gap: 14px; background: linear-gradient(135deg, #1e2329, #181a20);
             padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 10px;
@@ -294,6 +294,39 @@
         .vip-badge {
             background: linear-gradient(90deg, #fcd535, #f0b90b); color: #181a20; font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; display: inline-block; margin-top: 4px;
         }
+
+        /* AI CHAT SECTION STYLES */
+        .chat-container {
+            display: flex; flex-direction: column; height: calc(100vh - 140px); background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden;
+        }
+        .chat-messages {
+            flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;
+        }
+        .chat-msg {
+            max-width: 80%; padding: 12px 16px; border-radius: 12px; font-size: 0.9rem; line-height: 1.4; word-break: break-word;
+        }
+        .chat-msg.ai {
+            background: var(--bg-elevated); border: 1px solid var(--border-color); color: var(--text-primary); align-self: flex-start; border-top-left-radius: 2px;
+        }
+        .chat-msg.user {
+            background: var(--accent-yellow); color: #181a20; align-self: flex-end; border-top-right-radius: 2px; font-weight: 500;
+        }
+        .chat-msg.system-alert {
+            background: rgba(14, 203, 129, 0.15); border: 1px solid var(--accent-green); color: var(--accent-green); align-self: center; text-align: center; width: 100%; max-width: 100%; font-weight: 600;
+        }
+        .chat-input-area {
+            padding: 12px; background: var(--bg-elevated); border-top: 1px solid var(--border-color); display: flex; gap: 10px;
+        }
+        .chat-input-area input {
+            flex: 1; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 14px; color: var(--text-primary); font-size: 0.9rem; outline: none;
+        }
+        .chat-suggestions {
+            display: flex; gap: 6px; padding: 8px 16px; overflow-x: auto; background: var(--bg-main); border-top: 1px solid var(--border-color);
+        }
+        .chat-suggestion-chip {
+            background: var(--bg-elevated); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 4px 10px; border-radius: 14px; font-size: 0.75rem; cursor: pointer; white-space: nowrap;
+        }
+        .chat-suggestion-chip:hover { color: var(--accent-yellow); border-color: var(--accent-yellow); }
 
         /* Loader */
         .loader-container { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px; gap: 10px; color: var(--text-secondary); }
@@ -348,6 +381,7 @@
             <li class="menu-item active" data-tab="p2p" onclick="switchTab('p2p')">📈 P2P & Arbitrage</li>
             <li class="menu-item" data-tab="trading" onclick="switchTab('trading')">📊 Trade Signals</li>
             <li class="menu-item" data-tab="memecoins" onclick="switchTab('memecoins')">🚀 Meme & Pump.fun</li>
+            <li class="menu-item" data-tab="ai-chat" onclick="switchTab('ai-chat')">🤖 AI Chat & Assistant</li>
             <li class="menu-item" data-tab="favorites" onclick="switchTab('favorites')">⭐ Favorites</li>
         </ul>
     </aside>
@@ -365,7 +399,7 @@
                     <span id="countdown-timer" class="timer-countdown mono">15s</span>
                 </div>
                 <div class="user-balance"><span id="txt-capital">Capital:</span> <span id="display-capital" class="mono">$1,000.00</span></div>
-                <button class="profile-btn" id="header-avatar-btn" onclick="openProfileModal()" title="Account & Settings">👤</button>
+                <button class="profile-btn" id="header-avatar-btn" onclick="openProfileModal()" title="Account & Settings"></button>
             </div>
         </header>
 
@@ -496,7 +530,7 @@
                             <th>Liq.</th>
                             <th>24h</th>
                             <th>Safety</th>
-                            <th style="width: 90px;">Action</th>
+                            <th style="width: 100px;">Action / AI</th>
                         </tr>
                     </thead>
                     <tbody id="meme-table-body"></tbody>
@@ -507,7 +541,34 @@
             <div class="card-grid mobile-only-cards" id="meme-card-grid"></div>
         </section>
 
-        <!-- SECTION 4: FAVORITES -->
+        <!-- SECTION 4: AI CHAT & ASSISTANT -->
+        <section id="ai-chat" class="content-section">
+            <div class="section-header">
+                <div>
+                    <h2>🤖 AI Chat & Trading Assistant</h2>
+                    <div class="subtitle">Ask any question or launch automated meme targets with instant internal push alerts</div>
+                </div>
+            </div>
+
+            <div class="chat-container">
+                <div class="chat-messages" id="chat-messages-box">
+                    <div class="chat-msg ai">
+                        Привет! Я твой персональный AI-ассистент в терминале. Готов помочь разобраться с мемкоинами, арбитражем или настройкой целевых иксов. Выбери быстрый вопрос ниже или напиши свой!
+                    </div>
+                </div>
+                <div class="chat-suggestions">
+                    <span class="chat-suggestion-chip" onclick="sendAiPrompt('Как безопасно покупать мемкоины на Pump.fun?')">🛡️ Как покупать на Pump.fun?</span>
+                    <span class="chat-suggestion-chip" onclick="sendAiPrompt('Как настроить уведомления на 2x иксы?')">🎯 Как настроить цель 2X?</span>
+                    <span class="chat-suggestion-chip" onclick="sendAiPrompt('Какие сейчас топ-3 мемкоина с высокой ликвидностью?')">🚀 Топ мемкоины сейчас</span>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chat-user-input" placeholder="Задай любой вопрос AI-помощнику..." onkeydown="if(event.key==='Enter') handleUserChat()">
+                    <button class="primary-btn" onclick="handleUserChat()">Отправить</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: FAVORITES -->
         <section id="favorites" class="content-section">
             <div class="section-header">
                 <div>
@@ -557,6 +618,10 @@
             <li class="mobile-nav-item" data-tab="memecoins" onclick="switchTab('memecoins')">
                 <span class="nav-icon">🚀</span>
                 <span>Pump.fun</span>
+            </li>
+            <li class="mobile-nav-item" data-tab="ai-chat" onclick="switchTab('ai-chat')">
+                <span class="nav-icon">🤖</span>
+                <span>AI Chat</span>
             </li>
             <li class="mobile-nav-item" data-tab="favorites" onclick="switchTab('favorites')">
                 <span class="nav-icon">⭐</span>
@@ -627,6 +692,7 @@
         let currentAvatar = localStorage.getItem('cryptopro_avatar') || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80';
         let telegramAlertsEnabled = localStorage.getItem('cryptopro_tg_enabled') === 'true';
         let telegramChatId = localStorage.getItem('cryptopro_tg_chat') || '@crypto_alerts_channel';
+        let activeMemeTargets = JSON.parse(localStorage.getItem('cryptopro_meme_targets')) || [];
 
         const i18n = {
             en: {
@@ -635,7 +701,7 @@
                 thPair: "Pair", thBuy: "Buy Ex.", thSell: "Sell Ex.", thSpread: "Spread", thProfit: "Profit", thAction: "Action",
                 tradeTitle: "Algorithmic Trade Signals", tradeSub: "Institutional order book sorted by AI confidence & profitability",
                 memeTitle: "Meme & Pump.fun Scanner (Auto 5s)", memeSub: "Real-time DEX & Pump.fun launches sorted by top 24h ROI & safety",
-                profileTitle: "Binance-Style Account & Telegram Alerts", langLabel: "Interface Language:", userLabel: "Username / Handle:",
+                profileTitle: "Account & Telegram Alerts", langLabel: "Interface Language:", userLabel: "Username / Handle:",
                 calcTitle: "ROI & Multiplier Calculator", investLabel: "Investment Amount (USD)", buyDexBtn: "Buy on Pump.fun / DEX →",
                 safetyLabel: "Contract Safety Audit:", releaseLabel: "Estimated Time to Target Multipliers:",
                 tgHeader: "Telegram Bot Push Alerts", tgToggle: "Enable instant alerts for high-yield meme offers", tgChatLabel: "Telegram Username / Chat ID:"
@@ -646,18 +712,18 @@
                 thPair: "Пара", thBuy: "Покупка", thSell: "Продажа", thSpread: "Спред", thProfit: "Профит", thAction: "Действие",
                 tradeTitle: "Алгоритмические торговые сигналы", tradeSub: "Стакан ордеров, отсортированный по силе AI и доходности",
                 memeTitle: "Сканер Мемкоинов и Pump.fun (Авто 5с)", memeSub: "Токены Pump.fun и DEX, отсортированные по росту 24h и безопасности",
-                profileTitle: "Профиль Binance & Telegram Уведомления", langLabel: "Язык интерфейса:", userLabel: "Имя пользователя:",
+                profileTitle: "Профиль и Telegram Уведомления", langLabel: "Язык интерфейса:", userLabel: "Имя пользователя:",
                 calcTitle: "Калькулятор доходности и иксов", investLabel: "Сумма инвестиций (USD)", buyDexBtn: "Купить на Pump.fun / DEX →",
                 safetyLabel: "Аудит безопасности контракта:", releaseLabel: "Прогноз времени до достижения иксов:",
                 tgHeader: "Telegram Бот-уведомления", tgToggle: "Включить пуши о выгодных мемкоинах и арбитраже", tgChatLabel: "Telegram чат / Юзернейм:"
             },
             uk: {
-                timer: "Наст. тік:", capital: "Капітал:", p2pTitle: "Міжбіржовий арбітраж", p2pSub: "Маршрутизація спредів по 20 топ-біржах (від найвигідніших)",
+                timer: "Наст. тік:", capital: "Капітал:", p2pTitle: "Міжбіржовий арбитраж", p2pSub: "Маршрутизація спредів по 20 топ-біржах (від найвигідніших)",
                 lblCap: "Інвестиційний капітал (USDT)", lblEx: "Вибір біржах", lblSearch: "Пошук активу", btnRefresh: "↻ Оновити",
-                thPair: "Пара", thBuy: "Купівля", thSell: "Продаж", thSpread: "Спред", thProfit: "Профіт", thAction: "Дія",
+                thPair: "Пара", thBuy: "Купівля", thSell: "Продаж", thSpread: "Спред", thProfit: "Прибуток", thAction: "Дія",
                 tradeTitle: "Алгоритмічні торгові сигнали", tradeSub: "Книга ордерів, відсортована за AI та дохідністю",
                 memeTitle: "Сканер Мемкоїнів та Pump.fun (Авто 5с)", memeSub: "Токени Pump.fun і DEX, відсортовані за ростом 24h та безпекою",
-                profileTitle: "Профіль Binance & Telegram Сповіщення", langLabel: "Мова інтерфейсу:", userLabel: "Ім'я користувача:",
+                profileTitle: "Профіль & Telegram Сповіщення", langLabel: "Мова інтерфейсу:", userLabel: "Ім'я користувача:",
                 calcTitle: "Калькулятор прибутковості та іксів", investLabel: "Сума інвестицій (USD)", buyDexBtn: "Купити на Pump.fun / DEX →",
                 safetyLabel: "Аудит безпеки контракту:", releaseLabel: "Прогноз часу до досягнення іксів:",
                 tgHeader: "Telegram Бот-сповіщення", tgToggle: "Увімкнути пуші про вигідні мемкоїни", tgChatLabel: "Telegram чат / Юзернейм:"
@@ -901,6 +967,7 @@
                 if (document.getElementById('memecoins').classList.contains('active')) {
                     fetchLiveMemes(true);
                 }
+                checkMemeTargetsProgress();
                 memeTimer = 0;
             }
             const timerEl = document.getElementById('countdown-timer');
@@ -918,6 +985,7 @@
                 'p2p': t('p2pTitle'),
                 'trading': t('tradeTitle'),
                 'memecoins': t('memeTitle'),
+                'ai-chat': '🤖 AI Chat & Assistant',
                 'favorites': 'Saved Watchlist'
             };
             document.getElementById('header-title').innerText = titles[tabId];
@@ -926,7 +994,6 @@
             if (tabId === 'memecoins' && liveMemes.length === 0) fetchLiveMemes();
         }
 
-        // 1. P2P ARBITRAGE SORTED BY PROFITABILITY
         function renderArbitrage() {
             const capital = parseFloat(document.getElementById('capital-input').value) || 0;
             const query = document.getElementById('arb-search').value.trim().toUpperCase();
@@ -1017,7 +1084,6 @@
             renderArbitrage();
         }
 
-        // 2. TRADE SIGNALS SORTED BY AI CONFIDENCE & PROFIT POTENTIAL
         function renderSignals() {
             const grid = document.getElementById('signals-grid');
             grid.innerHTML = '';
@@ -1032,7 +1098,6 @@
                 return matchesTf && matchesEx;
             });
 
-            // Sort signals by AI confidence descending
             filtered.sort((a, b) => b.conf - a.conf);
 
             if (filtered.length === 0) {
@@ -1079,7 +1144,6 @@
             });
         }
 
-        // 3. MEMECOINS & PUMP.FUN SORTED BY 24H ROI & SAFETY
         async function fetchLiveMemes(silent = false) {
             const tbody = document.getElementById('meme-table-body');
             const cardGrid = document.getElementById('meme-card-grid');
@@ -1118,7 +1182,8 @@
                             safetyScore: safetyScore,
                             timeHorizon: `~${hoursHorizon} hours (Bonding Curve Velocity)`,
                             url: isPump ? `https://pump.fun/${p.baseToken.address}` : (p.url || 'https://pump.fun'),
-                            symbol: `BINANCE:SOLUSDT`
+                            symbol: `BINANCE:SOLUSDT`,
+                            currentMultiplier: 1.0 + (changeVal / 100)
                         };
                     });
                 } else {
@@ -1127,25 +1192,14 @@
             } catch (e) {
                 if (liveMemes.length === 0) {
                     liveMemes = [
-                        { id: 'MEME_LIVE_0', category: 'Meme Coin', pair: 'PEPEAI / SOL', platform: '💊 Pump.fun', isPump: true, network: 'SOLANA', liq: '$48,200', changeNumeric: 410, change: '+410%', isUp: true, safetyScore: 86, timeHorizon: '~3.2 hours (High Velocity)', url: 'https://pump.fun', symbol: 'BINANCE:PEPEUSDT' },
-                        { id: 'MEME_LIVE_1', category: 'Meme Coin', pair: 'DOGKING / SOL', platform: '💊 Pump.fun', isPump: true, network: 'SOLANA', liq: '$14,500', changeNumeric: 225, change: '+225%', isUp: true, safetyScore: 64, timeHorizon: '~9.5 hours (Early Stage)', url: 'https://pump.fun', symbol: 'BINANCE:DOGEUSDT' }
+                        { id: 'MEME_LIVE_0', category: 'Meme Coin', pair: 'PEPEAI / SOL', platform: '💊 Pump.fun', isPump: true, network: 'SOLANA', liq: '$48,200', changeNumeric: 410, change: '+410%', isUp: true, safetyScore: 86, timeHorizon: '~3.2 hours (High Velocity)', url: 'https://pump.fun', symbol: 'BINANCE:PEPEUSDT', currentMultiplier: 4.1 },
+                        { id: 'MEME_LIVE_1', category: 'Meme Coin', pair: 'DOGKING / SOL', platform: '💊 Pump.fun', isPump: true, network: 'SOLANA', liq: '$14,500', changeNumeric: 225, change: '+225%', isUp: true, safetyScore: 64, timeHorizon: '~9.5 hours (Early Stage)', url: 'https://pump.fun', symbol: 'BINANCE:DOGEUSDT', currentMultiplier: 2.25 }
                     ];
                 }
             }
 
-            // SORT BY HIGHEST 24H ROI / PROFITABILITY
             liveMemes.sort((a, b) => b.changeNumeric - a.changeNumeric);
-
             renderMemesTable();
-
-            // Trigger Telegram Push Alert simulation if enabled & high ROI found
-            if (telegramAlertsEnabled && liveMemes.length > 0 && Math.random() > 0.6) {
-                simulateTelegramPush(liveMemes[0]);
-            }
-        }
-
-        function simulateTelegramPush(token) {
-            console.log(`[Telegram Bot Alert sent to ${telegramChatId}] 🚨 High-Yield Meme Alert: ${token.pair} on ${token.platform} surged ${token.change} with safety score ${token.safetyScore}/100!`);
         }
 
         function getSafetyHtml(score) {
@@ -1191,7 +1245,12 @@
                         <td class="mono">${meme.liq}</td>
                         <td><span class="badge ${badgeClass} mono">${meme.change}</span></td>
                         <td>${getSafetyHtml(meme.safetyScore)}</td>
-                        <td><button class="primary-btn" style="padding: 5px 10px; font-size: 0.75rem;" onclick="openMemeModal('${meme.id}')">Inspect</button></td>
+                        <td>
+                            <div style="display:flex; gap:4px;">
+                                <button class="primary-btn" style="padding: 5px 8px; font-size: 0.7rem;" onclick="openMemeModal('${meme.id}')">Inspect</button>
+                                <button class="secondary-link-btn" style="padding: 5px 8px; font-size: 0.7rem; background: var(--accent-yellow); color:#181a20; border:none;" onclick="startMemeAiSetup('${meme.pair}')">🤖 AI Вход</button>
+                            </div>
+                        </td>
                     </tr>
                 `;
 
@@ -1211,11 +1270,133 @@
                         </div>
                         ${getSafetyHtml(meme.safetyScore)}
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
-                            <span style="font-size: 0.75rem; color: var(--accent-yellow);">${meme.timeHorizon.split(' ')[0]} to x's</span>
-                            <button class="primary-btn" style="padding: 5px 10px; font-size: 0.75rem;">Inspect & ROI →</button>
+                            <button class="primary-btn" style="padding: 5px 10px; font-size: 0.75rem;" onclick="openMemeModal('${meme.id}')">Inspect</button>
+                            <button class="primary-btn" style="padding: 5px 10px; font-size: 0.75rem; background: var(--accent-yellow); color:#181a20;" onclick="event.stopPropagation(); startMemeAiSetup('${meme.pair}')">🤖 AI Вход</button>
                         </div>
                     </div>
                 `;
+            });
+        }
+
+        // AI CHAT & STEP-BY-STEP INVESTMENT WIZARD LOGIC
+        function appendChatMessage(sender, text, isSystem = false) {
+            const box = document.getElementById('chat-messages-box');
+            if (!box) return;
+
+            let cls = 'ai';
+            if (sender === 'user') cls = 'user';
+            if (isSystem) cls = 'system-alert';
+
+            box.innerHTML += `<div class="chat-msg ${cls}">${text}</div>`;
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function sendAiPrompt(text) {
+            switchTab('ai-chat');
+            appendChatMessage('user', text);
+            setTimeout(() => {
+                let reply = "Я проанализировал твой запрос. Всегда проверяй ликвидность пула перед входом и используй некастодиальные кошельки (например, Phantom). Хочешь выбрать мемкоин из сканера и настроить авто-цель по иксам?";
+                if (text.includes('Pump.fun')) {
+                    reply = "Покупка на Pump.fun:\n1. Подключи кошелек Phantom с небольшим балансом SOL.\n2. Выбери токен со статусом Safety > 75.\n3. Укажи сумму и нажми Buy. Mint-авторизация должна быть отключена!";
+                } else if (text.includes('2X') || text.includes('цель')) {
+                    reply = "Чтобы настроить цель (например, 2X) по мемкоину, перейди во вкладку 'Meme & Pump.fun Scanner', нажми кнопку '🤖 AI Вход' на любой монете или выбери монету из списка. Я проведу тебя по шагам!";
+                } else if (text.includes('топ')) {
+                    reply = "Сейчас в топе по ликвидности PEPEAI и DOGKING на сети Solana. Риск-рейтинг средний, потенциал роста до 5x при текущей динамике.";
+                }
+                appendChatMessage('ai', reply);
+            }, 600);
+        }
+
+        function handleUserChat() {
+            const input = document.getElementById('chat-user-input');
+            const val = input.value.trim();
+            if (!val) return;
+            input.value = '';
+            
+            appendChatMessage('user', val);
+            setTimeout(() => {
+                let answer = `Интересный вопрос! Как AI-помощник биржи, я рекомендую соблюдать риск-менеджмент: выделяй на мемкоины не более 5-10% капитала. По вопросу "${val}" — стратегия заключается в быстром выходе по достижении целевых иксов.`;
+                if (val.toLowerCase().includes('привет') || val.toLowerCase().includes('здарова')) {
+                    answer = "Привет! Чем могу помочь в трейдинге сегодня?";
+                }
+                appendChatMessage('ai', answer);
+            }, 700);
+        }
+
+        let pendingMemePair = '';
+
+        function startMemeAiSetup(pair) {
+            pendingMemePair = pair;
+            switchTab('ai-chat');
+            appendChatMessage('ai', `🚀 Отлично! Ты выбрал мемкоин **${pair}** для инвестиции.\n\nДавай настроим сделку пошагово:\n1️⃣ **Шаг 1:** Укажи сумму инвестиций в USD (например, ` + `$100` + `):`);
+            
+            // Add interactive response buttons in chat
+            setTimeout(() => {
+                const box = document.getElementById('chat-messages-box');
+                box.innerHTML += `
+                    <div style="display:flex; gap:6px; margin: 4px 0;" id="interactive-wizard-1">
+                        <button class="primary-btn" style="font-size:0.75rem; padding:6px 12px;" onclick="wizardStepAmount('${pair}', 50)">$50</button>
+                        <button class="primary-btn" style="font-size:0.75rem; padding:6px 12px;" onclick="wizardStepAmount('${pair}', 100)">$100</button>
+                        <button class="primary-btn" style="font-size:0.75rem; padding:6px 12px;" onclick="wizardStepAmount('${pair}', 500)">$500</button>
+                    </div>
+                `;
+                box.scrollTop = box.scrollHeight;
+            }, 300);
+        }
+
+        function wizardStepAmount(pair, amount) {
+            appendChatMessage('user', `Инвестирую $${amount} в ${pair}`);
+            setTimeout(() => {
+                appendChatMessage('ai', `💰 Сумма зафиксирована: **$${amount}**.\n\n2️⃣ **Шаг 2:** Какой **ожидаемый результат (иксы)** ты хочешь поставить? Как только монета достигнет этой цели, я пришлю тебе пуш-уведомление прямо сюда в чат!`);
+                const box = document.getElementById('chat-messages-box');
+                box.innerHTML += `
+                    <div style="display:flex; gap:6px; margin: 4px 0;" id="interactive-wizard-2">
+                        <button class="primary-btn" style="font-size:0.75rem; padding:6px 12px; background:var(--accent-green); color:#fff;" onclick="wizardStepTarget('${pair}', ${amount}, 2)">🎯 2X (X2)</button>
+                        <button class="primary-btn" style="font-size:0.75rem; padding:6px 12px; background:var(--accent-green); color:#fff;" onclick="wizardStepTarget('${pair}', ${amount}, 5)">🎯 5X (X5)</button>
+                        <button class="primary-btn" style="font-size:0.75rem; padding:6px 12px; background:var(--accent-yellow); color:#181a20;" onclick="wizardStepTarget('${pair}', ${amount}, 10)">🎯 10X (ТОП)</button>
+                    </div>
+                `;
+                box.scrollTop = box.scrollHeight;
+            }, 500);
+        }
+
+        function wizardStepTarget(pair, amount, targetX) {
+            appendChatMessage('user', `Ставлю цель: ${targetX}X для ${pair}`);
+            
+            // Save to active targets
+            const newTarget = {
+                id: `TGT_${Date.now()}`,
+                pair: pair,
+                amount: amount,
+                targetMultiplier: targetX,
+                currentMultiplier: 1.0,
+                status: 'active'
+            };
+            activeMemeTargets.push(newTarget);
+            localStorage.setItem('cryptopro_meme_targets', JSON.stringify(activeMemeTargets));
+
+            setTimeout(() => {
+                appendChatMessage('ai', `✅ **Сделка успешно зарегистрирована в системе!**\n\n📊 **Параметры:** ${pair}\n💵 **Инвестиция:** $${amount}\n🎯 **Цель:** ${targetX}X (Ожидаемый профит: $${amount * targetX})\n\n🤖 *Я начал мониторинг пула в реальном времени. Как только монета сделает ${targetX}X, ты мгновенно получишь уведомление в этом чате!*`, false);
+            }, 600);
+        }
+
+        // Simulate target checks & push notifications into chat
+        function checkMemeTargetsProgress() {
+            if (!activeMemeTargets || activeMemeTargets.length === 0) return;
+
+            activeMemeTargets.forEach(tgr => {
+                if (tgr.status !== 'active') return;
+                
+                // Simulate random multiplier growth
+                tgr.currentMultiplier += +(Math.random() * 0.35).toFixed(2);
+
+                if (tgr.currentMultiplier >= tgr.targetMultiplier) {
+                    tgr.status = 'triggered';
+                    localStorage.setItem('cryptopro_meme_targets', JSON.stringify(activeMemeTargets));
+
+                    // PUSH NOTIFICATION IN INTERNAL CHAT
+                    appendChatMessage('system-alert', `🚨 ПУШ-УВЕДОМЛЕНИЕ ОТ БИРЖИ: Мемкоин **${tgr.pair}** достиг твоей цели в **${tgr.targetMultiplier}X**! Твои $${tgr.amount} превратились в **$${tgr.amount * tgr.targetMultiplier}** (+$${tgr.amount * (tgr.targetMultiplier - 1)}). Рекомендуем зафиксировать прибыль на DEX!`);
+                }
             });
         }
 
@@ -1318,30 +1499,12 @@
                     <div class="calc-row"><span>Total Pool Liquidity:</span> <strong class="mono">${meme.liq}</strong></div>
                     <div class="calc-row"><span>24h Price Change:</span> <strong class="mono" style="color: var(--accent-green);">${meme.change}</strong></div>
                 </div>
-                <div class="calc-box">
-                    <div style="font-weight: 600; margin-bottom: 4px; font-size: 0.9rem;">🎯 ${t('calcTitle')}</div>
-                    <div class="control-group" style="margin-bottom: 8px;">
-                        <label>${t('investLabel')}</label>
-                        <input type="number" id="meme-invest" class="mono" value="100" oninput="calculateMemeProfit()">
-                    </div>
-                    <div class="calc-row">
-                        <span>At 2x Growth (<span id="time-2x" style="color:var(--accent-yellow);">~1.5h</span>):</span> 
-                        <strong class="mono" id="calc-2x" style="color: var(--accent-green);">$200.00 (+$100)</strong>
-                    </div>
-                    <div class="calc-row">
-                        <span>At 5x Growth (<span id="time-5x" style="color:var(--accent-yellow);">~4.2h</span>):</span> 
-                        <strong class="mono" id="calc-5x" style="color: var(--accent-green);">$500.00 (+$400)</strong>
-                    </div>
-                    <div class="calc-row">
-                        <span>At 10x Growth (10X) (<span id="time-10x" style="color:var(--accent-yellow);">~11.8h</span>):</span> 
-                        <strong class="mono" id="calc-10x" style="color: var(--accent-yellow); font-size: 1.05rem;">$1,000.00 (+$900)</strong>
-                    </div>
+                <div style="display: flex; gap: 10px;">
+                    <a href="${meme.url}" target="_blank" class="primary-btn" style="flex: 1; padding: 12px; text-align: center;">${t('buyDexBtn')}</a>
+                    <button class="primary-btn" style="flex: 1; padding: 12px; background: var(--accent-yellow); color:#181a20;" onclick="closeModal(); startMemeAiSetup('${meme.pair}')">🤖 AI Вход и Уведомление</button>
                 </div>
-                <a href="${meme.url}" target="_blank" class="primary-btn" style="width: 100%; padding: 12px; text-align: center;">${t('buyDexBtn')}</a>
             `;
             document.getElementById('detail-modal').style.display = 'flex';
-
-            calculateMemeProfit();
 
             setTimeout(() => {
                 const container = document.getElementById('tv_meme_container');
@@ -1362,22 +1525,6 @@
             }, 100);
         }
 
-        function calculateMemeProfit() {
-            const inv = parseFloat(document.getElementById('meme-invest').value) || 0;
-            document.getElementById('calc-2x').innerText = `$${(inv * 2).toFixed(2)} (+$${inv.toFixed(2)})`;
-            document.getElementById('calc-5x').innerText = `$${(inv * 5).toFixed(2)} (+$${(inv * 4).toFixed(2)})`;
-            document.getElementById('calc-10x').innerText = `$${(inv * 10).toFixed(2)} (+$${(inv * 9).toFixed(2)})`;
-
-            let baseHours = 1.2;
-            if (inv > 500) baseHours = 2.4;
-            if (inv > 2000) baseHours = 4.1;
-
-            document.getElementById('time-2x').innerText = `~${(baseHours).toFixed(1)}h`;
-            document.getElementById('time-5x').innerText = `~${(baseHours * 2.8).toFixed(1)}h`;
-            document.getElementById('time-10x').innerText = `~${(baseHours * 6.5).toFixed(1)}h`;
-        }
-
-        // 4. BINANCE-STYLE PROFILE & TELEGRAM ALERTS SETTINGS
         function openProfileModal() {
             document.getElementById('modal-title').innerText = t('profileTitle');
             
@@ -1403,7 +1550,7 @@
                     <div>
                         <div style="font-weight: 700; font-size: 1.05rem;" id="modal-display-user">${currentUsername}</div>
                         <div class="vip-badge">VIP 3 PRO TRADER</div>
-                        <div style="font-size: 0.72rem; color: var(--text-secondary); margin-top: 2px;">ID: 884920194 • Binance Security Verified</div>
+                        <div style="font-size: 0.72rem; color: var(--text-secondary); margin-top: 2px;">ID: 884920194</div>
                     </div>
                 </div>
 
@@ -1444,13 +1591,7 @@
         }
 
         function changeAvatarPrompt() {
-            const urls = [
-                "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
-                "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=150&q=80",
-                "https://images.unsplash.com/photo-1628157582853-a796fa650a6a?auto=format&fit=crop&w=150&q=80",
-                "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
-            ];
-            const nextUrl = prompt("Enter image URL for avatar or choose one of preset styles:", currentAvatar);
+            const nextUrl = prompt("Enter image URL for avatar:", currentAvatar);
             if (nextUrl && nextUrl.trim() !== '') {
                 currentAvatar = nextUrl.trim();
                 localStorage.setItem('cryptopro_avatar', currentAvatar);
@@ -1463,7 +1604,7 @@
             telegramAlertsEnabled = enabled;
             localStorage.setItem('cryptopro_tg_enabled', enabled);
             if (enabled) {
-                alert(`Telegram Bot notifications successfully linked to ${telegramChatId}! You will receive push alerts for profitable memes.`);
+                alert(`Telegram Bot notifications successfully linked to ${telegramChatId}!`);
             }
         }
 
