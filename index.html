@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CryptoPro Terminal | Ultimate Edition</title>
+    <title>CryptoPro Terminal | Binance Pro Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -159,7 +159,6 @@
             gap: 16px;
         }
 
-        /* Pro Timer Widget */
         .timer-widget {
             display: flex;
             align-items: center;
@@ -191,6 +190,22 @@
             font-weight: 600;
             margin-left: 4px;
         }
+
+        .profile-btn {
+            background-color: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            color: var(--accent-yellow);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background 0.15s;
+        }
+        .profile-btn:hover { background-color: var(--bg-hover); }
 
         .content-section {
             padding: 24px;
@@ -245,7 +260,7 @@
             flex-direction: column;
             gap: 6px;
             flex: 1;
-            min-width: 150px;
+            min-width: 180px;
         }
 
         .control-group label {
@@ -266,9 +281,48 @@
             width: 100%;
         }
 
-        input:focus, select:focus {
-            border-color: var(--accent-yellow);
+        input:focus, select:focus { border-color: var(--accent-yellow); }
+
+        /* Multi-select Exchange Dropdown Design */
+        .dropdown-check-list {
+            position: relative;
         }
+        .dropdown-selected {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px 12px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .dropdown-options {
+            display: none;
+            position: absolute;
+            top: 100%; left: 0; right: 0;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            margin-top: 4px;
+            z-index: 50;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 8px;
+        }
+        .dropdown-options label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 8px;
+            cursor: pointer;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            border-radius: 4px;
+        }
+        .dropdown-options label:hover { background-color: var(--bg-elevated); }
 
         button.primary-btn {
             background-color: var(--accent-yellow);
@@ -285,7 +339,6 @@
             display: inline-block;
             text-align: center;
         }
-
         button.primary-btn:hover { background-color: var(--accent-yellow-hover); }
         button.primary-btn:active { transform: scale(0.98); }
 
@@ -416,7 +469,6 @@
             transition: transform 0.15s, color 0.15s;
             padding: 4px;
         }
-
         .star-btn:hover { transform: scale(1.15); }
         .star-btn.favorited { color: var(--accent-yellow); }
 
@@ -463,8 +515,8 @@
             border: 1px solid var(--border-color);
             border-radius: 12px;
             width: 100%;
-            max-width: 650px;
-            max-height: 90vh;
+            max-width: 750px;
+            max-height: 92vh;
             overflow-y: auto;
             padding: 24px;
             display: flex;
@@ -507,26 +559,14 @@
             font-size: 0.9rem;
         }
 
-        .chart-mock {
+        /* TradingView Widget Container inside Modal */
+        .tradingview-container {
             width: 100%;
-            height: 180px;
-            background: linear-gradient(180deg, rgba(14, 203, 129, 0.08) 0%, rgba(24, 26, 32, 0) 100%);
+            height: 350px;
+            background-color: var(--bg-main);
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            display: flex;
-            align-items: flex-end;
-            padding: 10px;
-            gap: 4px;
-            position: relative;
             overflow: hidden;
-        }
-
-        .chart-bar {
-            flex: 1;
-            background-color: var(--accent-green);
-            opacity: 0.6;
-            border-radius: 2px 2px 0 0;
-            transition: height 0.3s;
         }
 
         /* Mobile Bottom Navigation */
@@ -600,15 +640,16 @@
                     <span id="countdown-timer" class="timer-countdown mono">15s</span>
                 </div>
                 <div class="user-balance">Capital: <span id="display-capital" class="mono">$1,000.00</span></div>
+                <button class="profile-btn" onclick="openProfileModal()" title="Account & Order History">👤</button>
             </div>
         </header>
 
-        <!-- SECTION 1: P2P & ARBITRAGE WITH EXCHANGE FILTERS -->
+        <!-- SECTION 1: P2P & ARBITRAGE WITH MULTI-EXCHANGE FILTER -->
         <section id="p2p" class="content-section active">
             <div class="section-header">
                 <div>
                     <h2>Inter-Exchange Arbitrage</h2>
-                    <div class="subtitle">Live spread routing with multi-exchange filters & fee calculation</div>
+                    <div class="subtitle">Live spread routing with multi-exchange selection & fee calculation</div>
                 </div>
             </div>
 
@@ -618,17 +659,22 @@
                     <input type="number" id="capital-input" class="mono" value="1000" min="10" oninput="renderArbitrage()">
                 </div>
                 <div class="control-group">
-                    <label>Filter by Exchange</label>
-                    <select id="exchange-filter" onchange="renderArbitrage()">
-                        <option value="ALL">All Exchanges</option>
-                        <option value="Binance">Binance</option>
-                        <option value="Bybit">Bybit</option>
-                        <option value="OKX">OKX</option>
-                        <option value="Gate.io">Gate.io</option>
-                        <option value="MEXC">MEXC</option>
-                        <option value="KuCoin">KuCoin</option>
-                        <option value="HTX">HTX</option>
-                    </select>
+                    <label>Select Exchanges</label>
+                    <div class="dropdown-check-list" id="exchange-dropdown">
+                        <div class="dropdown-selected" onclick="toggleDropdown()">
+                            <span id="dropdown-label">All Exchanges Selected</span> ▾
+                        </div>
+                        <div class="dropdown-options" id="dropdown-opts">
+                            <label><input type="checkbox" value="Binance" checked onchange="updateExDropdown()"> Binance</label>
+                            <label><input type="checkbox" value="Bybit" checked onchange="updateExDropdown()"> Bybit</label>
+                            <label><input type="checkbox" value="OKX" checked onchange="updateExDropdown()"> OKX</label>
+                            <label><input type="checkbox" value="Gate.io" checked onchange="updateExDropdown()"> Gate.io</label>
+                            <label><input type="checkbox" value="MEXC" checked onchange="updateExDropdown()"> MEXC</label>
+                            <label><input type="checkbox" value="KuCoin" checked onchange="updateExDropdown()"> KuCoin</label>
+                            <label><input type="checkbox" value="HTX" checked onchange="updateExDropdown()"> HTX</label>
+                            <label><input type="checkbox" value="Kraken" checked onchange="updateExDropdown()"> Kraken</label>
+                        </div>
+                    </div>
                 </div>
                 <div class="control-group">
                     <label>Search Asset</label>
@@ -663,7 +709,7 @@
             <div class="section-header">
                 <div>
                     <h2>Algorithmic Trade Signals</h2>
-                    <div class="subtitle">Expanded order book with multi-timeframe filtering</div>
+                    <div class="subtitle">Expanded institutional order book with multi-timeframe filtering</div>
                 </div>
                 <div class="control-group" style="min-width: 150px; margin: 0;">
                     <select id="tf-filter" onchange="renderSignals()">
@@ -678,12 +724,12 @@
             <div class="card-grid" id="signals-grid"></div>
         </section>
 
-        <!-- SECTION 3: EXPANDED MEMECOIN SCANNER -->
+        <!-- SECTION 3: LIVE MEMECOIN SCANNER (AUTO 5S REFRESH) -->
         <section id="memecoins" class="content-section">
             <div class="section-header">
                 <div>
-                    <h2>Live Meme Coin Scanner</h2>
-                    <div class="subtitle">Expanded multi-chain DEX pools scanner (Solana, Ethereum, Base, TON)</div>
+                    <h2>Live Meme Coin Scanner (Auto 5s)</h2>
+                    <div class="subtitle">Real-time multi-chain DEX pools scanner with instant ROI calculator</div>
                 </div>
                 <button class="secondary-link-btn" onclick="fetchLiveMemes()">↻ Refresh DEX Pools</button>
             </div>
@@ -697,7 +743,7 @@
                             <th>DEX / Chain</th>
                             <th>Liquidity</th>
                             <th>24h Change</th>
-                            <th>Trade / Buy</th>
+                            <th>Analysis & Calculator</th>
                         </tr>
                     </thead>
                     <tbody id="meme-table-body"></tbody>
@@ -730,7 +776,7 @@
         </section>
     </main>
 
-    <!-- Detailed Route / Chart Modal -->
+    <!-- General Modal Overlay (Charts, Calculator, Profile) -->
     <div class="modal-overlay" id="detail-modal" onclick="if(event.target === this) closeModal()">
         <div class="modal-card">
             <div class="modal-header">
@@ -766,7 +812,7 @@
     </nav>
 
     <script>
-        // Expanded Data Stores with many currency pairs
+        // Expanded Data Stores with massive pairs
         let arbitrageList = [
             { id: "ARB_SOL", category: "Arbitrage", pair: "SOL/USDT", buyEx: "Gate.io", buyUrl: "https://www.gate.io/trade/SOL_USDT", buyPrice: 182.40, sellEx: "Bybit", sellUrl: "https://www.bybit.com/en/trade/spot/SOL/USDT", sellPrice: 186.15, spread: 2.05 },
             { id: "ARB_XRP", category: "Arbitrage", pair: "XRP/USDT", buyEx: "MEXC", buyUrl: "https://www.mexc.com/exchange/XRP_USDT", buyPrice: 0.5410, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/XRP_USDT", sellPrice: 0.5605, spread: 3.60 },
@@ -776,30 +822,72 @@
             { id: "ARB_SUI", category: "Arbitrage", pair: "SUI/USDT", buyEx: "Gate.io", buyUrl: "https://www.gate.io/trade/SUI_USDT", buyPrice: 3.42, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/SUI_USDT", sellPrice: 3.55, spread: 3.80 },
             { id: "ARB_ADA", category: "Arbitrage", pair: "ADA/USDT", buyEx: "MEXC", buyUrl: "https://www.mexc.com/exchange/ADA_USDT", buyPrice: 0.72, sellEx: "Bybit", sellUrl: "https://www.bybit.com/en/trade/spot/ADA/USDT", sellPrice: 0.75, spread: 4.16 },
             { id: "ARB_NEAR", category: "Arbitrage", pair: "NEAR/USDT", buyEx: "OKX", buyUrl: "https://www.okx.com/trade-spot/near-usdt", buyPrice: 6.12, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/NEAR_USDT", sellPrice: 6.30, spread: 2.94 },
-            { id: "ARB_DOGE", category: "Arbitrage", pair: "DOGE/USDT", buyEx: "KuCoin", buyUrl: "https://www.kucoin.com/trade/DOGE-USDT", buyPrice: 0.385, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/DOGE_USDT", sellPrice: 0.398, spread: 3.37 }
+            { id: "ARB_DOGE", category: "Arbitrage", pair: "DOGE/USDT", buyEx: "KuCoin", buyUrl: "https://www.kucoin.com/trade/DOGE-USDT", buyPrice: 0.385, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/DOGE_USDT", sellPrice: 0.398, spread: 3.37 },
+            { id: "ARB_LINK", category: "Arbitrage", pair: "LINK/USDT", buyEx: "HTX", buyUrl: "https://www.htx.com/", buyPrice: 18.20, sellEx: "Binance", sellUrl: "https://www.binance.com/", sellPrice: 18.75, spread: 3.02 }
         ];
 
         const signalsList = [
-            { id: "SIG_BTC", category: "Signal", pair: "BTC/USDT", tf: "4H", side: "LONG", entry: 89450, tp: "+14.5%", sl: "-2.1%", conf: "91%", exchangeUrl: "https://www.binance.com/en/trade/BTC_USDT" },
-            { id: "SIG_SOL", category: "Signal", pair: "SOL/USDT", tf: "1H", side: "LONG", entry: 184.20, tp: "+22.0%", sl: "-3.4%", conf: "87%", exchangeUrl: "https://www.bybit.com/en/trade/spot/SOL/USDT" },
-            { id: "SIG_SUI", category: "Signal", pair: "SUI/USDT", tf: "15M", side: "SHORT", entry: 3.48, tp: "+11.2%", sl: "-1.8%", conf: "84%", exchangeUrl: "https://www.okx.com/trade-spot/sui-usdt" },
-            { id: "SIG_ETH", category: "Signal", pair: "ETH/USDT", tf: "1D", side: "LONG", entry: 3150.00, tp: "+18.0%", sl: "-2.8%", conf: "89%", exchangeUrl: "https://www.binance.com/en/trade/ETH_USDT" },
-            { id: "SIG_PEPE", category: "Signal", pair: "1000PEPE/USDT", tf: "1H", side: "LONG", entry: 0.0114, tp: "+28.5%", sl: "-4.2%", conf: "82%", exchangeUrl: "https://www.binance.com/en/trade/1000PEPE_USDT" },
-            { id: "SIG_NEAR", category: "Signal", pair: "NEAR/USDT", tf: "4H", side: "LONG", entry: 6.20, tp: "+15.4%", sl: "-2.5%", conf: "86%", exchangeUrl: "https://www.bybit.com/en/trade/spot/NEAR/USDT" },
-            { id: "SIG_XRP", category: "Signal", pair: "XRP/USDT", tf: "15M", side: "LONG", entry: 0.55, tp: "+12.0%", sl: "-1.9%", conf: "85%", exchangeUrl: "https://www.binance.com/en/trade/XRP_USDT" },
-            { id: "SIG_AVAX", category: "Signal", pair: "AVAX/USDT", tf: "4H", side: "SHORT", entry: 34.50, tp: "-16.0%", sl: "+2.4%", conf: "81%", exchangeUrl: "https://trade.kraken.com/" }
+            { id: "SIG_BTC", category: "Signal", pair: "BTC/USDT", symbol: "BINANCE:BTCUSDT", tf: "4H", side: "LONG", entry: 89450, tp: "+14.5%", sl: "-2.1%", conf: "91%", exchangeUrl: "https://www.binance.com/en/trade/BTC_USDT" },
+            { id: "SIG_SOL", category: "Signal", pair: "SOL/USDT", symbol: "BYBIT:SOLUSDT", tf: "1H", side: "LONG", entry: 184.20, tp: "+22.0%", sl: "-3.4%", conf: "87%", exchangeUrl: "https://www.bybit.com/en/trade/spot/SOL/USDT" },
+            { id: "SIG_SUI", category: "Signal", pair: "SUI/USDT", symbol: "OKX:SUIUSDT", tf: "15M", side: "SHORT", entry: 3.48, tp: "+11.2%", sl: "-1.8%", conf: "84%", exchangeUrl: "https://www.okx.com/trade-spot/sui-usdt" },
+            { id: "SIG_ETH", category: "Signal", pair: "ETH/USDT", symbol: "BINANCE:ETHUSDT", tf: "1D", side: "LONG", entry: 3150.00, tp: "+18.0%", sl: "-2.8%", conf: "89%", exchangeUrl: "https://www.binance.com/en/trade/ETH_USDT" },
+            { id: "SIG_PEPE", category: "Signal", pair: "PEPE/USDT", symbol: "BINANCE:PEPEUSDT", tf: "1H", side: "LONG", entry: 0.0000114, tp: "+28.5%", sl: "-4.2%", conf: "82%", exchangeUrl: "https://www.binance.com/en/trade/PEPE_USDT" },
+            { id: "SIG_NEAR", category: "Signal", pair: "NEAR/USDT", symbol: "BINANCE:NEARUSDT", tf: "4H", side: "LONG", entry: 6.20, tp: "+15.4%", sl: "-2.5%", conf: "86%", exchangeUrl: "https://www.bybit.com/en/trade/spot/NEAR/USDT" },
+            { id: "SIG_XRP", category: "Signal", pair: "XRP/USDT", symbol: "BINANCE:XRPUSDT", tf: "15M", side: "LONG", entry: 0.55, tp: "+12.0%", sl: "-1.9%", conf: "85%", exchangeUrl: "https://www.binance.com/en/trade/XRP_USDT" },
+            { id: "SIG_AVAX", category: "Signal", pair: "AVAX/USDT", symbol: "KRAKEN:AVAXUSDT", tf: "4H", side: "SHORT", entry: 34.50, tp: "-16.0%", sl: "+2.4%", conf: "81%", exchangeUrl: "https://trade.kraken.com/" }
         ];
 
         let liveMemes = [];
         let favorites = JSON.parse(localStorage.getItem('cryptopro_watchlist')) || [];
+        let orderHistory = JSON.parse(localStorage.getItem('cryptopro_orders')) || [
+            { id: "ORD_01", time: "2026-03-30 14:12", pair: "SOL/USDT", type: "Arbitrage Execution", amount: "$1,000.00", profit: "+$18.50" },
+            { id: "ORD_02", time: "2026-03-30 11:45", pair: "BTC/USDT", type: "Signal LONG", amount: "$2,500.00", profit: "+$362.00" }
+        ];
 
-        // Countdown Timer Logic
+        // Multi-select Dropdown Logic for Exchanges
+        function toggleDropdown() {
+            const opts = document.getElementById('dropdown-opts');
+            opts.style.display = opts.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function updateExDropdown() {
+            const checkboxes = document.querySelectorAll('#dropdown-opts input[type="checkbox"]');
+            const selected = [];
+            checkboxes.forEach(cb => { if (cb.checked) selected.push(cb.value); });
+            
+            const label = document.getElementById('dropdown-label');
+            if (selected.length === checkboxes.length) {
+                label.innerText = "All Exchanges Selected";
+            } else if (selected.length === 0) {
+                label.innerText = "None Selected";
+            } else {
+                label.innerText = `${selected.length} Exchanges Selected`;
+            }
+            renderArbitrage();
+        }
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', function(e) {
+            if (!document.getElementById('exchange-dropdown').contains(e.target)) {
+                document.getElementById('dropdown-opts').style.display = 'none';
+            }
+        });
+
+        // Countdown Timer & Auto 5s Meme Refresh
         let timeLeft = 15;
+        let memeTimer = 0;
         setInterval(() => {
             timeLeft--;
+            memeTimer++;
             if (timeLeft <= 0) {
                 simulateMarketTick();
                 timeLeft = 15;
+            }
+            if (memeTimer >= 5) {
+                if (document.getElementById('memecoins').classList.contains('active')) {
+                    fetchLiveMemes(true); // silent background update
+                }
+                memeTimer = 0;
             }
             const timerEl = document.getElementById('countdown-timer');
             if (timerEl) timerEl.innerText = `${timeLeft}s`;
@@ -825,11 +913,15 @@
             if (tabId === 'memecoins' && liveMemes.length === 0) fetchLiveMemes();
         }
 
-        // Render Arbitrage Table with Exchange Filter
+        // Render Arbitrage Table with Multi-Exchange Filter
         function renderArbitrage() {
             const capital = parseFloat(document.getElementById('capital-input').value) || 0;
             const query = document.getElementById('arb-search').value.trim().toUpperCase();
-            const selectedEx = document.getElementById('exchange-filter').value;
+            
+            const checkboxes = document.querySelectorAll('#dropdown-opts input[type="checkbox"]');
+            const selectedExs = [];
+            checkboxes.forEach(cb => { if (cb.checked) selectedExs.push(cb.value); });
+
             document.getElementById('display-capital').innerText = `$${capital.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
 
             const tbody = document.getElementById('p2p-table-body');
@@ -837,12 +929,12 @@
 
             const filtered = arbitrageList.filter(item => {
                 const matchesQuery = item.pair.includes(query);
-                const matchesEx = selectedEx === 'ALL' || item.buyEx === selectedEx || item.sellEx === selectedEx;
+                const matchesEx = selectedExs.includes(item.buyEx) || selectedExs.includes(item.sellEx);
                 return matchesQuery && matchesEx;
             });
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-secondary); padding: 30px;">No arbitrage pairs found for selected filters.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-secondary); padding: 30px;">No arbitrage pairs match your selected exchanges.</td></tr>`;
                 return;
             }
 
@@ -860,7 +952,7 @@
                         <td class="mono">$${item.sellPrice} <span class="ex-tag">${item.sellEx}</span></td>
                         <td><span class="badge badge-green mono">+${item.spread.toFixed(2)}%</span></td>
                         <td class="mono" style="color: var(--accent-green); font-weight: 600;">+$${netProfit}</td>
-                        <td><button class="primary-btn" style="padding: 6px 12px; font-size: 0.8rem;" onclick="openArbitrageModal('${item.id}')">Details</button></td>
+                        <td><button class="primary-btn" style="padding: 6px 12px; font-size: 0.8rem;" onclick="openArbitrageModal('${item.id}')">Execute</button></td>
                     </tr>
                 `;
             });
@@ -875,7 +967,7 @@
             renderArbitrage();
         }
 
-        // Render Signals with Timeframe filter
+        // Render Signals
         function renderSignals() {
             const tfFilter = document.getElementById('tf-filter').value;
             const grid = document.getElementById('signals-grid');
@@ -913,17 +1005,19 @@
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; color: var(--text-secondary);">
                             <span>AI Confidence: <strong style="color: var(--text-primary);">${sig.conf}</strong></span>
-                            <span style="color: var(--accent-yellow);">View Strategy & Chart →</span>
+                            <span style="color: var(--accent-yellow);">View Live Chart →</span>
                         </div>
                     </div>
                 `;
             });
         }
 
-        // Fetch Live Meme Coins from DexScreener
-        async function fetchLiveMemes() {
+        // Fetch Live Meme Coins from DexScreener (with auto 5s silent refresh)
+        async function fetchLiveMemes(silent = false) {
             const tbody = document.getElementById('meme-table-body');
-            tbody.innerHTML = `<tr><td colspan="6"><div class="loader-container"><div class="spinner"></div><span>Loading high-liquidity DEX pools...</span></div></td></tr>`;
+            if (!silent && liveMemes.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6"><div class="loader-container"><div class="spinner"></div><span>Loading DEX liquidity pools...</span></div></td></tr>`;
+            }
 
             try {
                 const response = await fetch('https://api.dexscreener.com/latest/dex/search?q=USDT');
@@ -938,19 +1032,21 @@
                         liq: `$${Math.round(p.liquidity?.usd || 25000).toLocaleString()}`,
                         change: `${p.priceChange?.h24 >= 0 ? '+' : ''}${p.priceChange?.h24 || 0}%`,
                         isUp: (p.priceChange?.h24 || 0) >= 0,
-                        url: p.url || 'https://dexscreener.com'
+                        priceUsd: p.priceUsd || '0.0012',
+                        url: p.url || 'https://dexscreener.com',
+                        symbol: `BINANCE:${p.baseToken.symbol}USDT`
                     }));
                 } else {
                     throw new Error('No data');
                 }
             } catch (e) {
-                liveMemes = [
-                    { id: 'MEME_LIVE_0', category: 'Meme Coin', pair: 'PEPEK / SOL', network: 'SOLANA', liq: '$42,800', change: '+340%', isUp: true, url: 'https://dexscreener.com' },
-                    { id: 'MEME_LIVE_1', category: 'Meme Coin', pair: 'MOONDOG / SOL', network: 'SOLANA', liq: '$19,200', change: '+610%', isUp: true, url: 'https://dexscreener.com' },
-                    { id: 'MEME_LIVE_2', category: 'Meme Coin', pair: 'TURBOAI / ETH', network: 'BASE', liq: '$85,400', change: '+185%', isUp: true, url: 'https://dexscreener.com' },
-                    { id: 'MEME_LIVE_3', category: 'Meme Coin', pair: 'CYBERCAT / SOL', network: 'SOLANA', liq: '$6,400', change: '-12.4%', isUp: false, url: 'https://dexscreener.com' },
-                    { id: 'MEME_LIVE_4', category: 'Meme Coin', pair: 'TONMOON / TON', network: 'TON', liq: '$54,100', change: '+88.2%', isUp: true, url: 'https://dexscreener.com' }
-                ];
+                if (liveMemes.length === 0) {
+                    liveMemes = [
+                        { id: 'MEME_LIVE_0', category: 'Meme Coin', pair: 'PEPEK / SOL', network: 'SOLANA', liq: '$42,800', change: '+340%', isUp: true, priceUsd: '0.00045', url: 'https://dexscreener.com', symbol: 'BINANCE:PEPEUSDT' },
+                        { id: 'MEME_LIVE_1', category: 'Meme Coin', pair: 'MOONDOG / SOL', network: 'SOLANA', liq: '$19,200', change: '+610%', isUp: true, priceUsd: '0.012', url: 'https://dexscreener.com', symbol: 'BINANCE:DOGEUSDT' },
+                        { id: 'MEME_LIVE_2', category: 'Meme Coin', pair: 'TURBOAI / ETH', network: 'BASE', liq: '$85,400', change: '+185%', isUp: true, priceUsd: '0.24', url: 'https://dexscreener.com', symbol: 'BINANCE:ETHUSDT' }
+                    ];
+                }
             }
 
             renderMemesTable();
@@ -971,13 +1067,13 @@
                         <td>${meme.network}</td>
                         <td class="mono">${meme.liq}</td>
                         <td><span class="badge ${badgeClass} mono">${meme.change}</span></td>
-                        <td><a href="${meme.url}" target="_blank" class="primary-btn" style="padding: 6px 12px; font-size: 0.8rem;">Buy on DEX →</a></td>
+                        <td><button class="primary-btn" style="padding: 6px 12px; font-size: 0.8rem;" onclick="openMemeModal('${meme.id}')">Open Chart & Calculator →</button></td>
                     </tr>
                 `;
             });
         }
 
-        // Modals & Charts
+        // Modals: Arbitrage Execution
         function openArbitrageModal(id) {
             const item = arbitrageList.find(x => x.id === id);
             if (!item) return;
@@ -987,9 +1083,9 @@
             const fee = capital * 0.002;
             const net = gross - fee;
 
-            document.getElementById('modal-title').innerText = `Arbitrage Route: ${item.pair}`;
+            document.getElementById('modal-title').innerText = `Arbitrage Execution: ${item.pair}`;
             document.getElementById('modal-body').innerHTML = `
-                <div style="font-size: 0.85rem; color: var(--text-secondary);">Step-by-step execution path:</div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary);">Step-by-step execution route:</div>
                 <div class="calc-box">
                     <div class="calc-row"><span>1. Buy on <strong>${item.buyEx}</strong></span> <a href="${item.buyUrl}" target="_blank" class="secondary-link-btn">Open Exchange</a></div>
                     <div class="calc-row"><span>2. Transfer network</span> <span class="mono" style="color: var(--accent-yellow);">Fast Withdrawal</span></div>
@@ -1003,46 +1099,178 @@
                         <span>Net Profit:</span> <strong class="mono" style="color: var(--accent-green); font-size: 1.1rem;">+$${net.toFixed(2)}</strong>
                     </div>
                 </div>
-                <button class="primary-btn" style="width: 100%; padding: 12px;" onclick="closeModal()">Got It, Execute Route</button>
+                <button class="primary-btn" style="width: 100%; padding: 12px;" onclick="executeArbitrageOrder('${item.pair}', ${net})">Confirm & Save to Order History</button>
             `;
             document.getElementById('detail-modal').style.display = 'flex';
         }
 
+        function executeArbitrageOrder(pair, netProfit) {
+            const newOrder = {
+                id: `ORD_${Date.now().toString().slice(-4)}`,
+                time: new Date().toISOString().replace('T', ' ').substring(0, 16),
+                pair: pair,
+                type: 'Arbitrage Route',
+                amount: document.getElementById('display-capital').innerText,
+                profit: `+$${netProfit.toFixed(2)}`
+            };
+            orderHistory.unshift(newOrder);
+            localStorage.setItem('cryptopro_orders', JSON.stringify(orderHistory));
+            closeModal();
+            alert('Order successfully recorded in your Account History!');
+        }
+
+        // Modals: Real TradingView Chart for Signals
         function openSignalModal(id) {
             const sig = signalsList.find(x => x.id === id);
             if (!sig) return;
 
-            document.getElementById('modal-title').innerText = `Signal Strategy & Chart: ${sig.pair}`;
+            document.getElementById('modal-title').innerText = `Live TradingView Chart: ${sig.pair} (${sig.tf})`;
             document.getElementById('modal-body').innerHTML = `
-                <div style="font-size: 0.85rem; color: var(--text-secondary);">Real-time price action simulation (${sig.tf}):</div>
-                <div class="chart-mock" id="chart-bars"></div>
+                <div class="tradingview-container" id="tv_chart_container"></div>
                 <div class="calc-box">
-                    <div class="calc-row"><span>Direction:</span> <strong>${sig.side}</strong></div>
-                    <div class="calc-row"><span>Entry Price:</span> <strong class="mono">$${sig.entry}</strong></div>
-                    <div class="calc-row"><span>Take Profit Target:</span> <strong class="mono" style="color: var(--accent-green);">${sig.tp}</strong></div>
-                    <div class="calc-row"><span>Stop Loss Level:</span> <strong class="mono" style="color: var(--accent-red);">${sig.sl}</strong></div>
-                    <div class="calc-row"><span>AI Confidence:</span> <strong style="color: var(--accent-yellow);">${sig.conf}</strong></div>
+                    <div class="calc-row"><span>Direction & Strategy:</span> <strong>${sig.side}</strong></div>
+                    <div class="calc-row"><span>Entry Zone:</span> <strong class="mono">$${sig.entry}</strong></div>
+                    <div class="calc-row"><span>Take Profit (TP):</span> <strong class="mono" style="color: var(--accent-green);">${sig.tp}</strong></div>
+                    <div class="calc-row"><span>Stop Loss (SL):</span> <strong class="mono" style="color: var(--accent-red);">${sig.sl}</strong></div>
+                    <div class="calc-row"><span>AI Model Confidence:</span> <strong style="color: var(--accent-yellow);">${sig.conf}</strong></div>
                 </div>
-                <a href="${sig.exchangeUrl}" target="_blank" class="primary-btn" style="width: 100%; padding: 12px; text-align: center;">Open Terminal & Trade Setup →</a>
+                <a href="${sig.exchangeUrl}" target="_blank" class="primary-btn" style="width: 100%; padding: 12px; text-align: center;">Open Terminal & Execute Order →</a>
             `;
             document.getElementById('detail-modal').style.display = 'flex';
 
-            const chartContainer = document.getElementById('chart-bars');
-            chartContainer.innerHTML = '';
-            for (let i = 0; i < 24; i++) {
-                const height = Math.floor(Math.random() * 70) + 20;
-                const bar = document.createElement('div');
-                bar.className = 'chart-bar';
-                bar.style.height = `${height}%`;
-                if (i > 18) bar.style.backgroundColor = 'var(--accent-yellow)';
-                chartContainer.appendChild(bar);
-            }
+            // Embed real TradingView widget
+            setTimeout(() => {
+                const container = document.getElementById('tv_chart_container');
+                if (container) {
+                    container.innerHTML = '';
+                    const script = document.createElement('script');
+                    script.src = 'https://s3.tradingview.com/tv.js';
+                    script.async = true;
+                    script.onload = function() {
+                        new TradingView.widget({
+                            "width": "100%",
+                            "height": "350",
+                            "symbol": sig.symbol,
+                            "interval": sig.tf === '15M' ? '15' : (sig.tf === '1H' ? '60' : '240'),
+                            "timezone": "Etc/UTC",
+                            "theme": "dark",
+                            "style": "1",
+                            "locale": "en",
+                            "toolbar_bg": "#181a20",
+                            "enable_publishing": false,
+                            "hide_side_toolbar": false,
+                            "container_id": "tv_chart_container"
+                        });
+                    };
+                    container.appendChild(script);
+                }
+            }, 100);
+        }
+
+        // Modals: Meme Coin Chart & Multiplier Calculator
+        function openMemeModal(id) {
+            const meme = liveMemes.find(x => x.id === id);
+            if (!meme) return;
+
+            document.getElementById('modal-title').innerText = `Meme Details & ROI Calculator: ${meme.pair}`;
+            document.getElementById('modal-body').innerHTML = `
+                <div class="tradingview-container" id="tv_meme_container"></div>
+                <div class="calc-box">
+                    <div class="calc-row"><span>Network / Chain:</span> <strong>${meme.network}</strong></div>
+                    <div class="calc-row"><span>Total Pool Liquidity:</span> <strong class="mono">${meme.liq}</strong></div>
+                    <div class="calc-row"><span>24h Price Change:</span> <strong class="mono" style="color: var(--accent-green);">${meme.change}</strong></div>
+                </div>
+                <div class="calc-box">
+                    <div style="font-weight: 600; margin-bottom: 4px; font-size: 0.9rem;">🎯 Multiplier & Profit Calculator</div>
+                    <div class="control-group" style="margin-bottom: 8px;">
+                        <label>Investment Amount (USD)</label>
+                        <input type="number" id="meme-invest" class="mono" value="100" oninput="calculateMemeProfit()">
+                    </div>
+                    <div class="calc-row"><span>At 2x Growth:</span> <strong class="mono" id="calc-2x" style="color: var(--accent-green);">$200.00 (+$100)</strong></div>
+                    <div class="calc-row"><span>At 5x Growth:</span> <strong class="mono" id="calc-5x" style="color: var(--accent-green);">$500.00 (+$400)</strong></div>
+                    <div class="calc-row"><span>At 10x Growth (10X):</span> <strong class="mono" id="calc-10x" style="color: var(--accent-yellow); font-size: 1.05rem;">$1,000.00 (+$900)</strong></div>
+                </div>
+                <a href="${meme.url}" target="_blank" class="primary-btn" style="width: 100%; padding: 12px; text-align: center;">Buy Directly on DEX Pool →</a>
+            `;
+            document.getElementById('detail-modal').style.display = 'flex';
+
+            // Embed TradingView for Meme
+            setTimeout(() => {
+                const container = document.getElementById('tv_meme_container');
+                if (container) {
+                    container.innerHTML = '';
+                    const script = document.createElement('script');
+                    script.src = 'https://s3.tradingview.com/tv.js';
+                    script.async = true;
+                    script.onload = function() {
+                        new TradingView.widget({
+                            "width": "100%",
+                            "height": "350",
+                            "symbol": meme.symbol || "BINANCE:SOLUSDT",
+                            "interval": "60",
+                            "timezone": "Etc/UTC",
+                            "theme": "dark",
+                            "style": "1",
+                            "locale": "en",
+                            "toolbar_bg": "#181a20",
+                            "container_id": "tv_meme_container"
+                        });
+                    };
+                    container.appendChild(script);
+                }
+            }, 100);
+        }
+
+        function calculateMemeProfit() {
+            const inv = parseFloat(document.getElementById('meme-invest').value) || 0;
+            document.getElementById('calc-2x').innerText = `$${(inv * 2).toFixed(2)} (+$${inv.toFixed(2)})`;
+            document.getElementById('calc-5x').innerText = `$${(inv * 5).toFixed(2)} (+$${(inv * 4).toFixed(2)})`;
+            document.getElementById('calc-10x').innerText = `$${(inv * 10).toFixed(2)} (+$${(inv * 9).toFixed(2)})`;
+        }
+
+        // Modals: Account & Order History Profile
+        function openProfileModal() {
+            document.getElementById('modal-title').innerText = `Account & Order History`;
+            
+            let ordersHtml = '';
+            orderHistory.forEach(ord => {
+                ordersHtml += `
+                    <div class="calc-row" style="border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                        <div>
+                            <strong>${ord.pair}</strong> <span style="font-size: 0.75rem; color: var(--text-secondary);">${ord.time}</span><br>
+                            <span style="font-size: 0.8rem; color: var(--text-secondary);">${ord.type} (${ord.amount})</span>
+                        </div>
+                        <strong class="mono" style="color: var(--accent-green);">${ord.profit}</strong>
+                    </div>
+                `;
+            });
+
+            document.getElementById('modal-body').innerHTML = `
+                <div class="calc-box">
+                    <div class="calc-row"><span>Account Status:</span> <strong style="color: var(--accent-yellow);">PRO TERMINAL MEMBER</strong></div>
+                    <div class="calc-row"><span>Default Capital:</span> <strong class="mono">$1,000.00 USDT</strong></div>
+                    <div class="calc-row"><span>Total Executed Orders:</span> <strong class="mono">${orderHistory.length}</strong></div>
+                </div>
+                <div style="font-weight: 600; font-size: 0.9rem; margin-top: 4px;">📜 Order History & Executed Routes</div>
+                <div class="calc-box" style="max-height: 220px; overflow-y: auto; gap: 10px;">
+                    ${ordersHtml || '<div style="color: var(--text-secondary); text-align: center;">No orders recorded yet.</div>'}
+                </div>
+                <button class="secondary-link-btn" style="text-align: center; padding: 10px;" onclick="clearOrderHistory()">Clear History</button>
+            `;
+            document.getElementById('detail-modal').style.display = 'flex';
+        }
+
+        function clearOrderHistory() {
+            orderHistory = [];
+            localStorage.removeItem('cryptopro_orders');
+            openProfileModal();
         }
 
         function closeModal() {
             document.getElementById('detail-modal').style.display = 'none';
         }
 
+        // Watchlist Functions
         function toggleFavorite(id) {
             const index = favorites.indexOf(id);
             if (index > -1) {
