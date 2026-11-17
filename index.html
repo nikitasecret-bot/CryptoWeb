@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CryptoPro Terminal | Pro Edition</title>
+    <title>CryptoPro Terminal | Ultimate Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -153,6 +153,30 @@
             font-weight: 600;
         }
 
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Pro Timer Widget */
+        .timer-widget {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .timer-countdown {
+            color: var(--accent-yellow);
+            font-weight: 600;
+        }
+
         .user-balance {
             background-color: var(--bg-elevated);
             padding: 6px 12px;
@@ -221,7 +245,7 @@
             flex-direction: column;
             gap: 6px;
             flex: 1;
-            min-width: 160px;
+            min-width: 150px;
         }
 
         .control-group label {
@@ -570,15 +594,21 @@
                 <div class="live-dot"></div>
                 <div id="header-title">Inter-Exchange Arbitrage</div>
             </div>
-            <div class="user-balance">Capital: <span id="display-capital" class="mono">$1,000.00</span></div>
+            <div class="header-right">
+                <div class="timer-widget">
+                    <span>Next tick:</span>
+                    <span id="countdown-timer" class="timer-countdown mono">15s</span>
+                </div>
+                <div class="user-balance">Capital: <span id="display-capital" class="mono">$1,000.00</span></div>
+            </div>
         </header>
 
-        <!-- SECTION 1: P2P & ARBITRAGE -->
+        <!-- SECTION 1: P2P & ARBITRAGE WITH EXCHANGE FILTERS -->
         <section id="p2p" class="content-section active">
             <div class="section-header">
                 <div>
                     <h2>Inter-Exchange Arbitrage</h2>
-                    <div class="subtitle">Live spread routing & fee calculations</div>
+                    <div class="subtitle">Live spread routing with multi-exchange filters & fee calculation</div>
                 </div>
             </div>
 
@@ -588,12 +618,25 @@
                     <input type="number" id="capital-input" class="mono" value="1000" min="10" oninput="renderArbitrage()">
                 </div>
                 <div class="control-group">
+                    <label>Filter by Exchange</label>
+                    <select id="exchange-filter" onchange="renderArbitrage()">
+                        <option value="ALL">All Exchanges</option>
+                        <option value="Binance">Binance</option>
+                        <option value="Bybit">Bybit</option>
+                        <option value="OKX">OKX</option>
+                        <option value="Gate.io">Gate.io</option>
+                        <option value="MEXC">MEXC</option>
+                        <option value="KuCoin">KuCoin</option>
+                        <option value="HTX">HTX</option>
+                    </select>
+                </div>
+                <div class="control-group">
                     <label>Search Asset</label>
-                    <input type="text" id="arb-search" placeholder="SOL, XRP, ETH..." oninput="renderArbitrage()">
+                    <input type="text" id="arb-search" placeholder="SOL, XRP, SUI..." oninput="renderArbitrage()">
                 </div>
                 <div class="control-group" style="flex: 0;">
                     <label>&nbsp;</label>
-                    <button class="primary-btn" onclick="simulateMarketTick()">↻ Refresh Ticks</button>
+                    <button class="primary-btn" onclick="simulateMarketTick()">↻ Refresh Now</button>
                 </div>
             </div>
 
@@ -615,14 +658,14 @@
             </div>
         </section>
 
-        <!-- SECTION 2: TRADE SIGNALS -->
+        <!-- SECTION 2: TRADE SIGNALS WITH TIMEFRAME FILTER -->
         <section id="trading" class="content-section">
             <div class="section-header">
                 <div>
                     <h2>Algorithmic Trade Signals</h2>
-                    <div class="subtitle">Expanded order book & multi-timeframe setups</div>
+                    <div class="subtitle">Expanded order book with multi-timeframe filtering</div>
                 </div>
-                <div class="control-group" style="min-width: 140px; margin: 0;">
+                <div class="control-group" style="min-width: 150px; margin: 0;">
                     <select id="tf-filter" onchange="renderSignals()">
                         <option value="ALL">All Timeframes</option>
                         <option value="15M">15 Minutes</option>
@@ -635,14 +678,14 @@
             <div class="card-grid" id="signals-grid"></div>
         </section>
 
-        <!-- SECTION 3: MEMECOIN SCANNER -->
+        <!-- SECTION 3: EXPANDED MEMECOIN SCANNER -->
         <section id="memecoins" class="content-section">
             <div class="section-header">
                 <div>
                     <h2>Live Meme Coin Scanner</h2>
-                    <div class="subtitle">Multi-chain DEX pools scanner (Solana, Ethereum, Base)</div>
+                    <div class="subtitle">Expanded multi-chain DEX pools scanner (Solana, Ethereum, Base, TON)</div>
                 </div>
-                <button class="secondary-link-btn" onclick="fetchLiveMemes()">↻ Refresh DEX</button>
+                <button class="secondary-link-btn" onclick="fetchLiveMemes()">↻ Refresh DEX Pools</button>
             </div>
 
             <div class="table-container">
@@ -723,27 +766,44 @@
     </nav>
 
     <script>
-        // Data Stores
+        // Expanded Data Stores with many currency pairs
         let arbitrageList = [
             { id: "ARB_SOL", category: "Arbitrage", pair: "SOL/USDT", buyEx: "Gate.io", buyUrl: "https://www.gate.io/trade/SOL_USDT", buyPrice: 182.40, sellEx: "Bybit", sellUrl: "https://www.bybit.com/en/trade/spot/SOL/USDT", sellPrice: 186.15, spread: 2.05 },
             { id: "ARB_XRP", category: "Arbitrage", pair: "XRP/USDT", buyEx: "MEXC", buyUrl: "https://www.mexc.com/exchange/XRP_USDT", buyPrice: 0.5410, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/XRP_USDT", sellPrice: 0.5605, spread: 3.60 },
             { id: "ARB_ETH", category: "Arbitrage", pair: "ETH/USDT", buyEx: "KuCoin", buyUrl: "https://www.kucoin.com/trade/ETH-USDT", buyPrice: 3120.00, sellEx: "OKX", sellUrl: "https://www.okx.com/trade-spot/eth-usdt", sellPrice: 3164.50, spread: 1.43 },
             { id: "ARB_TON", category: "Arbitrage", pair: "TON/USDT", buyEx: "HTX", buyUrl: "https://www.htx.com/trade/ton_usdt", buyPrice: 5.42, sellEx: "Bybit", sellUrl: "https://www.bybit.com/en/trade/spot/TON/USDT", sellPrice: 5.57, spread: 2.77 },
-            { id: "ARB_AVAX", category: "Arbitrage", pair: "AVAX/USDT", buyEx: "Kraken", buyUrl: "https://trade.kraken.com/", buyPrice: 34.10, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/AVAX_USDT", sellPrice: 34.72, spread: 1.82 }
+            { id: "ARB_AVAX", category: "Arbitrage", pair: "AVAX/USDT", buyEx: "Kraken", buyUrl: "https://trade.kraken.com/", buyPrice: 34.10, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/AVAX_USDT", sellPrice: 34.72, spread: 1.82 },
+            { id: "ARB_SUI", category: "Arbitrage", pair: "SUI/USDT", buyEx: "Gate.io", buyUrl: "https://www.gate.io/trade/SUI_USDT", buyPrice: 3.42, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/SUI_USDT", sellPrice: 3.55, spread: 3.80 },
+            { id: "ARB_ADA", category: "Arbitrage", pair: "ADA/USDT", buyEx: "MEXC", buyUrl: "https://www.mexc.com/exchange/ADA_USDT", buyPrice: 0.72, sellEx: "Bybit", sellUrl: "https://www.bybit.com/en/trade/spot/ADA/USDT", sellPrice: 0.75, spread: 4.16 },
+            { id: "ARB_NEAR", category: "Arbitrage", pair: "NEAR/USDT", buyEx: "OKX", buyUrl: "https://www.okx.com/trade-spot/near-usdt", buyPrice: 6.12, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/NEAR_USDT", sellPrice: 6.30, spread: 2.94 },
+            { id: "ARB_DOGE", category: "Arbitrage", pair: "DOGE/USDT", buyEx: "KuCoin", buyUrl: "https://www.kucoin.com/trade/DOGE-USDT", buyPrice: 0.385, sellEx: "Binance", sellUrl: "https://www.binance.com/en/trade/DOGE_USDT", sellPrice: 0.398, spread: 3.37 }
         ];
 
-        // Expanded Signals List with different Timeframes
         const signalsList = [
             { id: "SIG_BTC", category: "Signal", pair: "BTC/USDT", tf: "4H", side: "LONG", entry: 89450, tp: "+14.5%", sl: "-2.1%", conf: "91%", exchangeUrl: "https://www.binance.com/en/trade/BTC_USDT" },
             { id: "SIG_SOL", category: "Signal", pair: "SOL/USDT", tf: "1H", side: "LONG", entry: 184.20, tp: "+22.0%", sl: "-3.4%", conf: "87%", exchangeUrl: "https://www.bybit.com/en/trade/spot/SOL/USDT" },
             { id: "SIG_SUI", category: "Signal", pair: "SUI/USDT", tf: "15M", side: "SHORT", entry: 3.48, tp: "+11.2%", sl: "-1.8%", conf: "84%", exchangeUrl: "https://www.okx.com/trade-spot/sui-usdt" },
             { id: "SIG_ETH", category: "Signal", pair: "ETH/USDT", tf: "1D", side: "LONG", entry: 3150.00, tp: "+18.0%", sl: "-2.8%", conf: "89%", exchangeUrl: "https://www.binance.com/en/trade/ETH_USDT" },
             { id: "SIG_PEPE", category: "Signal", pair: "1000PEPE/USDT", tf: "1H", side: "LONG", entry: 0.0114, tp: "+28.5%", sl: "-4.2%", conf: "82%", exchangeUrl: "https://www.binance.com/en/trade/1000PEPE_USDT" },
-            { id: "SIG_NEAR", category: "Signal", pair: "NEAR/USDT", tf: "4H", side: "LONG", entry: 6.20, tp: "+15.4%", sl: "-2.5%", conf: "86%", exchangeUrl: "https://www.bybit.com/en/trade/spot/NEAR/USDT" }
+            { id: "SIG_NEAR", category: "Signal", pair: "NEAR/USDT", tf: "4H", side: "LONG", entry: 6.20, tp: "+15.4%", sl: "-2.5%", conf: "86%", exchangeUrl: "https://www.bybit.com/en/trade/spot/NEAR/USDT" },
+            { id: "SIG_XRP", category: "Signal", pair: "XRP/USDT", tf: "15M", side: "LONG", entry: 0.55, tp: "+12.0%", sl: "-1.9%", conf: "85%", exchangeUrl: "https://www.binance.com/en/trade/XRP_USDT" },
+            { id: "SIG_AVAX", category: "Signal", pair: "AVAX/USDT", tf: "4H", side: "SHORT", entry: 34.50, tp: "-16.0%", sl: "+2.4%", conf: "81%", exchangeUrl: "https://trade.kraken.com/" }
         ];
 
         let liveMemes = [];
         let favorites = JSON.parse(localStorage.getItem('cryptopro_watchlist')) || [];
+
+        // Countdown Timer Logic
+        let timeLeft = 15;
+        setInterval(() => {
+            timeLeft--;
+            if (timeLeft <= 0) {
+                simulateMarketTick();
+                timeLeft = 15;
+            }
+            const timerEl = document.getElementById('countdown-timer');
+            if (timerEl) timerEl.innerText = `${timeLeft}s`;
+        }, 1000);
 
         // Tab Navigation
         function switchTab(tabId) {
@@ -765,16 +825,26 @@
             if (tabId === 'memecoins' && liveMemes.length === 0) fetchLiveMemes();
         }
 
-        // Render Arbitrage Table
+        // Render Arbitrage Table with Exchange Filter
         function renderArbitrage() {
             const capital = parseFloat(document.getElementById('capital-input').value) || 0;
             const query = document.getElementById('arb-search').value.trim().toUpperCase();
+            const selectedEx = document.getElementById('exchange-filter').value;
             document.getElementById('display-capital').innerText = `$${capital.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
 
             const tbody = document.getElementById('p2p-table-body');
             tbody.innerHTML = '';
 
-            const filtered = arbitrageList.filter(item => item.pair.includes(query));
+            const filtered = arbitrageList.filter(item => {
+                const matchesQuery = item.pair.includes(query);
+                const matchesEx = selectedEx === 'ALL' || item.buyEx === selectedEx || item.sellEx === selectedEx;
+                return matchesQuery && matchesEx;
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-secondary); padding: 30px;">No arbitrage pairs found for selected filters.</td></tr>`;
+                return;
+            }
 
             filtered.forEach(item => {
                 const grossProfit = capital * (item.spread / 100);
@@ -805,7 +875,7 @@
             renderArbitrage();
         }
 
-        // Render Trade Signals with Filter
+        // Render Signals with Timeframe filter
         function renderSignals() {
             const tfFilter = document.getElementById('tf-filter').value;
             const grid = document.getElementById('signals-grid');
@@ -850,22 +920,22 @@
             });
         }
 
-        // Fetch Live Meme Coins from DexScreener (Expanded search query for high volume)
+        // Fetch Live Meme Coins from DexScreener
         async function fetchLiveMemes() {
             const tbody = document.getElementById('meme-table-body');
-            tbody.innerHTML = `<tr><td colspan="6"><div class="loader-container"><div class="spinner"></div><span>Loading live blockchain pools...</span></div></td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="6"><div class="loader-container"><div class="spinner"></div><span>Loading high-liquidity DEX pools...</span></div></td></tr>`;
 
             try {
                 const response = await fetch('https://api.dexscreener.com/latest/dex/search?q=USDT');
                 const data = await response.json();
                 
                 if (data && data.pairs && data.pairs.length > 0) {
-                    liveMemes = data.pairs.slice(0, 15).map((p, idx) => ({
+                    liveMemes = data.pairs.slice(0, 20).map((p, idx) => ({
                         id: `MEME_LIVE_${idx}`,
                         category: 'Meme Coin',
                         pair: `${p.baseToken.symbol} / ${p.quoteToken.symbol}`,
                         network: p.chainId.toUpperCase(),
-                        liq: `$${Math.round(p.liquidity?.usd || 20000).toLocaleString()}`,
+                        liq: `$${Math.round(p.liquidity?.usd || 25000).toLocaleString()}`,
                         change: `${p.priceChange?.h24 >= 0 ? '+' : ''}${p.priceChange?.h24 || 0}%`,
                         isUp: (p.priceChange?.h24 || 0) >= 0,
                         url: p.url || 'https://dexscreener.com'
@@ -874,12 +944,12 @@
                     throw new Error('No data');
                 }
             } catch (e) {
-                // Fallback robust mock dataset if network fails
                 liveMemes = [
                     { id: 'MEME_LIVE_0', category: 'Meme Coin', pair: 'PEPEK / SOL', network: 'SOLANA', liq: '$42,800', change: '+340%', isUp: true, url: 'https://dexscreener.com' },
                     { id: 'MEME_LIVE_1', category: 'Meme Coin', pair: 'MOONDOG / SOL', network: 'SOLANA', liq: '$19,200', change: '+610%', isUp: true, url: 'https://dexscreener.com' },
                     { id: 'MEME_LIVE_2', category: 'Meme Coin', pair: 'TURBOAI / ETH', network: 'BASE', liq: '$85,400', change: '+185%', isUp: true, url: 'https://dexscreener.com' },
-                    { id: 'MEME_LIVE_3', category: 'Meme Coin', pair: 'CYBERCAT / SOL', network: 'SOLANA', liq: '$6,400', change: '-12.4%', isUp: false, url: 'https://dexscreener.com' }
+                    { id: 'MEME_LIVE_3', category: 'Meme Coin', pair: 'CYBERCAT / SOL', network: 'SOLANA', liq: '$6,400', change: '-12.4%', isUp: false, url: 'https://dexscreener.com' },
+                    { id: 'MEME_LIVE_4', category: 'Meme Coin', pair: 'TONMOON / TON', network: 'TON', liq: '$54,100', change: '+88.2%', isUp: true, url: 'https://dexscreener.com' }
                 ];
             }
 
@@ -907,7 +977,7 @@
             });
         }
 
-        // Modal Views with Interactive Chart Simulation
+        // Modals & Charts
         function openArbitrageModal(id) {
             const item = arbitrageList.find(x => x.id === id);
             if (!item) return;
@@ -957,7 +1027,6 @@
             `;
             document.getElementById('detail-modal').style.display = 'flex';
 
-            // Generate mock chart bars dynamically for visual appeal
             const chartContainer = document.getElementById('chart-bars');
             chartContainer.innerHTML = '';
             for (let i = 0; i < 24; i++) {
